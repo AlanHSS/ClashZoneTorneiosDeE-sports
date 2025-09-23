@@ -4,9 +4,9 @@ services:
     image: postgres:latest
     container_name: ClashZone
     environment:
-      POSTGRES_DB: ClashZone
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ${DATABASE_DB}
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     ports:
-      - "5431:5432"
+      - "5432:5432"
     restart: always
