@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: ClashZone
+    environment:
+      POSTGRES_DB: ClashZone
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "8058:8059"
+    restart: always
