@@ -8,5 +8,5 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - "8058:8059"
+      - "5431:5432"
     restart: always
