@@ -1,5 +1,5 @@
 -- V1_criar_tabela_torneio.sql
-CREATE TABLE torneio (
+CREATE TABLE torneios (
     id BIGSERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     descricao TEXT,
