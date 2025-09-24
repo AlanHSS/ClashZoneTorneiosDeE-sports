@@ -1,14 +1,14 @@
 package com.alanhss.ClashZone.core.enums;
 
 public enum Games {
-    LEAGUEOFLEGENDS,
+    LEAGUE_OF_LEGENDS,
     CS2,
     DOTA2,
     VALORANT,
-    OVERWATCH2,
-    RAINBOWSIXSIEGE,
+    OVERWATCH_2,
+    RAINBOW_SIX_SIEGE,
     FIFA,
-    STREETFIGHTERS6,
-    TEKKEN8,
+    STREET_FIGHTERS_6,
+    TEKKEN_8,
     OUTRO
 }
