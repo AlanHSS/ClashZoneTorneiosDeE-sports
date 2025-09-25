@@ -6,7 +6,7 @@ Spring:
     name: ClashZone
 
   datasource:
-    url: jdbc:postgresql://postgres:5432/${DATABASE_DB}
+    url: jdbc:postgresql://localhost:5432/${DATABASE_DB}
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
     driver-class-name: org.postgresql.Driver
