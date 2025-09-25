@@ -1,7 +1,8 @@
 -- V1_criar_tabela_torneio.sql
+
 CREATE TABLE torneios (
     id BIGSERIAL PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
+    nome VARCHAR(255) NOT NULL,
     descricao TEXT,
     inicio TIMESTAMP NOT NULL,
     jogo VARCHAR(50) NOT NULL,
