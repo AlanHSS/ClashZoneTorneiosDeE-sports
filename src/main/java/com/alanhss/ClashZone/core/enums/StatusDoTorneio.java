@@ -4,5 +4,5 @@ public enum StatusDoTorneio {
     AGENDADO,
     EM_ANDAMENTO,
     FINALIZADO,
-    CANCELADO
+    CANCELADO;
 }

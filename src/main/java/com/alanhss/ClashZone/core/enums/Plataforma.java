@@ -7,5 +7,5 @@ public enum Plataforma {
     NINTENDO_SWITCH,
     MOBILE,
     CROSS_PLATAFORM,
-    OUTRA
+    OUTRA;
 }
