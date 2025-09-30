@@ -1,9 +1,9 @@
 package com.alanhss.ClashZone.core.usecases;
 
-import com.alanhss.ClashZone.core.entities.Torneio;
+import com.alanhss.ClashZone.core.entities.TorneioDomain;
 
-public interface CriarTorneioCase {
+public interface CriarTorneioUsecase {
 
-    public Torneio execute(Torneio torneio);
+    public TorneioDomain execute(TorneioDomain torneioDomain);
 
 }

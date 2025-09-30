@@ -1,10 +1,17 @@
 package com.alanhss.ClashZone.core.usecases;
-import com.alanhss.ClashZone.core.entities.Torneio;
+import com.alanhss.ClashZone.core.entities.TorneioDomain;
+import com.alanhss.ClashZone.core.gateway.TorneioGateway;
 
-public class CriarTorneioCaseImpl implements CriarTorneioCase {
+public class CriarTorneioUsecaseImpl implements CriarTorneioUsecase {
+
+    private final TorneioGateway torneioGateway;
+
+    public CriarTorneioUsecaseImpl(TorneioGateway torneioGateway) {
+        this.torneioGateway = torneioGateway;
+    }
 
     @Override
-    public Torneio execute(Torneio torneio) {
+    public TorneioDomain execute(TorneioDomain torneioDomain) {
         return null;
     }
 }
