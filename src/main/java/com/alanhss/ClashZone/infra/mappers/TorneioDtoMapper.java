@@ -1,29 +1,28 @@
 package com.alanhss.ClashZone.infra.mappers;
 
-import com.alanhss.ClashZone.core.entities.Torneio;
+import com.alanhss.ClashZone.core.entities.TorneioDomain;
 import com.alanhss.ClashZone.infra.dtos.TorneioDto;
-import com.alanhss.ClashZone.infra.persistence.TorneioEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TorneioDtoMapper {
 
-    public TorneioDto toDto(Torneio torneio){
+    public TorneioDto toDto(TorneioDomain torneioDomain){
         return new TorneioDto(
-                torneio.id(),
-                torneio.nomeDoTorneio(),
-                torneio.descricaoDoTorneio(),
-                torneio.inicioDoTorneio(),
-                torneio.jogoDoTorneio(),
-                torneio.quantidadeDeEquipes(),
-                torneio.criadorDoTorneio(),
-                torneio.statusDoTorneio(),
-                torneio.plataforma()
+                torneioDomain.id(),
+                torneioDomain.nomeDoTorneio(),
+                torneioDomain.descricaoDoTorneio(),
+                torneioDomain.inicioDoTorneio(),
+                torneioDomain.jogoDoTorneio(),
+                torneioDomain.quantidadeDeEquipes(),
+                torneioDomain.criadorDoTorneio(),
+                torneioDomain.statusDoTorneio(),
+                torneioDomain.plataforma()
         );
     }
 
-    public Torneio toEntity(TorneioDto torneioDto){
-        return new Torneio(
+    public TorneioDomain toDomain(TorneioDto torneioDto){
+        return new TorneioDomain(
                 torneioDto.id(),
                 torneioDto.nomeDoTorneio(),
                 torneioDto.descricaoDoTorneio(),
