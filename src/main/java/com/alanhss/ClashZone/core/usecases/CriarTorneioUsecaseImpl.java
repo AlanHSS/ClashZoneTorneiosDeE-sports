@@ -12,6 +12,6 @@ public class CriarTorneioUsecaseImpl implements CriarTorneioUsecase {
 
     @Override
     public TorneioDomain execute(TorneioDomain torneioDomain) {
-        return null;
+        return torneioGateway.criarTorneio(torneioDomain);
     }
 }
