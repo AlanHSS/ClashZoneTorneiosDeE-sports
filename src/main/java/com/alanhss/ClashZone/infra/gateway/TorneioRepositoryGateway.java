@@ -8,6 +8,9 @@ import com.alanhss.ClashZone.infra.persistence.TorneioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 @RequiredArgsConstructor
 public class TorneioRepositoryGateway implements TorneioGateway {
@@ -20,5 +23,13 @@ public class TorneioRepositoryGateway implements TorneioGateway {
         TorneioEntity torneioEntity = mapper.toEntity(torneioDomain);
         TorneioEntity novoTorneio = torneioRepository.save(torneioEntity);
         return mapper.toDomain(novoTorneio);
+    }
+
+    @Override
+    public List<TorneioDomain> listarTorneios() {
+        List<TorneioEntity> lista = torneioRepository.findAll();
+        return lista.stream()
+                .map(mapper::toDomain)
+                .collect(Collectors.toList());
     }
 }

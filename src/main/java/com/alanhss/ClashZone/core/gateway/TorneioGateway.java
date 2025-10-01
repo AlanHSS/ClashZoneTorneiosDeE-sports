@@ -2,6 +2,10 @@ package com.alanhss.ClashZone.core.gateway;
 
 import com.alanhss.ClashZone.core.entities.TorneioDomain;
 
+import java.util.List;
+
 public interface TorneioGateway {
     TorneioDomain criarTorneio(TorneioDomain torneioDomain);
+
+    List<TorneioDomain> listarTorneios();
 }
