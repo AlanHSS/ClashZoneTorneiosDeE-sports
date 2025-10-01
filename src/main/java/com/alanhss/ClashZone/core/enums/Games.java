@@ -10,5 +10,7 @@ public enum Games {
     FIFA,
     STREET_FIGHTERS_6,
     TEKKEN_8,
+    FORTNITE,
+    PUBG,
     OUTRO;
 }
