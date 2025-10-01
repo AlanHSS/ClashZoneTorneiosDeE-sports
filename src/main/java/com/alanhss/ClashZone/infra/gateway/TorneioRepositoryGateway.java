@@ -8,6 +8,7 @@ import com.alanhss.ClashZone.infra.persistence.TorneioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,8 +29,14 @@ public class TorneioRepositoryGateway implements TorneioGateway {
     @Override
     public List<TorneioDomain> listarTorneios() {
         List<TorneioEntity> lista = torneioRepository.findAll();
-        return lista.stream()
-                .map(mapper::toDomain)
-                .collect(Collectors.toList());
+        List<TorneioDomain> listaConvertida = new ArrayList<>();
+
+        for(int i = 0; i < lista.size(); i++){
+            TorneioEntity entity = lista.get(i);
+            TorneioDomain domain = mapper.toDomain(entity);
+
+            listaConvertida.add(domain);
+        }
+        return listaConvertida;
     }
 }
