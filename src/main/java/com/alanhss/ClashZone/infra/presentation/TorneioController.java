@@ -7,10 +7,13 @@ import com.alanhss.ClashZone.infra.dtos.TorneioDto;
 import com.alanhss.ClashZone.infra.mappers.TorneioDtoMapper;
 import com.alanhss.ClashZone.infra.persistence.TorneioEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -23,9 +26,13 @@ public class TorneioController {
     private final TorneioDtoMapper torneioDtoMapper;
 
     @PostMapping("criartorneio")
-    public TorneioDto criarTorneio(@RequestBody TorneioDto torneioDto){
+    public ResponseEntity<Map<String, Object>> criarTorneio(@RequestBody TorneioDto torneioDto){
         TorneioDomain novoTorneioDomain = criarTorneioUsecase.execute(torneioDtoMapper.toDomain(torneioDto));
-        return torneioDtoMapper.toDto(novoTorneioDomain);
+        Map<String, Object> response = new HashMap<>();
+        response.put("Mensagem: ", "Torneio criado com sucesso!");
+        response.put("Dados do torneio: ", torneioDtoMapper.toDto(novoTorneioDomain));
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("listartorneios")
