@@ -1,11 +1,17 @@
 package com.alanhss.ClashZone.infra.gateway;
 
 import com.alanhss.ClashZone.core.entities.TorneioDomain;
+import com.alanhss.ClashZone.core.enums.Games;
+import com.alanhss.ClashZone.core.enums.Plataforma;
+import com.alanhss.ClashZone.core.enums.StatusDoTorneio;
 import com.alanhss.ClashZone.core.gateway.TorneioGateway;
+import com.alanhss.ClashZone.infra.dtos.FiltroTorneioDto;
 import com.alanhss.ClashZone.infra.mappers.TorneioEntityMapper;
 import com.alanhss.ClashZone.infra.persistence.TorneioEntity;
 import com.alanhss.ClashZone.infra.persistence.TorneioRepository;
+import com.alanhss.ClashZone.infra.persistence.TorneioSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -38,5 +44,21 @@ public class TorneioRepositoryGateway implements TorneioGateway {
             listaConvertida.add(domain);
         }
         return listaConvertida;
+    }
+
+    @Override
+    public List<TorneioDomain> filtrarTorneios(FiltroTorneioDto filtroTorneioDto) {
+        Specification<TorneioEntity> spec = Specification.allOf(
+                TorneioSpecification.comNome(filtroTorneioDto.nomeDoTorneio()),
+                TorneioSpecification.comJogo(filtroTorneioDto.jogoDoTorneio()),
+                TorneioSpecification.comPlataforma(filtroTorneioDto.plataforma()),
+                TorneioSpecification.comStatus(filtroTorneioDto.statusDoTorneio()),
+                TorneioSpecification.comDataInicio(filtroTorneioDto.inicioDoTorneio())
+        );
+
+        return torneioRepository.findAll(spec)
+                .stream()
+                .map(mapper::toDomain)
+                .collect(Collectors.toList());
     }
 }
