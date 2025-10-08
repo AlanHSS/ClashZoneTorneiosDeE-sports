@@ -1,10 +1,7 @@
 package com.alanhss.ClashZone.infra.beans;
 
 import com.alanhss.ClashZone.core.gateway.TorneioGateway;
-import com.alanhss.ClashZone.core.usecases.CriarTorneioUsecase;
-import com.alanhss.ClashZone.core.usecases.CriarTorneioUsecaseImpl;
-import com.alanhss.ClashZone.core.usecases.ListarTorneiosUsecase;
-import com.alanhss.ClashZone.core.usecases.ListarTorneiosUsecaseImpl;
+import com.alanhss.ClashZone.core.usecases.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,5 +16,10 @@ public class BeanConfiguration {
     @Bean
     public ListarTorneiosUsecase listartorneio(TorneioGateway torneioGateway){
         return new ListarTorneiosUsecaseImpl(torneioGateway);
+    }
+
+    @Bean
+    public FiltrosTorneioUsecase filtrartorneio(TorneioGateway torneioGateway){
+        return new FiltrosTorneioUsecaseImpl(torneioGateway);
     }
 }
