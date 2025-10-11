@@ -50,11 +50,17 @@ public class TorneioController {
     }
 
     @PostMapping("torneiosfiltrados")
-    public List<TorneioDto> listarTorneiosFiltrados(@RequestBody FiltroTorneioDto filtroTorneioDto){
-        return filtrosTorneioUsecase.execute(filtroTorneioDto)
-                .stream()
+    public ResponseEntity<Map<String, Object>> listarTorneiosFiltrados2(@RequestBody FiltroTorneioDto filtroTorneioDto){
+        Map<String, Object> response = new HashMap<>();
+        List<TorneioDomain> torneiosFiltrados = filtrosTorneioUsecase.execute(filtroTorneioDto);
+        response.put("Lista de torneios:", torneiosFiltrados.stream()
                 .map(mapper::toDto)
-                .toList();
+                .toList());
+        if (torneiosFiltrados.size() == 0){
+            response.put("Mensagem: ", "Não foi encontrado nenhum torneio com essas características");
+        }
+
+        return ResponseEntity.ok(response);
     }
 
 }
