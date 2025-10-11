@@ -8,6 +8,7 @@ import com.alanhss.ClashZone.infra.dtos.FiltroTorneioDto;
 import com.alanhss.ClashZone.infra.dtos.TorneioDto;
 import com.alanhss.ClashZone.infra.mappers.TorneioDtoMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
@@ -53,14 +54,16 @@ public class TorneioController {
     public ResponseEntity<Map<String, Object>> listarTorneiosFiltrados2(@RequestBody FiltroTorneioDto filtroTorneioDto){
         Map<String, Object> response = new HashMap<>();
         List<TorneioDomain> torneiosFiltrados = filtrosTorneioUsecase.execute(filtroTorneioDto);
-        response.put("Lista de torneios:", torneiosFiltrados.stream()
-                .map(mapper::toDto)
-                .toList());
         if (torneiosFiltrados.size() == 0){
             response.put("Mensagem: ", "Não foi encontrado nenhum torneio com essas características");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
-
-        return ResponseEntity.ok(response);
+        else {
+            response.put("Lista de torneios:", torneiosFiltrados.stream()
+                    .map(mapper::toDto)
+                    .toList());
+            return ResponseEntity.ok(response);
+        }
     }
 
 }
