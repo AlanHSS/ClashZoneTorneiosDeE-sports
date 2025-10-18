@@ -1,7 +1,7 @@
 package com.alanhss.ClashZone.infra.beans;
 
 import com.alanhss.ClashZone.core.gateway.TorneioGateway;
-import com.alanhss.ClashZone.core.usecases.*;
+import com.alanhss.ClashZone.core.usecases.torneio.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

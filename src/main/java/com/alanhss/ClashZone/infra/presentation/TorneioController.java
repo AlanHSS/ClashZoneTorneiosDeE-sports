@@ -1,9 +1,9 @@
 package com.alanhss.ClashZone.infra.presentation;
 
 import com.alanhss.ClashZone.core.entities.TorneioDomain;
-import com.alanhss.ClashZone.core.usecases.CriarTorneioUsecase;
-import com.alanhss.ClashZone.core.usecases.FiltrosTorneioUsecase;
-import com.alanhss.ClashZone.core.usecases.ListarTorneiosUsecase;
+import com.alanhss.ClashZone.core.usecases.torneio.CriarTorneioUsecase;
+import com.alanhss.ClashZone.core.usecases.torneio.FiltrosTorneioUsecase;
+import com.alanhss.ClashZone.core.usecases.torneio.ListarTorneiosUsecase;
 import com.alanhss.ClashZone.infra.dtos.FiltroTorneioDto;
 import com.alanhss.ClashZone.infra.dtos.TorneioDto;
 import com.alanhss.ClashZone.infra.mappers.TorneioDtoMapper;
