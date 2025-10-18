@@ -17,7 +17,8 @@ public class TorneioEntityMapper {
                 torneioDomain.quantidadeDeEquipes(),
                 torneioDomain.criadorDoTorneio(),
                 torneioDomain.statusDoTorneio(),
-                torneioDomain.plataforma()
+                torneioDomain.plataforma(),
+                torneioDomain.dataCriacao()
         );
     }
 
@@ -31,7 +32,8 @@ public class TorneioEntityMapper {
                 torneioEntity.getQuantidadeDeEquipes(),
                 torneioEntity.getCriadorDoTorneio(),
                 torneioEntity.getStatusDoTorneio(),
-                torneioEntity.getPlataforma()
+                torneioEntity.getPlataforma(),
+                torneioEntity.getDataCriacao()
         );
     }
 

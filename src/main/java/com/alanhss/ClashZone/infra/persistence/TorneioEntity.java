@@ -40,4 +40,7 @@ public class TorneioEntity {
     @Enumerated(EnumType.STRING)
     private Plataforma plataforma;
 
+    @Column(name = "data_criacao", updatable = false, insertable = false)
+    private LocalDateTime dataCriacao;
+
 }

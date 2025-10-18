@@ -17,7 +17,8 @@ public class TorneioDtoMapper {
                 torneioDomain.quantidadeDeEquipes(),
                 torneioDomain.criadorDoTorneio(),
                 torneioDomain.statusDoTorneio(),
-                torneioDomain.plataforma()
+                torneioDomain.plataforma(),
+                torneioDomain.dataCriacao()
         );
     }
 
@@ -31,7 +32,8 @@ public class TorneioDtoMapper {
                 torneioDto.quantidadeDeEquipes(),
                 torneioDto.criadorDoTorneio(),
                 torneioDto.statusDoTorneio(),
-                torneioDto.plataforma()
+                torneioDto.plataforma(),
+                torneioDto.dataCriacao()
         );
 
     }

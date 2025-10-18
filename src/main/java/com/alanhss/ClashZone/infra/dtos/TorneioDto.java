@@ -14,5 +14,6 @@ public record TorneioDto(Long id,
                          Integer quantidadeDeEquipes,
                          String criadorDoTorneio,
                          StatusDoTorneio statusDoTorneio,
-                         Plataforma plataforma) {
+                         Plataforma plataforma,
+                         LocalDateTime dataCriacao) {
 }
