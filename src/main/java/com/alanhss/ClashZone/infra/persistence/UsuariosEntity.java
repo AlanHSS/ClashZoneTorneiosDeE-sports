@@ -18,6 +18,8 @@ public class UsuariosEntity {
 
     private String nomeDoUsuario;
 
+    private String nickname;
+
     private String emailDoUsuario;
 
     private String senhaDoUsuario;
