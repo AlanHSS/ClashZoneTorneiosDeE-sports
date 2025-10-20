@@ -11,6 +11,9 @@ import com.alanhss.ClashZone.infra.persistence.UsuariosRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 @RequiredArgsConstructor
 public class UsuariosRepositoryGateway implements UsuariosGateway {
@@ -23,5 +26,14 @@ public class UsuariosRepositoryGateway implements UsuariosGateway {
         UsuariosEntity usuariosEntity = mapper.toEntity(usuariosDomain);
         UsuariosEntity novoUsuario = usuariosRepository.save(usuariosEntity);
         return mapper.toDomain(novoUsuario);
+    }
+
+    @Override
+    public List<UsuariosDomain> listarUsuarios() {
+        List<UsuariosEntity> entityList = usuariosRepository.findAll();
+
+        return entityList.stream()
+                .map(mapper::toDomain)
+                .collect(Collectors.toList());
     }
 }
