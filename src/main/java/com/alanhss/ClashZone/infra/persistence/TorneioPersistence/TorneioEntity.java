@@ -1,4 +1,4 @@
-package com.alanhss.ClashZone.infra.persistence;
+package com.alanhss.ClashZone.infra.persistence.TorneioPersistence;
 
 import com.alanhss.ClashZone.core.enums.Games;
 import com.alanhss.ClashZone.core.enums.Plataforma;

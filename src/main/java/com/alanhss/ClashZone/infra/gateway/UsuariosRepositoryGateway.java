@@ -3,8 +3,8 @@ package com.alanhss.ClashZone.infra.gateway;
 import com.alanhss.ClashZone.core.entities.UsuariosDomain;
 import com.alanhss.ClashZone.core.gateway.UsuariosGateway;
 import com.alanhss.ClashZone.infra.mappers.UsuariosMappers.UsuariosEntityMapper;
-import com.alanhss.ClashZone.infra.persistence.UsuariosEntity;
-import com.alanhss.ClashZone.infra.persistence.UsuariosRepository;
+import com.alanhss.ClashZone.infra.persistence.UsuariosPersistence.UsuariosEntity;
+import com.alanhss.ClashZone.infra.persistence.UsuariosPersistence.UsuariosRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

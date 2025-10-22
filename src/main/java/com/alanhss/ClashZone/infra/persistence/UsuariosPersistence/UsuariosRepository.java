@@ -1,4 +1,4 @@
-package com.alanhss.ClashZone.infra.persistence;
+package com.alanhss.ClashZone.infra.persistence.UsuariosPersistence;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
