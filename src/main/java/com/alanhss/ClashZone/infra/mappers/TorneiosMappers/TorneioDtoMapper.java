@@ -1,4 +1,4 @@
-package com.alanhss.ClashZone.infra.mappers;
+package com.alanhss.ClashZone.infra.mappers.TorneiosMappers;
 
 import com.alanhss.ClashZone.core.entities.TorneioDomain;
 import com.alanhss.ClashZone.infra.dtos.TorneioDto;

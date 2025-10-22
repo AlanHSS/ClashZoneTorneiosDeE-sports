@@ -1,11 +1,8 @@
 package com.alanhss.ClashZone.infra.gateway;
 
 import com.alanhss.ClashZone.core.entities.UsuariosDomain;
-import com.alanhss.ClashZone.core.gateway.TorneioGateway;
 import com.alanhss.ClashZone.core.gateway.UsuariosGateway;
-import com.alanhss.ClashZone.infra.mappers.UsuariosEntityMapper;
-import com.alanhss.ClashZone.infra.persistence.TorneioEntity;
-import com.alanhss.ClashZone.infra.persistence.TorneioRepository;
+import com.alanhss.ClashZone.infra.mappers.UsuariosMappers.UsuariosEntityMapper;
 import com.alanhss.ClashZone.infra.persistence.UsuariosEntity;
 import com.alanhss.ClashZone.infra.persistence.UsuariosRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.alanhss.ClashZone.infra.mappers;
+package com.alanhss.ClashZone.infra.mappers.UsuariosMappers;
 
 import com.alanhss.ClashZone.core.entities.UsuariosDomain;
 import com.alanhss.ClashZone.infra.persistence.UsuariosEntity;

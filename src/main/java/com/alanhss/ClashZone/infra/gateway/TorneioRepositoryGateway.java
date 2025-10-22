@@ -1,12 +1,9 @@
 package com.alanhss.ClashZone.infra.gateway;
 
 import com.alanhss.ClashZone.core.entities.TorneioDomain;
-import com.alanhss.ClashZone.core.enums.Games;
-import com.alanhss.ClashZone.core.enums.Plataforma;
-import com.alanhss.ClashZone.core.enums.StatusDoTorneio;
 import com.alanhss.ClashZone.core.gateway.TorneioGateway;
 import com.alanhss.ClashZone.infra.dtos.FiltroTorneioDto;
-import com.alanhss.ClashZone.infra.mappers.TorneioEntityMapper;
+import com.alanhss.ClashZone.infra.mappers.TorneiosMappers.TorneioEntityMapper;
 import com.alanhss.ClashZone.infra.persistence.TorneioEntity;
 import com.alanhss.ClashZone.infra.persistence.TorneioRepository;
 import com.alanhss.ClashZone.infra.persistence.TorneioSpecification;

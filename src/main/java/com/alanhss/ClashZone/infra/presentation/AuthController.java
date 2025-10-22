@@ -4,7 +4,7 @@ import com.alanhss.ClashZone.core.entities.UsuariosDomain;
 import com.alanhss.ClashZone.core.usecases.usuario.CriarUsuarioUsecase;
 import com.alanhss.ClashZone.core.usecases.usuario.ListarUsuariosUsecase;
 import com.alanhss.ClashZone.infra.dtos.UsuariosDtos.UsuariosDto;
-import com.alanhss.ClashZone.infra.mappers.UsuariosDtoMapper;
+import com.alanhss.ClashZone.infra.mappers.UsuariosMappers.UsuariosDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
