@@ -1,4 +1,4 @@
-package com.alanhss.ClashZone.infra.dtos;
+package com.alanhss.ClashZone.infra.dtos.UsuariosDtos;
 
 public record UsuariosDto(Long id,
                           String nomeDoUsuario,

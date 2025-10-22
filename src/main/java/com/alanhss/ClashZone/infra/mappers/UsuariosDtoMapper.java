@@ -1,7 +1,7 @@
 package com.alanhss.ClashZone.infra.mappers;
 
 import com.alanhss.ClashZone.core.entities.UsuariosDomain;
-import com.alanhss.ClashZone.infra.dtos.UsuariosDto;
+import com.alanhss.ClashZone.infra.dtos.UsuariosDtos.UsuariosDto;
 import org.springframework.stereotype.Component;
 
 @Component
