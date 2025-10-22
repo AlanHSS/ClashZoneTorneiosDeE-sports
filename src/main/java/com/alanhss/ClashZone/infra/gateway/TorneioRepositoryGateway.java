@@ -61,4 +61,35 @@ public class TorneioRepositoryGateway implements TorneioGateway {
                 .map(mapper::toDomain)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public TorneioDomain atualizarTorneio(Long id, TorneioDomain torneioDomain) {
+        TorneioEntity torneioExistente = torneioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Torneio não encontrado com id: " + id));
+
+        if (torneioDomain.nomeDoTorneio() != null) {
+            torneioExistente.setNomeDoTorneio(torneioDomain.nomeDoTorneio());
+        }
+        if (torneioDomain.descricaoDoTorneio() != null) {
+            torneioExistente.setDescricaoDoTorneio(torneioDomain.descricaoDoTorneio());
+        }
+        if (torneioDomain.inicioDoTorneio() != null) {
+            torneioExistente.setInicioDoTorneio(torneioDomain.inicioDoTorneio());
+        }
+        if (torneioDomain.jogoDoTorneio() != null) {
+            torneioExistente.setJogoDoTorneio(torneioDomain.jogoDoTorneio());
+        }
+        if (torneioDomain.quantidadeDeEquipes() != null) {
+            torneioExistente.setQuantidadeDeEquipes(torneioDomain.quantidadeDeEquipes());
+        }
+        if (torneioDomain.statusDoTorneio() != null) {
+            torneioExistente.setStatusDoTorneio(torneioDomain.statusDoTorneio());
+        }
+        if (torneioDomain.plataforma() != null) {
+            torneioExistente.setPlataforma(torneioDomain.plataforma());
+        }
+
+        TorneioEntity torneioAtualizado = torneioRepository.save(torneioExistente);
+        return mapper.toDomain(torneioAtualizado);
+    }
 }

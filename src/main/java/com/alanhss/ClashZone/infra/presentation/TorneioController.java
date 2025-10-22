@@ -1,11 +1,14 @@
 package com.alanhss.ClashZone.infra.presentation;
 
 import com.alanhss.ClashZone.core.entities.TorneioDomain;
+import com.alanhss.ClashZone.core.usecases.torneio.AtualizarTorneioUsecase;
 import com.alanhss.ClashZone.core.usecases.torneio.CriarTorneioUsecase;
 import com.alanhss.ClashZone.core.usecases.torneio.FiltrosTorneioUsecase;
 import com.alanhss.ClashZone.core.usecases.torneio.ListarTorneiosUsecase;
+import com.alanhss.ClashZone.infra.dtos.AtualizarTorneioDto;
 import com.alanhss.ClashZone.infra.dtos.FiltroTorneioDto;
 import com.alanhss.ClashZone.infra.dtos.TorneioDto;
+import com.alanhss.ClashZone.infra.mappers.TorneioAtualizarMapper;
 import com.alanhss.ClashZone.infra.mappers.TorneioDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,6 +27,8 @@ public class TorneioController {
     private final CriarTorneioUsecase criarTorneioUsecase;
     private final ListarTorneiosUsecase listarTorneiosUsecase;
     private final FiltrosTorneioUsecase filtrosTorneioUsecase;
+    private final AtualizarTorneioUsecase atualizarTorneioUsecase;
+    private final TorneioAtualizarMapper atualizarMapper;
     private final TorneioDtoMapper mapper;
 
     @PostMapping("criartorneio")
@@ -64,6 +69,21 @@ public class TorneioController {
                     .toList());
             return ResponseEntity.ok(response);
         }
+    }
+
+    @PatchMapping("atualizartorneio/{id}")
+    public ResponseEntity<Map<String, Object>> atualizarTorneio(@PathVariable Long id, @RequestBody AtualizarTorneioDto atualizarTorneioDto) {
+        Map<String, Object> response = new HashMap<>();
+
+        // Valida e prepara os dados
+        AtualizarTorneioDto dtoValidado = atualizarMapper.validarEPrepararAtualizacao(atualizarTorneioDto);
+
+        TorneioDomain torneioDomain = atualizarMapper.toDomain(atualizarTorneioDto, id);
+        TorneioDomain torneioAtualizado = atualizarTorneioUsecase.execute(id, torneioDomain);
+        response.put("Mensagem: ", "Torneio atualizado com sucesso!");
+        response.put("Dados do torneio: ", mapper.toDto(torneioAtualizado));
+
+        return ResponseEntity.ok(response);
     }
 
 }

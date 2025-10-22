@@ -29,6 +29,11 @@ public class BeanConfiguration {
     }
 
     @Bean
+    public AtualizarTorneioUsecase atualizartorneio(TorneioGateway torneioGateway){
+        return new AtualizarTorneioUsecaseImpl(torneioGateway);
+    }
+
+    @Bean
     public CriarUsuarioUsecase criarusuario(UsuariosGateway usuariosGateway){
         return new CriarUsuarioUsecaseImpl(usuariosGateway);
     }
