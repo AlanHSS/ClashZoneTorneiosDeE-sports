@@ -1,9 +1,14 @@
 package com.alanhss.ClashZone.infra.presentation;
 
+import com.alanhss.ClashZone.core.entities.TorneioDomain;
 import com.alanhss.ClashZone.core.entities.UsuariosDomain;
+import com.alanhss.ClashZone.core.usecases.usuario.AtualizarUsuarioUsecase;
 import com.alanhss.ClashZone.core.usecases.usuario.CriarUsuarioUsecase;
 import com.alanhss.ClashZone.core.usecases.usuario.ListarUsuariosUsecase;
+import com.alanhss.ClashZone.infra.dtos.AtualizarTorneioDto;
+import com.alanhss.ClashZone.infra.dtos.UsuariosDtos.AtualizarUsuariosDto;
 import com.alanhss.ClashZone.infra.dtos.UsuariosDtos.UsuariosDto;
+import com.alanhss.ClashZone.infra.mappers.UsuariosMappers.UsuariosAtualizarMapper;
 import com.alanhss.ClashZone.infra.mappers.UsuariosMappers.UsuariosDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +26,9 @@ public class AuthController {
 
     private final CriarUsuarioUsecase criarUsuarioUsecase;
     private final ListarUsuariosUsecase listarUsuariosUsecase;
+    private final AtualizarUsuarioUsecase atualizarUsuarioUsecase;
     private final UsuariosDtoMapper mapper;
+    private final UsuariosAtualizarMapper atualizarMapper;
 
     @PostMapping("criarusuario")
     public ResponseEntity<Map<String, Object>> criarUsuario(@RequestBody UsuariosDto usuariosDto){
@@ -41,4 +48,20 @@ public class AuthController {
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    @PatchMapping("atualizarusuario/{id}")
+    public ResponseEntity<Map<String, Object>> atualizarUsuario(@PathVariable Long id, @RequestBody AtualizarUsuariosDto atualizarUsuariosDto) {
+        Map<String, Object> response = new HashMap<>();
+
+        // Valida e prepara os dados
+        AtualizarUsuariosDto dtoValidado = atualizarMapper.validarEPrepararAtualizacao(atualizarUsuariosDto);
+
+        UsuariosDomain usuariosDomain = atualizarMapper.toDomain(dtoValidado, id);
+        UsuariosDomain usuarioAtualizado = atualizarUsuarioUsecase.execute(id, usuariosDomain);
+        response.put("Mensagem: ", "Usuário atualizado com sucesso!");
+        response.put("Dados do usuário: ", mapper.toDto(usuarioAtualizado));
+
+        return ResponseEntity.ok(response);
+    }
+
 }

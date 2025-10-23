@@ -10,4 +10,6 @@ public interface UsuariosGateway {
 
     List<UsuariosDomain> listarUsuarios();
 
+    UsuariosDomain atualizarUsuario(Long id, UsuariosDomain usuariosDomain);
+
 }
