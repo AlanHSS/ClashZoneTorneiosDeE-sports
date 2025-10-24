@@ -15,7 +15,7 @@ public class FiltrosTorneioUsecaseImpl implements FiltrosTorneioUsecase{
     }
 
     @Override
-    public List<TorneioDomain> execute(FiltroTorneioDto filtroTorneioDto) {
-        return torneioGateway.filtrarTorneios(filtroTorneioDto);
+    public List<TorneioDomain> execute(TorneioDomain torneioDomain) {
+        return torneioGateway.filtrarTorneios(torneioDomain);
     }
 }

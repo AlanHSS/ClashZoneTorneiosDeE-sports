@@ -44,13 +44,13 @@ public class TorneioRepositoryGateway implements TorneioGateway {
     }
 
     @Override
-    public List<TorneioDomain> filtrarTorneios(FiltroTorneioDto filtroTorneioDto) {
+    public List<TorneioDomain> filtrarTorneios(TorneioDomain torneioDomain) {
         Specification<TorneioEntity> spec = Specification.allOf(
-                TorneioSpecification.comNome(filtroTorneioDto.nomeDoTorneio()),
-                TorneioSpecification.comJogo(filtroTorneioDto.jogoDoTorneio()),
-                TorneioSpecification.comPlataforma(filtroTorneioDto.plataforma()),
-                TorneioSpecification.comStatus(filtroTorneioDto.statusDoTorneio()),
-                TorneioSpecification.comDataInicio(filtroTorneioDto.inicioDoTorneio())
+                TorneioSpecification.comNome(torneioDomain.nomeDoTorneio()),
+                TorneioSpecification.comJogo(torneioDomain.jogoDoTorneio()),
+                TorneioSpecification.comPlataforma(torneioDomain.plataforma()),
+                TorneioSpecification.comStatus(torneioDomain.statusDoTorneio()),
+                TorneioSpecification.comDataInicio(torneioDomain.inicioDoTorneio())
         );
 
         return torneioRepository.findAll(spec)

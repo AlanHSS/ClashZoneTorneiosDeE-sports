@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface FiltrosTorneioUsecase {
 
-    public List<TorneioDomain> execute(FiltroTorneioDto filtroTorneioDto);
+    public List<TorneioDomain> execute(TorneioDomain torneioDomain);
 }

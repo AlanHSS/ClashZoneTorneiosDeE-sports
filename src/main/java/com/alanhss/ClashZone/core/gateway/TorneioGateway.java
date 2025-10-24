@@ -10,7 +10,7 @@ public interface TorneioGateway {
 
     List<TorneioDomain> listarTorneios();
 
-    List<TorneioDomain> filtrarTorneios(FiltroTorneioDto filtroTorneioDto);
+    List<TorneioDomain> filtrarTorneios(TorneioDomain torneioDomain);
 
     TorneioDomain atualizarTorneio(Long id, TorneioDomain torneioDomain);
 }

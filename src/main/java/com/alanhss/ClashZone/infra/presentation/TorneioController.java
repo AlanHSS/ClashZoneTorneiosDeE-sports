@@ -10,6 +10,7 @@ import com.alanhss.ClashZone.infra.dtos.FiltroTorneioDto;
 import com.alanhss.ClashZone.infra.dtos.TorneioDto;
 import com.alanhss.ClashZone.infra.mappers.TorneiosMappers.TorneioAtualizarMapper;
 import com.alanhss.ClashZone.infra.mappers.TorneiosMappers.TorneioDtoMapper;
+import com.alanhss.ClashZone.infra.mappers.TorneiosMappers.TorneioFiltroMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,7 @@ public class TorneioController {
     private final FiltrosTorneioUsecase filtrosTorneioUsecase;
     private final AtualizarTorneioUsecase atualizarTorneioUsecase;
     private final TorneioAtualizarMapper atualizarMapper;
+    private final TorneioFiltroMapper filtroMapper;
     private final TorneioDtoMapper mapper;
 
     @PostMapping("criartorneio")
@@ -58,12 +60,17 @@ public class TorneioController {
     @PostMapping("torneiosfiltrados")
     public ResponseEntity<Map<String, Object>> listarTorneiosFiltrados2(@RequestBody FiltroTorneioDto filtroTorneioDto){
         Map<String, Object> response = new HashMap<>();
-        List<TorneioDomain> torneiosFiltrados = filtrosTorneioUsecase.execute(filtroTorneioDto);
-        if (torneiosFiltrados.size() == 0){
+
+        FiltroTorneioDto filtroValidado = filtroMapper.validarEPrepararFiltro(filtroTorneioDto);
+        TorneioDomain filtroDomain = filtroMapper.toDomain(filtroValidado);
+        List<TorneioDomain> torneiosFiltrados = filtrosTorneioUsecase.execute(filtroDomain);
+
+        if (torneiosFiltrados.isEmpty()){
             response.put("Mensagem: ", "Não foi encontrado nenhum torneio com essas características");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
         else {
+            response.put("Total encontrado: ", torneiosFiltrados.size());
             response.put("Lista de torneios:", torneiosFiltrados.stream()
                     .map(mapper::toDto)
                     .toList());
