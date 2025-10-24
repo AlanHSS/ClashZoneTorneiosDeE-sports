@@ -1,7 +1,6 @@
 package com.alanhss.ClashZone.core.gateway;
 
 import com.alanhss.ClashZone.core.entities.TorneioDomain;
-import com.alanhss.ClashZone.infra.dtos.FiltroTorneioDto;
 
 import java.util.List;
 
