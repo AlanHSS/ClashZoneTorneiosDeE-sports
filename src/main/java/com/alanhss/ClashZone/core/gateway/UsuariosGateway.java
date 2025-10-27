@@ -12,4 +12,6 @@ public interface UsuariosGateway {
 
     UsuariosDomain atualizarUsuario(Long id, UsuariosDomain usuariosDomain);
 
+    boolean existeNickname(String nickname);
+
 }
