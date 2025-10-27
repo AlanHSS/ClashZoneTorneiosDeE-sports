@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -59,10 +60,17 @@ public class TorneioRepositoryGateway implements TorneioGateway {
                 .collect(Collectors.toList());
     }
 
+
+    @Override
+    public Optional<TorneioDomain> buscarPorId(Long id) {
+        return torneioRepository.findById(id)
+                .map(mapper::toDomain);
+    }
+
     @Override
     public TorneioDomain atualizarTorneio(Long id, TorneioDomain torneioDomain) {
         TorneioEntity torneioExistente = torneioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Torneio não encontrado com id: " + id));
+                .orElse(null);
 
         if (torneioDomain.nomeDoTorneio() != null) {
             torneioExistente.setNomeDoTorneio(torneioDomain.nomeDoTorneio());

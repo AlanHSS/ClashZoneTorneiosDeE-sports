@@ -2,6 +2,7 @@ package com.alanhss.ClashZone.core.usecases.usuario;
 
 import com.alanhss.ClashZone.core.entities.UsuariosDomain;
 import com.alanhss.ClashZone.core.gateway.UsuariosGateway;
+import com.alanhss.ClashZone.infra.exceptions.NaoEncontradoPorIdException;
 
 public class AtualizarUsuarioUsecaseImpl implements AtualizarUsuarioUsecase{
 
@@ -13,6 +14,8 @@ public class AtualizarUsuarioUsecaseImpl implements AtualizarUsuarioUsecase{
 
     @Override
     public UsuariosDomain execute(Long id, UsuariosDomain usuariosDomain) {
+        usuariosGateway.buscarPorId(id)
+                .orElseThrow(() -> new NaoEncontradoPorIdException(id));
         return usuariosGateway.atualizarUsuario(id, usuariosDomain);
     }
 }

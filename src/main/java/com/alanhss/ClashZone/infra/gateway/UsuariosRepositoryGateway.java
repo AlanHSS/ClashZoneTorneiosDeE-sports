@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -17,6 +18,11 @@ public class UsuariosRepositoryGateway implements UsuariosGateway {
 
     private final UsuariosRepository usuariosRepository;
     private final UsuariosEntityMapper mapper;
+
+    @Override
+    public boolean existeNickname(String nickname) {
+        return usuariosRepository.existsByNickname(nickname);
+    }
 
     @Override
     public UsuariosDomain criarUsuario(UsuariosDomain usuariosDomain) {
@@ -35,9 +41,15 @@ public class UsuariosRepositoryGateway implements UsuariosGateway {
     }
 
     @Override
+    public Optional<UsuariosDomain> buscarPorId(Long id) {
+        return usuariosRepository.findById(id)
+                .map(mapper::toDomain);
+    }
+
+    @Override
     public UsuariosDomain atualizarUsuario(Long id, UsuariosDomain usuariosDomain) {
         UsuariosEntity usurioExistente = usuariosRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com id: " + id));
+                .orElse(null);
 
         if (usuariosDomain.nomeDoUsuario() != null){
             usurioExistente.setNomeDoUsuario(usuariosDomain.nomeDoUsuario());
@@ -51,10 +63,5 @@ public class UsuariosRepositoryGateway implements UsuariosGateway {
 
         UsuariosEntity usuarioAtulizado = usuariosRepository.save(usurioExistente);
         return mapper.toDomain(usuarioAtulizado);
-    }
-
-    @Override
-    public boolean existeNickname(String nickname) {
-        return usuariosRepository.existsByNickname(nickname);
     }
 }

@@ -3,6 +3,7 @@ package com.alanhss.ClashZone.core.gateway;
 import com.alanhss.ClashZone.core.entities.TorneioDomain;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TorneioGateway {
     TorneioDomain criarTorneio(TorneioDomain torneioDomain);
@@ -12,4 +13,6 @@ public interface TorneioGateway {
     List<TorneioDomain> filtrarTorneios(TorneioDomain torneioDomain);
 
     TorneioDomain atualizarTorneio(Long id, TorneioDomain torneioDomain);
+
+    Optional<TorneioDomain> buscarPorId(Long id);
 }
