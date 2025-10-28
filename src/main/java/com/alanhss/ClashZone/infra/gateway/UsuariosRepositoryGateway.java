@@ -48,8 +48,7 @@ public class UsuariosRepositoryGateway implements UsuariosGateway {
 
     @Override
     public UsuariosDomain atualizarUsuario(Long id, UsuariosDomain usuariosDomain) {
-        UsuariosEntity usurioExistente = usuariosRepository.findById(id)
-                .orElse(null);
+        UsuariosEntity usurioExistente = usuariosRepository.findById(id).get();
 
         if (usuariosDomain.nomeDoUsuario() != null){
             usurioExistente.setNomeDoUsuario(usuariosDomain.nomeDoUsuario());

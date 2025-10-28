@@ -2,7 +2,6 @@ package com.alanhss.ClashZone.infra.gateway;
 
 import com.alanhss.ClashZone.core.entities.TorneioDomain;
 import com.alanhss.ClashZone.core.gateway.TorneioGateway;
-import com.alanhss.ClashZone.infra.dtos.FiltroTorneioDto;
 import com.alanhss.ClashZone.infra.mappers.TorneiosMappers.TorneioEntityMapper;
 import com.alanhss.ClashZone.infra.persistence.TorneioPersistence.TorneioEntity;
 import com.alanhss.ClashZone.infra.persistence.TorneioPersistence.TorneioRepository;
@@ -10,7 +9,6 @@ import com.alanhss.ClashZone.infra.persistence.TorneioPersistence.TorneioSpecifi
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -67,10 +65,10 @@ public class TorneioRepositoryGateway implements TorneioGateway {
                 .map(mapper::toDomain);
     }
 
+    
     @Override
     public TorneioDomain atualizarTorneio(Long id, TorneioDomain torneioDomain) {
-        TorneioEntity torneioExistente = torneioRepository.findById(id)
-                .orElse(null);
+        TorneioEntity torneioExistente = torneioRepository.findById(id).get();
 
         if (torneioDomain.nomeDoTorneio() != null) {
             torneioExistente.setNomeDoTorneio(torneioDomain.nomeDoTorneio());
