@@ -34,7 +34,10 @@ public class TorneioController {
 
     @PostMapping("criartorneio")
     public ResponseEntity<Map<String, Object>> criarTorneio(@RequestBody TorneioDto torneioDto){
-        TorneioDomain novoTorneioDomain = criarTorneioUsecase.execute(mapper.toDomain(torneioDto));
+
+        TorneioDto dtoValidado = mapper.validarEPreparar(torneioDto);
+
+        TorneioDomain novoTorneioDomain = criarTorneioUsecase.execute(mapper.toDomain(dtoValidado));
         Map<String, Object> response = new HashMap<>();
         response.put("Mensagem: ", "Torneio criado com sucesso!");
         response.put("Dados do torneio: ", mapper.toDto(novoTorneioDomain));
@@ -81,7 +84,6 @@ public class TorneioController {
     public ResponseEntity<Map<String, Object>> atualizarTorneio(@PathVariable Long id, @RequestBody AtualizarTorneioDto atualizarTorneioDto) {
         Map<String, Object> response = new HashMap<>();
 
-        // Valida e prepara os dados
         AtualizarTorneioDto dtoValidado = atualizarMapper.validarEPrepararAtualizacao(atualizarTorneioDto);
 
         TorneioDomain torneioDomain = atualizarMapper.toDomain(dtoValidado, id);
