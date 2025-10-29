@@ -1,11 +1,8 @@
 package com.alanhss.ClashZone.core.usecases.usuario;
 
 import com.alanhss.ClashZone.core.domain.UsuariosDomain;
-import com.alanhss.ClashZone.core.exceptions.CampoObrigatorioException;
-import com.alanhss.ClashZone.core.exceptions.EmailJaExisteException;
-import com.alanhss.ClashZone.core.exceptions.NicknameJaExisteException;
+import com.alanhss.ClashZone.core.exceptions.*;
 import com.alanhss.ClashZone.core.gateway.UsuariosGateway;
-import com.alanhss.ClashZone.core.exceptions.NaoEncontradoPorIdException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +43,7 @@ public class AtualizarUsuarioUsecaseImpl implements AtualizarUsuarioUsecase{
         }
 
         if (usuariosGateway.existeEmail(usuariosDomain.emailDoUsuario())){
-            throw new EmailJaExisteException(usuariosDomain.emailDoUsuario());
+            throw new CampoDuplicadoException("email", usuariosDomain.emailDoUsuario());
         }
 
         return usuariosGateway.atualizarUsuario(id, usuariosDomain);

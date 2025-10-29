@@ -1,9 +1,8 @@
 package com.alanhss.ClashZone.core.usecases.usuario;
 import com.alanhss.ClashZone.core.domain.UsuariosDomain;
+import com.alanhss.ClashZone.core.exceptions.CampoDuplicadoException;
 import com.alanhss.ClashZone.core.exceptions.CampoObrigatorioException;
-import com.alanhss.ClashZone.core.exceptions.EmailJaExisteException;
 import com.alanhss.ClashZone.core.gateway.UsuariosGateway;
-import com.alanhss.ClashZone.core.exceptions.NicknameJaExisteException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,10 +43,10 @@ public class CriarUsuarioUsecaseImpl implements CriarUsuarioUsecase{
         }
 
         if (usuariosGateway.existeNickname(usuariosDomain.nickname())){
-            throw new NicknameJaExisteException(usuariosDomain.nickname());
+            throw new CampoDuplicadoException("nickname", usuariosDomain.emailDoUsuario());
         }
         if (usuariosGateway.existeEmail(usuariosDomain.emailDoUsuario())){
-            throw new EmailJaExisteException(usuariosDomain.emailDoUsuario());
+            throw new CampoDuplicadoException("email" ,usuariosDomain.emailDoUsuario());
         }
 
         return usuariosGateway.criarUsuario(usuariosDomain);

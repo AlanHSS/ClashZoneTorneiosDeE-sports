@@ -1,9 +1,6 @@
-package com.alanhss.ClashZone.infra.exceptions;
+package com.alanhss.ClashZone.infra.exceptionHandlers;
 
-import com.alanhss.ClashZone.core.exceptions.CampoObrigatorioException;
-import com.alanhss.ClashZone.core.exceptions.EmailJaExisteException;
-import com.alanhss.ClashZone.core.exceptions.NaoEncontradoPorIdException;
-import com.alanhss.ClashZone.core.exceptions.NicknameJaExisteException;
+import com.alanhss.ClashZone.core.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -29,14 +26,17 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 
-    @ExceptionHandler(NicknameJaExisteException.class)
-    public ResponseEntity<Map<String, Object>> handleNicknameJaExiste(NicknameJaExisteException ex, WebRequest request) {
+    @ExceptionHandler(CampoDuplicadoException.class)
+    public ResponseEntity<Map<String, Object>> handleCampoDuplicado(
+            CampoDuplicadoException ex, WebRequest request) {
 
         Map<String, Object> response = new HashMap<>();
         response.put("timestamp", LocalDateTime.now());
         response.put("status", HttpStatus.CONFLICT.value());
         response.put("error", "Conflict");
         response.put("message", ex.getMessage());
+        response.put("campo", ex.getCampo());
+        response.put("valor", ex.getValor());
         response.put("path", request.getDescription(false).replace("uri=", ""));
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
@@ -53,19 +53,6 @@ public class GlobalExceptionHandler {
         response.put("path", request.getDescription(false).replace("uri=", ""));
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-    }
-
-    @ExceptionHandler(EmailJaExisteException.class)
-    public ResponseEntity<Map<String, Object>> handEmailJaExisteException(EmailJaExisteException ex, WebRequest request) {
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("timestamp", LocalDateTime.now());
-        response.put("status", HttpStatus.CONFLICT.value());
-        response.put("error", "Conflict");
-        response.put("message", ex.getMessage());
-        response.put("path", request.getDescription(false).replace("uri=", ""));
-
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
     @ExceptionHandler(CampoObrigatorioException.class)
