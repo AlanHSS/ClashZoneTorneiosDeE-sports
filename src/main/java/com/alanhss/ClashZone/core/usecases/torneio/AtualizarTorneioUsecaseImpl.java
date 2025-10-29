@@ -2,7 +2,7 @@ package com.alanhss.ClashZone.core.usecases.torneio;
 
 import com.alanhss.ClashZone.core.entities.TorneioDomain;
 import com.alanhss.ClashZone.core.gateway.TorneioGateway;
-import com.alanhss.ClashZone.infra.exceptions.NaoEncontradoPorIdException;
+import com.alanhss.ClashZone.core.exceptions.NaoEncontradoPorIdException;
 
 public class AtualizarTorneioUsecaseImpl implements AtualizarTorneioUsecase{
 

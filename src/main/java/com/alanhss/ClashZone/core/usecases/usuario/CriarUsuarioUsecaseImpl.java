@@ -1,7 +1,8 @@
 package com.alanhss.ClashZone.core.usecases.usuario;
 import com.alanhss.ClashZone.core.entities.UsuariosDomain;
+import com.alanhss.ClashZone.core.exceptions.EmailJaExisteException;
 import com.alanhss.ClashZone.core.gateway.UsuariosGateway;
-import com.alanhss.ClashZone.infra.exceptions.NicknameJaExisteException;
+import com.alanhss.ClashZone.core.exceptions.NicknameJaExisteException;
 
 public class CriarUsuarioUsecaseImpl implements CriarUsuarioUsecase{
 
@@ -14,8 +15,11 @@ public class CriarUsuarioUsecaseImpl implements CriarUsuarioUsecase{
     @Override
     public UsuariosDomain execute(UsuariosDomain usuariosDomain) {
 
-        if (usuariosGateway.existeNickname(usuariosDomain.nickname())) {
+        if (usuariosGateway.existeNickname(usuariosDomain.nickname())){
             throw new NicknameJaExisteException(usuariosDomain.nickname());
+        }
+        if (usuariosGateway.existeEmail(usuariosDomain.emailDoUsuario())){
+            throw new EmailJaExisteException(usuariosDomain.emailDoUsuario());
         }
 
         return usuariosGateway.criarUsuario(usuariosDomain);

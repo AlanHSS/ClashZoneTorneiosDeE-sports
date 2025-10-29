@@ -17,4 +17,6 @@ public interface UsuariosGateway {
 
     Optional<UsuariosDomain> buscarPorId(Long id);
 
+    boolean existeEmail(String email);
+
 }

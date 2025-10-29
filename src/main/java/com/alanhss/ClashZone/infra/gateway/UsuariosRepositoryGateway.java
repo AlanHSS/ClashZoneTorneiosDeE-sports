@@ -25,6 +25,11 @@ public class UsuariosRepositoryGateway implements UsuariosGateway {
     }
 
     @Override
+    public boolean existeEmail(String email) {
+        return usuariosRepository.existsByEmailDoUsuario(email);
+    }
+
+    @Override
     public UsuariosDomain criarUsuario(UsuariosDomain usuariosDomain) {
         UsuariosEntity usuariosEntity = mapper.toEntity(usuariosDomain);
         UsuariosEntity novoUsuario = usuariosRepository.save(usuariosEntity);

@@ -2,7 +2,7 @@ package com.alanhss.ClashZone.core.usecases.usuario;
 
 import com.alanhss.ClashZone.core.entities.UsuariosDomain;
 import com.alanhss.ClashZone.core.gateway.UsuariosGateway;
-import com.alanhss.ClashZone.infra.exceptions.NaoEncontradoPorIdException;
+import com.alanhss.ClashZone.core.exceptions.NaoEncontradoPorIdException;
 
 public class AtualizarUsuarioUsecaseImpl implements AtualizarUsuarioUsecase{
 
