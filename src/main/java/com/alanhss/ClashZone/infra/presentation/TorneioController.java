@@ -86,7 +86,7 @@ public class TorneioController {
 
         AtualizarTorneioDto dtoValidado = atualizarMapper.validarEPrepararAtualizacao(atualizarTorneioDto);
 
-        TorneioDomain torneioDomain = atualizarMapper.toDomain(dtoValidado, id);
+        TorneioDomain torneioDomain = atualizarMapper.toDomain(id, dtoValidado);
         TorneioDomain torneioAtualizado = atualizarTorneioUsecase.execute(id, torneioDomain);
         response.put("Mensagem: ", "Torneio atualizado com sucesso!");
         response.put("Dados do torneio: ", mapper.toDto(torneioAtualizado));

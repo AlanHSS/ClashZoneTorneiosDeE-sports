@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TorneioAtualizarMapper {
 
-    public TorneioDomain toDomain(AtualizarTorneioDto atualizarTorneioDto, Long id) {
+    public TorneioDomain toDomain(Long id, AtualizarTorneioDto atualizarTorneioDto) {
         return new TorneioDomain(
                 id,
                 atualizarTorneioDto.nomeDoTorneio(),
