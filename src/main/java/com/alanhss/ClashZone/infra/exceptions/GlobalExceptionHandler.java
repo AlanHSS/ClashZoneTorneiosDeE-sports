@@ -1,5 +1,6 @@
 package com.alanhss.ClashZone.infra.exceptions;
 
+import com.alanhss.ClashZone.core.exceptions.CampoObrigatorioException;
 import com.alanhss.ClashZone.core.exceptions.EmailJaExisteException;
 import com.alanhss.ClashZone.core.exceptions.NaoEncontradoPorIdException;
 import com.alanhss.ClashZone.core.exceptions.NicknameJaExisteException;
@@ -65,6 +66,20 @@ public class GlobalExceptionHandler {
         response.put("path", request.getDescription(false).replace("uri=", ""));
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
+    @ExceptionHandler(CampoObrigatorioException.class)
+    public ResponseEntity<Map<String, Object>> handleCampoObrigatorio(CampoObrigatorioException ex, WebRequest request) {
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("timestamp", LocalDateTime.now());
+        response.put("status", HttpStatus.BAD_REQUEST.value());
+        response.put("error", "Bad Request");
+        response.put("message", ex.getMessage());
+        response.put("camposFaltantes", ex.getCamposFaltantes());
+        response.put("path", request.getDescription(false).replace("uri=", ""));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
 }

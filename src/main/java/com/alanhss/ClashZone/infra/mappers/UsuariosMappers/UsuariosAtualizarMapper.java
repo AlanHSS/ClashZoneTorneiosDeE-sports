@@ -21,10 +21,13 @@ public class UsuariosAtualizarMapper {
         String nomeNormalizado = atualizarUsuariosDto.nomeDoUsuario() != null
                 ? atualizarUsuariosDto.nomeDoUsuario().trim()
                 : null;
+        String emailNormalizado = atualizarUsuariosDto.emailDoUsuario() != null
+                ? atualizarUsuariosDto.emailDoUsuario().trim().toLowerCase()
+                : null;
 
         return new AtualizarUsuariosDto(
                 nomeNormalizado,
-                atualizarUsuariosDto.emailDoUsuario(),
+                emailNormalizado,
                 atualizarUsuariosDto.senhaDoUsuario()
         );
     }

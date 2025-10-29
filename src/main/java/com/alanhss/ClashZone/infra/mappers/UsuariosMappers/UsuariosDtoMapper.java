@@ -27,17 +27,23 @@ public class UsuariosDtoMapper {
         );
     }
 
-    public UsuariosDto validarEPreparar(UsuariosDto UsuariosDto){
-        String nomeNormalizado = UsuariosDto.nomeDoUsuario() != null
-                ? UsuariosDto.nomeDoUsuario().trim()
+    public UsuariosDto validarEPreparar(UsuariosDto usuariosDto){
+        String nomeNormalizado = usuariosDto.nomeDoUsuario() != null
+                ? usuariosDto.nomeDoUsuario().trim()
+                : null;
+        String nicknameNormalizado = usuariosDto.nickname() != null
+                ? usuariosDto.nickname().trim()
+                : null;
+        String emailNormalizado = usuariosDto.emailDoUsuario() != null
+                ? usuariosDto.emailDoUsuario().trim().toLowerCase()
                 : null;
 
         return new UsuariosDto(
-                UsuariosDto.id(),
+                usuariosDto.id(),
                 nomeNormalizado,
-                UsuariosDto.nickname(),
-                UsuariosDto.emailDoUsuario(),
-                UsuariosDto.senhaDoUsuario()
+                nicknameNormalizado,
+                emailNormalizado,
+                usuariosDto.senhaDoUsuario()
         );
     }
 

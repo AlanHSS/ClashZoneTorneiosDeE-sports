@@ -36,26 +36,26 @@ public class TorneioDtoMapper {
                 torneioDto.dataCriacao()
         );
 
-    }public TorneioDto validarEPreparar(TorneioDto TorneioDto) {
-        String nomeNormalizado = TorneioDto.nomeDoTorneio() != null
-                ? TorneioDto.nomeDoTorneio().trim()
+    }public TorneioDto validarEPreparar(TorneioDto torneioDto) {
+        String nomeNormalizado = torneioDto.nomeDoTorneio() != null
+                ? torneioDto.nomeDoTorneio().trim()
                 : null;
 
-        String descricaoNormalizada = TorneioDto.descricaoDoTorneio() != null
-                ? TorneioDto.descricaoDoTorneio().trim()
+        String descricaoNormalizada = torneioDto.descricaoDoTorneio() != null
+                ? torneioDto.descricaoDoTorneio().trim()
                 : null;
 
         return new TorneioDto(
-                TorneioDto.id(),
+                torneioDto.id(),
                 nomeNormalizado,
                 descricaoNormalizada,
-                TorneioDto.inicioDoTorneio(),
-                TorneioDto.jogoDoTorneio(),
-                TorneioDto.quantidadeDeEquipes(),
-                TorneioDto.criadorDoTorneio(),
-                TorneioDto.statusDoTorneio(),
-                TorneioDto.plataforma(),
-                TorneioDto.dataCriacao()
+                torneioDto.inicioDoTorneio(),
+                torneioDto.jogoDoTorneio(),
+                torneioDto.quantidadeDeEquipes(),
+                torneioDto.criadorDoTorneio(),
+                torneioDto.statusDoTorneio(),
+                torneioDto.plataforma(),
+                torneioDto.dataCriacao()
         );
     }
 }
