@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UsuariosAtualizarMapper {
 
-    public UsuariosDomain toDomain(AtualizarUsuariosDto atualizarUsuariosDto, Long id){
+    public UsuariosDomain toDomain(Long id, AtualizarUsuariosDto atualizarUsuariosDto){
         return new UsuariosDomain(
                 id,
                 atualizarUsuariosDto.nomeDoUsuario(),

@@ -27,4 +27,18 @@ public class UsuariosDtoMapper {
         );
     }
 
+    public UsuariosDto validarEPreparar(UsuariosDto UsuariosDto){
+        String nomeNormalizado = UsuariosDto.nomeDoUsuario() != null
+                ? UsuariosDto.nomeDoUsuario().trim()
+                : null;
+
+        return new UsuariosDto(
+                UsuariosDto.id(),
+                nomeNormalizado,
+                UsuariosDto.nickname(),
+                UsuariosDto.emailDoUsuario(),
+                UsuariosDto.senhaDoUsuario()
+        );
+    }
+
 }

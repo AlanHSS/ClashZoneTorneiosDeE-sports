@@ -29,7 +29,10 @@ public class AuthController {
 
     @PostMapping("criarusuario")
     public ResponseEntity<Map<String, Object>> criarUsuario(@RequestBody UsuariosDto usuariosDto){
-        UsuariosDomain novoUsuarioDomain = criarUsuarioUsecase.execute(mapper.toDomain(usuariosDto));
+
+        UsuariosDto dtoValidado = mapper.validarEPreparar(usuariosDto);
+
+        UsuariosDomain novoUsuarioDomain = criarUsuarioUsecase.execute(mapper.toDomain(dtoValidado));
         Map<String, Object> response = new HashMap<>();
         response.put("Mensagem: ", "Usuário criado com sucesso!");
         response.put("Dados do usuário: ", mapper.toDto(novoUsuarioDomain));
@@ -50,10 +53,9 @@ public class AuthController {
     public ResponseEntity<Map<String, Object>> atualizarUsuario(@PathVariable Long id, @RequestBody AtualizarUsuariosDto atualizarUsuariosDto) {
         Map<String, Object> response = new HashMap<>();
 
-        // Valida e prepara os dados
         AtualizarUsuariosDto dtoValidado = atualizarMapper.validarEPrepararAtualizacao(atualizarUsuariosDto);
 
-        UsuariosDomain usuariosDomain = atualizarMapper.toDomain(dtoValidado, id);
+        UsuariosDomain usuariosDomain = atualizarMapper.toDomain(id, dtoValidado);
         UsuariosDomain usuarioAtualizado = atualizarUsuarioUsecase.execute(id, usuariosDomain);
         response.put("Mensagem: ", "Usuário atualizado com sucesso!");
         response.put("Dados do usuário: ", mapper.toDto(usuarioAtualizado));
