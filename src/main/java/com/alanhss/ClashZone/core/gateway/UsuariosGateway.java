@@ -1,6 +1,6 @@
 package com.alanhss.ClashZone.core.gateway;
 
-import com.alanhss.ClashZone.core.entities.UsuariosDomain;
+import com.alanhss.ClashZone.core.domain.UsuariosDomain;
 
 import java.util.List;
 import java.util.Optional;

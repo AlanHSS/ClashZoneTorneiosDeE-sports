@@ -1,4 +1,4 @@
-package com.alanhss.ClashZone.core.entities;
+package com.alanhss.ClashZone.core.domain;
 
 import com.alanhss.ClashZone.core.enums.Games;
 import com.alanhss.ClashZone.core.enums.Plataforma;

@@ -1,6 +1,6 @@
 package com.alanhss.ClashZone.infra.gateway;
 
-import com.alanhss.ClashZone.core.entities.TorneioDomain;
+import com.alanhss.ClashZone.core.domain.TorneioDomain;
 import com.alanhss.ClashZone.core.gateway.TorneioGateway;
 import com.alanhss.ClashZone.infra.mappers.TorneiosMappers.TorneioEntityMapper;
 import com.alanhss.ClashZone.infra.persistence.TorneioPersistence.TorneioEntity;

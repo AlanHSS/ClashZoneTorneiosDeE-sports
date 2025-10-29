@@ -1,6 +1,6 @@
 package com.alanhss.ClashZone.core.usecases.torneio;
 
-import com.alanhss.ClashZone.core.entities.TorneioDomain;
+import com.alanhss.ClashZone.core.domain.TorneioDomain;
 
 public interface AtualizarTorneioUsecase {
 

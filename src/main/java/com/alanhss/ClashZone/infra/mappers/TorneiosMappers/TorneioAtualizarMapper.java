@@ -1,6 +1,6 @@
 package com.alanhss.ClashZone.infra.mappers.TorneiosMappers;
 
-import com.alanhss.ClashZone.core.entities.TorneioDomain;
+import com.alanhss.ClashZone.core.domain.TorneioDomain;
 import com.alanhss.ClashZone.infra.dtos.AtualizarTorneioDto;
 import org.springframework.stereotype.Component;
 

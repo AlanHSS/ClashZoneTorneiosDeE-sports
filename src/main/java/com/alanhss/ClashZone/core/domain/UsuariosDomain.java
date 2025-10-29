@@ -1,4 +1,4 @@
-package com.alanhss.ClashZone.core.entities;
+package com.alanhss.ClashZone.core.domain;
 
 public record UsuariosDomain(Long id,
                              String nomeDoUsuario,

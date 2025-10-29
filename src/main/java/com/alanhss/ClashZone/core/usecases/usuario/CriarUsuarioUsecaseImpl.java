@@ -1,5 +1,5 @@
 package com.alanhss.ClashZone.core.usecases.usuario;
-import com.alanhss.ClashZone.core.entities.UsuariosDomain;
+import com.alanhss.ClashZone.core.domain.UsuariosDomain;
 import com.alanhss.ClashZone.core.exceptions.EmailJaExisteException;
 import com.alanhss.ClashZone.core.gateway.UsuariosGateway;
 import com.alanhss.ClashZone.core.exceptions.NicknameJaExisteException;

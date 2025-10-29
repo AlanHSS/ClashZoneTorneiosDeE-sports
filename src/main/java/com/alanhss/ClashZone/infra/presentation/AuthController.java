@@ -1,5 +1,5 @@
 package com.alanhss.ClashZone.infra.presentation;
-import com.alanhss.ClashZone.core.entities.UsuariosDomain;
+import com.alanhss.ClashZone.core.domain.UsuariosDomain;
 import com.alanhss.ClashZone.core.usecases.usuario.AtualizarUsuarioUsecase;
 import com.alanhss.ClashZone.core.usecases.usuario.CriarUsuarioUsecase;
 import com.alanhss.ClashZone.core.usecases.usuario.ListarUsuariosUsecase;
