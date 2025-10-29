@@ -1,4 +1,4 @@
-package com.alanhss.ClashZone.infra.exceptions;
+package com.alanhss.ClashZone.core.exceptions;
 
 public class NicknameJaExisteException extends RuntimeException{
 

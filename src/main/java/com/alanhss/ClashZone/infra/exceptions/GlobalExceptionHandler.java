@@ -1,4 +1,4 @@
-package com.alanhss.ClashZone.infra.exceptions;
+package com.alanhss.ClashZone.core.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
