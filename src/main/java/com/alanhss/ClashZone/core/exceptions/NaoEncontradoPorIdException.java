@@ -2,11 +2,14 @@ package com.alanhss.ClashZone.core.exceptions;
 
 public class NaoEncontradoPorIdException extends RuntimeException {
 
-    public NaoEncontradoPorIdException(Long id) {
-        super("Não foi encontrado nada com id: " + id);
+    private final String campo;
+
+    public NaoEncontradoPorIdException(Long id, String campo) {
+        super("Não foi encontrado nenhum " + campo + " com id: " + id);
+        this.campo = campo;
     }
 
-    public NaoEncontradoPorIdException(String mensagem) {
-        super(mensagem);
+    public String getCampo() {
+        return campo;
     }
 }

@@ -18,7 +18,7 @@ public class AtualizarUsuarioUsecaseImpl implements AtualizarUsuarioUsecase{
     @Override
     public UsuariosDomain execute(Long id, UsuariosDomain usuariosDomain) {
         usuariosGateway.buscarPorId(id)
-                .orElseThrow(() -> new NaoEncontradoPorIdException(id));
+                .orElseThrow(() -> new NaoEncontradoPorIdException(id, "usuario"));
 
         List<String> camposInvalidos = new ArrayList<>();
 

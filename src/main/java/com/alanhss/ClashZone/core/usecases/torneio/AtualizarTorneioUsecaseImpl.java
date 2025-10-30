@@ -19,7 +19,7 @@ public class AtualizarTorneioUsecaseImpl implements AtualizarTorneioUsecase{
     @Override
     public TorneioDomain execute(Long id, TorneioDomain torneioDomain) {
         torneioGateway.buscarPorId(id)
-                .orElseThrow(() -> new NaoEncontradoPorIdException(id));
+                .orElseThrow(() -> new NaoEncontradoPorIdException(id, "torneio"));
 
         List<String> camposInvalidos = new ArrayList<>();
 
