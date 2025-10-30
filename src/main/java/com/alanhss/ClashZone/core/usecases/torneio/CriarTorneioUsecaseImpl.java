@@ -1,8 +1,10 @@
 package com.alanhss.ClashZone.core.usecases.torneio;
 import com.alanhss.ClashZone.core.domain.TorneioDomain;
 import com.alanhss.ClashZone.core.exceptions.CampoObrigatorioException;
+import com.alanhss.ClashZone.core.exceptions.DataInicioInvalidaException;
 import com.alanhss.ClashZone.core.gateway.TorneioGateway;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,9 +49,15 @@ public class CriarTorneioUsecaseImpl implements CriarTorneioUsecase {
             camposFaltantes.add("plataforma");
         }
 
-        // Se houver campos faltantes, lançar exception
         if (!camposFaltantes.isEmpty()) {
             throw new CampoObrigatorioException(camposFaltantes);
+        }
+
+        LocalDateTime agora = LocalDateTime.now();
+        LocalDateTime dataMinima = agora.plusDays(2);
+
+        if (torneioDomain.inicioDoTorneio().isBefore(dataMinima)) {
+            throw new DataInicioInvalidaException(torneioDomain.inicioDoTorneio(), dataMinima);
         }
 
         return torneioGateway.criarTorneio(torneioDomain);
