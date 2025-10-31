@@ -1,9 +1,6 @@
 package com.alanhss.ClashZone.infra.presentation;
 import com.alanhss.ClashZone.core.domain.TorneioDomain;
-import com.alanhss.ClashZone.core.usecases.torneio.AtualizarTorneioUsecase;
-import com.alanhss.ClashZone.core.usecases.torneio.CriarTorneioUsecase;
-import com.alanhss.ClashZone.core.usecases.torneio.FiltrosTorneioUsecase;
-import com.alanhss.ClashZone.core.usecases.torneio.ListarTorneiosUsecase;
+import com.alanhss.ClashZone.core.usecases.torneio.*;
 import com.alanhss.ClashZone.infra.dtos.AtualizarTorneioDto;
 import com.alanhss.ClashZone.infra.dtos.FiltroTorneioDto;
 import com.alanhss.ClashZone.infra.dtos.TorneioDto;
@@ -28,6 +25,7 @@ public class TorneioController {
     private final ListarTorneiosUsecase listarTorneiosUsecase;
     private final FiltrosTorneioUsecase filtrosTorneioUsecase;
     private final AtualizarTorneioUsecase atualizarTorneioUsecase;
+    private final BuscarTorneioPorId buscarTorneioPorId;
     private final TorneioAtualizarMapper atualizarMapper;
     private final TorneioFiltroMapper filtroMapper;
     private final TorneioDtoMapper mapper;
@@ -92,6 +90,14 @@ public class TorneioController {
         response.put("Dados do torneio: ", mapper.toDto(torneioAtualizado));
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("buscartorneio/{id}")
+    public TorneioDto buscarTorneioPorId(@PathVariable Long id){
+        TorneioDomain torneioDomain = buscarTorneioPorId.execute(id);
+        TorneioDto torneioDto = mapper.toDto(torneioDomain);
+
+        return torneioDto;
     }
 
 }

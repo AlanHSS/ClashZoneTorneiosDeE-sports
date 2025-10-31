@@ -31,6 +31,11 @@ public class BeanConfiguration {
     }
 
     @Bean
+    public BuscarTorneioPorId buscartorneioporid(TorneioGateway torneioGateway){
+        return new BuscarTorneioPorIdImpl(torneioGateway);
+    }
+
+    @Bean
     public CriarUsuarioUsecase criarusuario(UsuariosGateway usuariosGateway){
         return new CriarUsuarioUsecaseImpl(usuariosGateway);
     }

@@ -44,7 +44,6 @@ public class AtualizarTorneioUsecaseImpl implements AtualizarTorneioUsecase{
         LocalDateTime agora = LocalDateTime.now();
         LocalDateTime dataMinima = agora.plusDays(2);
 
-        // Verifica se a data de início é pelo menos 2 dias no futuro
         if (torneioDomain.inicioDoTorneio().isBefore(dataMinima)) {
             throw new DataInicioInvalidaException(torneioDomain.inicioDoTorneio(), dataMinima);
         }

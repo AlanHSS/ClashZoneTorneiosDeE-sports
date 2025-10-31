@@ -58,13 +58,11 @@ public class TorneioRepositoryGateway implements TorneioGateway {
                 .collect(Collectors.toList());
     }
 
-
     @Override
     public Optional<TorneioDomain> buscarPorId(Long id) {
         return torneioRepository.findById(id)
                 .map(mapper::toDomain);
     }
-
     
     @Override
     public TorneioDomain atualizarTorneio(Long id, TorneioDomain torneioDomain) {
