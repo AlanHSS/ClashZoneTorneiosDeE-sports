@@ -26,15 +26,15 @@ public class AtualizarTorneioUsecaseImpl implements AtualizarTorneioUsecase{
         List<String> camposInvalidos = new ArrayList<>();
 
         if (torneioDomain.nomeDoTorneio() != null && torneioDomain.nomeDoTorneio().trim().isEmpty()) {
-            camposInvalidos.add("nomeDoTorneio não pode estar vazio");
+            camposInvalidos.add("Nome do torneio não pode estar vazio");
         }
 
         if (torneioDomain.quantidadeDeEquipes() != null && torneioDomain.quantidadeDeEquipes() <= 0) {
-            camposInvalidos.add("quantidadeDeEquipes deve ser maior que zero");
+            camposInvalidos.add("Quantidade de equipes deve ser maior que zero");
         }
 
         if (torneioDomain.criadorDoTorneio() != null && torneioDomain.criadorDoTorneio().trim().isEmpty()) {
-            camposInvalidos.add("criadorDoTorneio não pode estar vazio");
+            camposInvalidos.add("Criador do torneio não pode estar vazio");
         }
 
         if (!camposInvalidos.isEmpty()) {

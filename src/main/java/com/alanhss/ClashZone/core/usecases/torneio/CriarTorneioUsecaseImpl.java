@@ -22,31 +22,31 @@ public class CriarTorneioUsecaseImpl implements CriarTorneioUsecase {
         List<String> camposFaltantes = new ArrayList<>();
 
         if (torneioDomain.nomeDoTorneio() == null || torneioDomain.nomeDoTorneio().trim().isEmpty()) {
-            camposFaltantes.add("nomeDoTorneio");
+            camposFaltantes.add("Nome do torneio");
         }
 
         if (torneioDomain.inicioDoTorneio() == null) {
-            camposFaltantes.add("inicioDoTorneio");
+            camposFaltantes.add("Data de inicio");
         }
 
         if (torneioDomain.jogoDoTorneio() == null) {
-            camposFaltantes.add("jogoDoTorneio");
+            camposFaltantes.add("Jogo do torneio");
         }
 
         if (torneioDomain.quantidadeDeEquipes() == null || torneioDomain.quantidadeDeEquipes() <= 0) {
-            camposFaltantes.add("quantidadeDeEquipes");
+            camposFaltantes.add("Quantidade de equipes");
         }
 
         if (torneioDomain.criadorDoTorneio() == null) {
-            camposFaltantes.add("criadorDoTorneio");
+            camposFaltantes.add("Criador do torneio");
         }
 
         if (torneioDomain.statusDoTorneio() == null) {
-            camposFaltantes.add("statusDoTorneio");
+            camposFaltantes.add("Status do torneio");
         }
 
         if (torneioDomain.plataforma() == null) {
-            camposFaltantes.add("plataforma");
+            camposFaltantes.add("Plataforma");
         }
 
         if (!camposFaltantes.isEmpty()) {
