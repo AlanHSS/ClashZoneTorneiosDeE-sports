@@ -1,6 +1,7 @@
 package com.alanhss.ClashZone.infra.presentation;
 import com.alanhss.ClashZone.core.domain.UsuariosDomain;
 import com.alanhss.ClashZone.core.usecases.usuario.AtualizarUsuarioUsecase;
+import com.alanhss.ClashZone.core.usecases.usuario.BuscarUsuarioPorId;
 import com.alanhss.ClashZone.core.usecases.usuario.CriarUsuarioUsecase;
 import com.alanhss.ClashZone.core.usecases.usuario.ListarUsuariosUsecase;
 import com.alanhss.ClashZone.infra.dtos.UsuariosDtos.AtualizarUsuariosDto;
@@ -24,6 +25,7 @@ public class AuthController {
     private final CriarUsuarioUsecase criarUsuarioUsecase;
     private final ListarUsuariosUsecase listarUsuariosUsecase;
     private final AtualizarUsuarioUsecase atualizarUsuarioUsecase;
+    private final BuscarUsuarioPorId buscarUsuarioPorId;
     private final UsuariosDtoMapper mapper;
     private final UsuariosAtualizarMapper atualizarMapper;
 
@@ -61,6 +63,14 @@ public class AuthController {
         response.put("Dados do usuário: ", mapper.toDto(usuarioAtualizado));
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("buscarusuario/{id}")
+    public UsuariosDto buscarUsuarioPorId(@PathVariable Long id){
+        UsuariosDomain usuariosDomain = buscarUsuarioPorId.execute(id);
+        UsuariosDto usuariosDto = mapper.toDto(usuariosDomain);
+
+        return usuariosDto;
     }
 
 }

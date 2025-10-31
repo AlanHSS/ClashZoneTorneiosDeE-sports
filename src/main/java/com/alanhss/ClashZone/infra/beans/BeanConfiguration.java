@@ -49,4 +49,9 @@ public class BeanConfiguration {
     public AtualizarUsuarioUsecase atualizarusuarios(UsuariosGateway usuariosGateway){
         return new AtualizarUsuarioUsecaseImpl(usuariosGateway);
     }
+
+    @Bean
+    public BuscarUsuarioPorId buscarUsuarioPorId(UsuariosGateway usuariosGateway){
+        return new BuscarUsuarioPorIdImpl(usuariosGateway);
+    }
 }
