@@ -1,7 +1,10 @@
 package com.alanhss.ClashZone.infra.beans;
 
+import com.alanhss.ClashZone.core.gateway.EquipeGateway;
 import com.alanhss.ClashZone.core.gateway.TorneioGateway;
 import com.alanhss.ClashZone.core.gateway.UsuariosGateway;
+import com.alanhss.ClashZone.core.usecases.equipe.CriarEquipeUsecase;
+import com.alanhss.ClashZone.core.usecases.equipe.CriarEquipeUsecaseImpl;
 import com.alanhss.ClashZone.core.usecases.torneio.*;
 import com.alanhss.ClashZone.core.usecases.usuario.*;
 import org.springframework.context.annotation.Bean;
@@ -53,5 +56,10 @@ public class BeanConfiguration {
     @Bean
     public BuscarUsuarioPorId buscarUsuarioPorId(UsuariosGateway usuariosGateway){
         return new BuscarUsuarioPorIdImpl(usuariosGateway);
+    }
+
+    @Bean
+    public CriarEquipeUsecase criarequipe(EquipeGateway equipeGateway){
+        return new CriarEquipeUsecaseImpl(equipeGateway);
     }
 }
