@@ -13,7 +13,8 @@ public class UsuariosEntityMapper {
                 usuariosDomain.nomeDoUsuario(),
                 usuariosDomain.nickname(),
                 usuariosDomain.emailDoUsuario(),
-                usuariosDomain.senhaDoUsuario()
+                usuariosDomain.senhaDoUsuario(),
+                usuariosDomain.dataCriacao()
         );
     }
 
@@ -23,7 +24,8 @@ public class UsuariosEntityMapper {
                 usuariosEntity.getNomeDoUsuario(),
                 usuariosEntity.getNickname(),
                 usuariosEntity.getEmailDoUsuario(),
-                usuariosEntity.getSenhaDoUsuario()
+                usuariosEntity.getSenhaDoUsuario(),
+                usuariosEntity.getDataCriacao()
         );
     }
 

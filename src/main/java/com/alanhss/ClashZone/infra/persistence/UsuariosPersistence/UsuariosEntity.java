@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "usuarios")
 @AllArgsConstructor
@@ -23,5 +25,8 @@ public class UsuariosEntity {
     private String emailDoUsuario;
 
     private String senhaDoUsuario;
+
+    @Column(name = "data_criacao", updatable = false, insertable = false)
+    private LocalDateTime dataCriacao;
 
 }
