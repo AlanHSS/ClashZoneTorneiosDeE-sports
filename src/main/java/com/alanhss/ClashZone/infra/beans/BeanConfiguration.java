@@ -5,6 +5,8 @@ import com.alanhss.ClashZone.core.gateway.TorneioGateway;
 import com.alanhss.ClashZone.core.gateway.UsuariosGateway;
 import com.alanhss.ClashZone.core.usecases.equipe.CriarEquipeUsecase;
 import com.alanhss.ClashZone.core.usecases.equipe.CriarEquipeUsecaseImpl;
+import com.alanhss.ClashZone.core.usecases.equipe.ListarEquipesUsecase;
+import com.alanhss.ClashZone.core.usecases.equipe.ListarEquipesUsecaseImpl;
 import com.alanhss.ClashZone.core.usecases.torneio.*;
 import com.alanhss.ClashZone.core.usecases.usuario.*;
 import org.springframework.context.annotation.Bean;
@@ -61,5 +63,10 @@ public class BeanConfiguration {
     @Bean
     public CriarEquipeUsecase criarequipe(EquipeGateway equipeGateway){
         return new CriarEquipeUsecaseImpl(equipeGateway);
+    }
+
+    @Bean
+    public ListarEquipesUsecase listarEquipesUsecase(EquipeGateway equipeGateway){
+        return new ListarEquipesUsecaseImpl(equipeGateway);
     }
 }
