@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("clashzone/auth/")
 @RequiredArgsConstructor
-public class AuthController {
+public class UsuarioController {
 
     private final CriarUsuarioUsecase criarUsuarioUsecase;
     private final ListarUsuariosUsecase listarUsuariosUsecase;
