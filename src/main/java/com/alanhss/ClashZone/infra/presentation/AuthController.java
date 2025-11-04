@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping("auth/")
+@RequestMapping("clashzone/auth/")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -30,16 +30,11 @@ public class AuthController {
     private final UsuariosAtualizarMapper atualizarMapper;
 
     @PostMapping("criarusuario")
-    public ResponseEntity<Map<String, Object>> criarUsuario(@RequestBody UsuariosDto usuariosDto){
-
+    public ResponseEntity<String> criarUsuario(@RequestBody UsuariosDto usuariosDto){
         UsuariosDto dtoValidado = mapper.validarEPreparar(usuariosDto);
-
         UsuariosDomain novoUsuarioDomain = criarUsuarioUsecase.execute(mapper.toDomain(dtoValidado));
-        Map<String, Object> response = new HashMap<>();
-        response.put("Mensagem: ", "Usuário criado com sucesso!");
-        response.put("Dados do usuário: ", mapper.toDto(novoUsuarioDomain));
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok("Usuário criado com sucesso!");
     }
 
     @GetMapping("listarusuarios")
@@ -65,7 +60,7 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("buscarusuario/{id}")
+    @GetMapping("userprofile/{id}")
     public UsuariosDto buscarUsuarioPorId(@PathVariable Long id){
         UsuariosDomain usuariosDomain = buscarUsuarioPorId.execute(id);
         UsuariosDto usuariosDto = mapper.toDto(usuariosDomain);
