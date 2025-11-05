@@ -14,6 +14,7 @@ public class UsuariosAtualizarMapper {
                 null,
                 atualizarUsuariosDto.emailDoUsuario(),
                 atualizarUsuariosDto.senhaDoUsuario(),
+                null,
                 null
         );
     }

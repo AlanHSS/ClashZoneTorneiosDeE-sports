@@ -1,6 +1,7 @@
 package com.alanhss.ClashZone.infra.mappers.UsuariosMappers;
 
 import com.alanhss.ClashZone.core.domain.UsuariosDomain;
+import com.alanhss.ClashZone.core.enums.Role;
 import com.alanhss.ClashZone.infra.persistence.UsuariosPersistence.UsuariosEntity;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,8 @@ public class UsuariosEntityMapper {
                 usuariosDomain.nickname(),
                 usuariosDomain.emailDoUsuario(),
                 usuariosDomain.senhaDoUsuario(),
-                usuariosDomain.dataCriacao()
+                usuariosDomain.dataCriacao(),
+                usuariosDomain.role() != null ? usuariosDomain.role() : Role.USER
         );
     }
 
@@ -25,7 +27,8 @@ public class UsuariosEntityMapper {
                 usuariosEntity.getNickname(),
                 usuariosEntity.getEmailDoUsuario(),
                 usuariosEntity.getSenhaDoUsuario(),
-                usuariosEntity.getDataCriacao()
+                usuariosEntity.getDataCriacao(),
+                usuariosEntity.getRole()
         );
     }
 

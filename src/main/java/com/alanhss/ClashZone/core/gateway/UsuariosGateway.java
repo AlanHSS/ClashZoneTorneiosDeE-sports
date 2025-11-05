@@ -19,4 +19,6 @@ public interface UsuariosGateway {
 
     boolean existeEmail(String email);
 
+    Optional<UsuariosDomain> buscarPorEmail(String email);
+
 }

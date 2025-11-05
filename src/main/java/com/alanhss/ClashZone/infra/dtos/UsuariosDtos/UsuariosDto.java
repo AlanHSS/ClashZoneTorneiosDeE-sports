@@ -6,6 +6,5 @@ public record UsuariosDto(Long id,
                           String nomeDoUsuario,
                           String nickname,
                           String emailDoUsuario,
-                          String senhaDoUsuario,
                           LocalDateTime dataCriacao) {
 }
