@@ -32,13 +32,6 @@ public class UsuariosRepositoryGateway implements UsuariosGateway {
     }
 
     @Override
-    public UsuariosDomain criarUsuario(UsuariosDomain usuariosDomain) {
-        UsuariosEntity usuariosEntity = mapper.toEntity(usuariosDomain);
-        UsuariosEntity novoUsuario = usuariosRepository.save(usuariosEntity);
-        return mapper.toDomain(novoUsuario);
-    }
-
-    @Override
     public List<UsuariosDomain> listarUsuarios() {
         List<UsuariosEntity> entityList = usuariosRepository.findAll();
 

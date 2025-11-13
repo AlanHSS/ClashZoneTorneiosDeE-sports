@@ -1,8 +1,13 @@
 package com.alanhss.ClashZone.infra.beans;
 
+import com.alanhss.ClashZone.core.gateway.AuthGateway;
 import com.alanhss.ClashZone.core.gateway.EquipeGateway;
 import com.alanhss.ClashZone.core.gateway.TorneioGateway;
 import com.alanhss.ClashZone.core.gateway.UsuariosGateway;
+import com.alanhss.ClashZone.core.usecases.auth.LoginUsecase;
+import com.alanhss.ClashZone.core.usecases.auth.LoginUsecaseImpl;
+import com.alanhss.ClashZone.core.usecases.auth.RegisterUsecase;
+import com.alanhss.ClashZone.core.usecases.auth.RegisterUsecaseImpl;
 import com.alanhss.ClashZone.core.usecases.equipe.CriarEquipeUsecase;
 import com.alanhss.ClashZone.core.usecases.equipe.CriarEquipeUsecaseImpl;
 import com.alanhss.ClashZone.core.usecases.equipe.ListarEquipesUsecase;
@@ -41,11 +46,6 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public CriarUsuarioUsecase criarusuario(UsuariosGateway usuariosGateway){
-        return new CriarUsuarioUsecaseImpl(usuariosGateway);
-    }
-
-    @Bean
     public ListarUsuariosUsecase listarusuarios(UsuariosGateway usuariosGateway){
         return new ListarUsuariosUsecaseImpl(usuariosGateway);
     }
@@ -68,5 +68,15 @@ public class BeanConfiguration {
     @Bean
     public ListarEquipesUsecase listarEquipesUsecase(EquipeGateway equipeGateway){
         return new ListarEquipesUsecaseImpl(equipeGateway);
+    }
+
+    @Bean
+    public RegisterUsecase registerUsecase(AuthGateway authGateway){
+        return new RegisterUsecaseImpl(authGateway);
+    }
+
+    @Bean
+    public LoginUsecase loginUsecase(AuthGateway authGateway) {
+        return new LoginUsecaseImpl(authGateway);
     }
 }
