@@ -1,5 +1,7 @@
 package com.alanhss.ClashZone.core.domain;
 
+import com.alanhss.ClashZone.core.enums.Role;
+
 import java.time.LocalDateTime;
 
 public record UsuariosDomain(Long id,
@@ -7,5 +9,6 @@ public record UsuariosDomain(Long id,
                              String nickname,
                              String emailDoUsuario,
                              String senhaDoUsuario,
-                             LocalDateTime dataCriacao) {
+                             LocalDateTime dataCriacao,
+                             Role role) {
 }

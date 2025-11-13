@@ -13,7 +13,6 @@ public class UsuariosDtoMapper {
                 usuariosDomain.nomeDoUsuario(),
                 usuariosDomain.nickname(),
                 usuariosDomain.emailDoUsuario(),
-                usuariosDomain.senhaDoUsuario(),
                 usuariosDomain.dataCriacao()
         );
     }
@@ -24,8 +23,9 @@ public class UsuariosDtoMapper {
                 usuariosDto.nomeDoUsuario(),
                 usuariosDto.nickname(),
                 usuariosDto.emailDoUsuario(),
-                usuariosDto.senhaDoUsuario(),
-                usuariosDto.dataCriacao()
+                null,
+                usuariosDto.dataCriacao(),
+                null
         );
     }
 
@@ -45,7 +45,6 @@ public class UsuariosDtoMapper {
                 nomeNormalizado,
                 nicknameNormalizado,
                 emailNormalizado,
-                usuariosDto.senhaDoUsuario(),
                 usuariosDto.dataCriacao()
         );
     }

@@ -3,8 +3,6 @@ package com.alanhss.ClashZone.infra.presentation;
 import com.alanhss.ClashZone.core.domain.EquipeDomain;
 import com.alanhss.ClashZone.core.usecases.equipe.CriarEquipeUsecase;
 import com.alanhss.ClashZone.core.usecases.equipe.ListarEquipesUsecase;
-import com.alanhss.ClashZone.core.usecases.usuario.CriarUsuarioUsecase;
-import com.alanhss.ClashZone.infra.dtos.EquipesDtos.AtualizarEquipeDto;
 import com.alanhss.ClashZone.infra.dtos.EquipesDtos.EquipeDto;
 import com.alanhss.ClashZone.infra.mappers.EquipeMappers.EquipeAtualizarMapper;
 import com.alanhss.ClashZone.infra.mappers.EquipeMappers.EquipeDtoMapper;
@@ -17,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("equipes/")
+@RequestMapping("clashzone/equipes/")
 @RequiredArgsConstructor
 public class EquipeCotroller {
 

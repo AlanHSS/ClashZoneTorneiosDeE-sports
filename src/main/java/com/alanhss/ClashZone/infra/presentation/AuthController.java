@@ -1,76 +1,59 @@
 package com.alanhss.ClashZone.infra.presentation;
-import com.alanhss.ClashZone.core.domain.UsuariosDomain;
-import com.alanhss.ClashZone.core.usecases.usuario.AtualizarUsuarioUsecase;
-import com.alanhss.ClashZone.core.usecases.usuario.BuscarUsuarioPorId;
-import com.alanhss.ClashZone.core.usecases.usuario.CriarUsuarioUsecase;
-import com.alanhss.ClashZone.core.usecases.usuario.ListarUsuariosUsecase;
-import com.alanhss.ClashZone.infra.dtos.UsuariosDtos.AtualizarUsuariosDto;
-import com.alanhss.ClashZone.infra.dtos.UsuariosDtos.UsuariosDto;
-import com.alanhss.ClashZone.infra.mappers.UsuariosMappers.UsuariosAtualizarMapper;
-import com.alanhss.ClashZone.infra.mappers.UsuariosMappers.UsuariosDtoMapper;
+
+import com.alanhss.ClashZone.core.domain.AuthDomain;
+import com.alanhss.ClashZone.core.usecases.auth.LoginUsecase;
+import com.alanhss.ClashZone.core.usecases.auth.RegisterUsecase;
+import com.alanhss.ClashZone.infra.dtos.AuthDtos.LoginRequestDto;
+import com.alanhss.ClashZone.infra.dtos.AuthDtos.LoginResponseDto;
+import com.alanhss.ClashZone.infra.dtos.AuthDtos.RegisterRequestDto;
+import com.alanhss.ClashZone.infra.dtos.AuthDtos.RegisterResponseDto;
+import com.alanhss.ClashZone.infra.mappers.AuthMappers.AuthRequestMapper;
+import com.alanhss.ClashZone.infra.mappers.AuthMappers.AuthResponseMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
 
 @RestController
-@RequestMapping("auth/")
+@RequestMapping("clashzone/auth/")
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final CriarUsuarioUsecase criarUsuarioUsecase;
-    private final ListarUsuariosUsecase listarUsuariosUsecase;
-    private final AtualizarUsuarioUsecase atualizarUsuarioUsecase;
-    private final BuscarUsuarioPorId buscarUsuarioPorId;
-    private final UsuariosDtoMapper mapper;
-    private final UsuariosAtualizarMapper atualizarMapper;
+    private final RegisterUsecase registerUsecase;
+    private final LoginUsecase loginUsecase;
+    private final AuthRequestMapper requestMapper;
+    private final AuthResponseMapper responseMapper;
 
-    @PostMapping("criarusuario")
-    public ResponseEntity<Map<String, Object>> criarUsuario(@RequestBody UsuariosDto usuariosDto){
+    @PostMapping("register")
+    public ResponseEntity<RegisterResponseDto> register(@Valid @RequestBody RegisterRequestDto request){
 
-        UsuariosDto dtoValidado = mapper.validarEPreparar(usuariosDto);
+        RegisterRequestDto requestValidado = requestMapper.validarEPrepararRegister(request);
 
-        UsuariosDomain novoUsuarioDomain = criarUsuarioUsecase.execute(mapper.toDomain(dtoValidado));
-        Map<String, Object> response = new HashMap<>();
-        response.put("Mensagem: ", "Usuário criado com sucesso!");
-        response.put("Dados do usuário: ", mapper.toDto(novoUsuarioDomain));
+        AuthDomain.RegisterData registerData = requestMapper.toRegisterData(requestValidado);
 
-        return ResponseEntity.ok(response);
-    }
+        AuthDomain authDomain = registerUsecase.execute(registerData);
 
-    @GetMapping("listarusuarios")
-    public List<UsuariosDto> listarusuarios(){
-        List<UsuariosDomain> lista = listarUsuariosUsecase.execute();
-
-        return lista.stream()
-                .map(mapper::toDto)
-                .collect(Collectors.toList());
-    }
-
-    @PatchMapping("atualizarusuario/{id}")
-    public ResponseEntity<Map<String, Object>> atualizarUsuario(@PathVariable Long id, @RequestBody AtualizarUsuariosDto atualizarUsuariosDto) {
-        Map<String, Object> response = new HashMap<>();
-
-        AtualizarUsuariosDto dtoValidado = atualizarMapper.validarEPrepararAtualizacao(atualizarUsuariosDto);
-
-        UsuariosDomain usuariosDomain = atualizarMapper.toDomain(id, dtoValidado);
-        UsuariosDomain usuarioAtualizado = atualizarUsuarioUsecase.execute(id, usuariosDomain);
-        response.put("Mensagem: ", "Usuário atualizado com sucesso!");
-        response.put("Dados do usuário: ", mapper.toDto(usuarioAtualizado));
+        RegisterResponseDto response = responseMapper.toRegisterResponse(authDomain);
 
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("buscarusuario/{id}")
-    public UsuariosDto buscarUsuarioPorId(@PathVariable Long id){
-        UsuariosDomain usuariosDomain = buscarUsuarioPorId.execute(id);
-        UsuariosDto usuariosDto = mapper.toDto(usuariosDomain);
+    @PostMapping("login")
+    public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginRequestDto request){
 
-        return usuariosDto;
+        LoginRequestDto requestValidado = requestMapper.validarEPrepararLogin(request);
+
+        AuthDomain.LoginData loginData = requestMapper.toLoginData(requestValidado);
+
+        AuthDomain authDomain = loginUsecase.execute(loginData);
+
+        LoginResponseDto response = responseMapper.toLoginResponse(authDomain);
+
+        return ResponseEntity.ok(response);
     }
-
 }

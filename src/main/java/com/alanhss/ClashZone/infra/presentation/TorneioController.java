@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("torneios/")
+@RequestMapping("clashzone/torneios/")
 @RequiredArgsConstructor
 public class TorneioController {
 
@@ -92,7 +92,7 @@ public class TorneioController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("buscartorneio/{id}")
+    @GetMapping("paginadotorneio/{id}")
     public TorneioDto buscarTorneioPorId(@PathVariable Long id){
         TorneioDomain torneioDomain = buscarTorneioPorId.execute(id);
         TorneioDto torneioDto = mapper.toDto(torneioDomain);
