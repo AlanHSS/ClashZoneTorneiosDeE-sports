@@ -36,7 +36,10 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("clashzone/auth/register", "clashzone/auth/login").permitAll()
+                        .requestMatchers("clashzone/auth/register",
+                                "clashzone/auth/login",
+                                "clashzone/torneios/listartorneios",
+                                "clashzone/torneios/torneiosfiltrados").permitAll()
                         .requestMatchers("/usuarios").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())
