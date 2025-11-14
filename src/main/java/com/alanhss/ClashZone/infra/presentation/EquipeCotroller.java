@@ -6,6 +6,7 @@ import com.alanhss.ClashZone.core.usecases.equipe.ListarEquipesUsecase;
 import com.alanhss.ClashZone.infra.dtos.EquipesDtos.EquipeDto;
 import com.alanhss.ClashZone.infra.mappers.EquipeMappers.EquipeAtualizarMapper;
 import com.alanhss.ClashZone.infra.mappers.EquipeMappers.EquipeDtoMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class EquipeCotroller {
     private final EquipeDtoMapper mapper;
 
     @PostMapping("criarequipe")
-    public ResponseEntity<Map<String, Object>> criarEquipe(@RequestBody EquipeDto equipeDto){
+    public ResponseEntity<Map<String, Object>> criarEquipe(@Valid @RequestBody EquipeDto equipeDto){
 
         EquipeDto dtoValidado = mapper.validarEPreparar(equipeDto);
 

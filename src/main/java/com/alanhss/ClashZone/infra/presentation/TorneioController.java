@@ -7,6 +7,7 @@ import com.alanhss.ClashZone.infra.dtos.TorneioDto;
 import com.alanhss.ClashZone.infra.mappers.TorneiosMappers.TorneioAtualizarMapper;
 import com.alanhss.ClashZone.infra.mappers.TorneiosMappers.TorneioDtoMapper;
 import com.alanhss.ClashZone.infra.mappers.TorneiosMappers.TorneioFiltroMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class TorneioController {
     private final TorneioDtoMapper mapper;
 
     @PostMapping("criartorneio")
-    public ResponseEntity<Map<String, Object>> criarTorneio(@RequestBody TorneioDto torneioDto){
+    public ResponseEntity<Map<String, Object>> criarTorneio(@Valid @RequestBody TorneioDto torneioDto){
 
         TorneioDto dtoValidado = mapper.validarEPreparar(torneioDto);
 
