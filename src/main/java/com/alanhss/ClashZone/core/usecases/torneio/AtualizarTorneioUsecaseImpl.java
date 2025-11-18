@@ -1,6 +1,7 @@
 package com.alanhss.ClashZone.core.usecases.torneio;
 
 import com.alanhss.ClashZone.core.domain.TorneioDomain;
+import com.alanhss.ClashZone.core.enums.Role;
 import com.alanhss.ClashZone.core.exceptions.AcessoNegadoException;
 import com.alanhss.ClashZone.core.exceptions.CampoObrigatorioException;
 import com.alanhss.ClashZone.core.exceptions.DataInicioInvalidaException;
@@ -20,17 +21,15 @@ public class AtualizarTorneioUsecaseImpl implements AtualizarTorneioUsecase{
     }
 
     @Override
-    public TorneioDomain execute(Long id, TorneioDomain torneioDomain, Long usuarioAutenticadoId) {
-        torneioGateway.buscarPorId(id)
-                .orElseThrow(() -> new NaoEncontradoPorIdException(id, "torneio"));
-
-        List<String> camposInvalidos = new ArrayList<>();
-
+    public TorneioDomain execute(Long id, TorneioDomain torneioDomain, Long usuarioAutenticadoId, Role roleUsuario) {
         TorneioDomain torneioExistente = torneioGateway.buscarPorId(id)
                 .orElseThrow(() -> new NaoEncontradoPorIdException(id, "torneio"));
-        if (!torneioExistente.criadorId().equals(usuarioAutenticadoId)) {
-            throw new AcessoNegadoException("Apenas o criador do torneio pode modificá-lo");
+
+        if (roleUsuario != Role.ADMIN && !torneioExistente.criadorId().equals(usuarioAutenticadoId)) {
+            throw new AcessoNegadoException("Apenas o criador do torneio ou um administrador podem modificá-lo");
         }
+
+        List<String> camposInvalidos = new ArrayList<>();
 
         if (torneioDomain.nomeDoTorneio() != null && torneioDomain.nomeDoTorneio().trim().isEmpty()) {
             camposInvalidos.add("Nome do torneio não pode estar vazio");

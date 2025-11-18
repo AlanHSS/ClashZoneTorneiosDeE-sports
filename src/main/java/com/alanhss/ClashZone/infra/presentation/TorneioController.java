@@ -1,5 +1,6 @@
 package com.alanhss.ClashZone.infra.presentation;
 import com.alanhss.ClashZone.core.domain.TorneioDomain;
+import com.alanhss.ClashZone.core.enums.Role;
 import com.alanhss.ClashZone.core.usecases.torneio.*;
 import com.alanhss.ClashZone.infra.dtos.AtualizarTorneioDto;
 import com.alanhss.ClashZone.infra.dtos.FiltroTorneioDto;
@@ -117,12 +118,15 @@ public class TorneioController {
     public ResponseEntity<Map<String, Object>> atualizarTorneio(@PathVariable Long id, @RequestBody AtualizarTorneioDto atualizarTorneioDto) {
         Map<String, Object> response = new HashMap<>();
 
-        Long usuarioAutenticadoId = getUsuarioAutenticadoId();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UsuariosEntity usuarioAutenticado = (UsuariosEntity) authentication.getPrincipal();
+        Long usuarioAutenticadoId = usuarioAutenticado.getId();
+        Role roleUsuario = usuarioAutenticado.getRole();
 
         AtualizarTorneioDto dtoValidado = atualizarMapper.validarEPrepararAtualizacao(atualizarTorneioDto);
 
         TorneioDomain torneioDomain = atualizarMapper.toDomain(id, dtoValidado);
-        TorneioDomain torneioAtualizado = atualizarTorneioUsecase.execute(id, torneioDomain, usuarioAutenticadoId);
+        TorneioDomain torneioAtualizado = atualizarTorneioUsecase.execute(id, torneioDomain, usuarioAutenticadoId, roleUsuario);
         response.put("Mensagem: ", "Torneio atualizado com sucesso!");
         response.put("Dados do torneio: ", mapper.toDto(torneioAtualizado));
 
