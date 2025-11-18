@@ -7,6 +7,7 @@ import com.alanhss.ClashZone.infra.dtos.TorneioDto;
 import com.alanhss.ClashZone.infra.mappers.TorneiosMappers.TorneioAtualizarMapper;
 import com.alanhss.ClashZone.infra.mappers.TorneiosMappers.TorneioDtoMapper;
 import com.alanhss.ClashZone.infra.mappers.TorneiosMappers.TorneioFiltroMapper;
+import com.alanhss.ClashZone.infra.persistence.TorneioPersistence.TorneioRepository;
 import com.alanhss.ClashZone.infra.persistence.UsuariosPersistence.UsuariosEntity;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class TorneioController {
     private final FiltrosTorneioUsecase filtrosTorneioUsecase;
     private final AtualizarTorneioUsecase atualizarTorneioUsecase;
     private final BuscarTorneioPorId buscarTorneioPorId;
+    private final TorneioRepository torneioRepository;
     private final TorneioAtualizarMapper atualizarMapper;
     private final TorneioFiltroMapper filtroMapper;
     private final TorneioDtoMapper mapper;
@@ -66,6 +68,8 @@ public class TorneioController {
                 torneioDomain.plataforma(),
                 torneioDomain.dataCriacao()
         );
+
+        TorneioDomain torneioSalvo = criarTorneioUsecase.execute(torneioDomainComCriador);
 
         Map<String, Object> response = new HashMap<>();
         response.put("Mensagem: ", "Torneio criado com sucesso!");

@@ -44,11 +44,13 @@ public class AtualizarTorneioUsecaseImpl implements AtualizarTorneioUsecase{
             throw new CampoObrigatorioException(camposInvalidos);
         }
 
-        LocalDateTime agora = LocalDateTime.now();
-        LocalDateTime dataMinima = agora.plusDays(2);
+        if (torneioDomain.inicioDoTorneio() != null){
+            LocalDateTime agora = LocalDateTime.now();
+            LocalDateTime dataMinima = agora.plusDays(2);
 
-        if (torneioDomain.inicioDoTorneio().isBefore(dataMinima)) {
-            throw new DataInicioInvalidaException(torneioDomain.inicioDoTorneio(), dataMinima);
+            if (torneioDomain.inicioDoTorneio().isBefore(dataMinima)) {
+                throw new DataInicioInvalidaException(torneioDomain.inicioDoTorneio(), dataMinima);
+            }
         }
 
         return torneioGateway.atualizarTorneio(id, torneioDomain);
