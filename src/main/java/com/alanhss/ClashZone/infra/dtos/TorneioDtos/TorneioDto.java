@@ -29,8 +29,7 @@ public record TorneioDto(
         @Max(128)
         Integer quantidadeDeEquipes,
 
-        @NotBlank(message = "O criador do torneio é obrigatório.")
-        String criadorDoTorneio,
+        Long criadorId,
 
         StatusDoTorneio statusDoTorneio,
 

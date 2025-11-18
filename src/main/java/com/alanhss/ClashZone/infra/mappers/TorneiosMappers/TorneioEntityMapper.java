@@ -2,24 +2,36 @@ package com.alanhss.ClashZone.infra.mappers.TorneiosMappers;
 
 import com.alanhss.ClashZone.core.domain.TorneioDomain;
 import com.alanhss.ClashZone.infra.persistence.TorneioPersistence.TorneioEntity;
+import com.alanhss.ClashZone.infra.persistence.UsuariosPersistence.UsuariosEntity;
+import com.alanhss.ClashZone.infra.persistence.UsuariosPersistence.UsuariosRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class TorneioEntityMapper {
 
+    private final UsuariosRepository usuariosRepository;
+
     public TorneioEntity toEntity(TorneioDomain torneioDomain){
-        return new TorneioEntity(
-                torneioDomain.id(),
-                torneioDomain.nomeDoTorneio(),
-                torneioDomain.descricaoDoTorneio(),
-                torneioDomain.inicioDoTorneio(),
-                torneioDomain.jogoDoTorneio(),
-                torneioDomain.quantidadeDeEquipes(),
-                torneioDomain.criadorDoTorneio(),
-                torneioDomain.statusDoTorneio(),
-                torneioDomain.plataforma(),
-                torneioDomain.dataCriacao()
-        );
+        TorneioEntity entity = new TorneioEntity();
+        entity.setId(torneioDomain.id());
+        entity.setNomeDoTorneio(torneioDomain.nomeDoTorneio());
+        entity.setDescricaoDoTorneio(torneioDomain.descricaoDoTorneio());
+        entity.setInicioDoTorneio(torneioDomain.inicioDoTorneio());
+        entity.setJogoDoTorneio(torneioDomain.jogoDoTorneio());
+        entity.setQuantidadeDeEquipes(torneioDomain.quantidadeDeEquipes());
+        entity.setStatusDoTorneio(torneioDomain.statusDoTorneio());
+        entity.setPlataforma(torneioDomain.plataforma());
+        entity.setDataCriacao(torneioDomain.dataCriacao());
+
+        if (torneioDomain.criadorId() != null) {
+            UsuariosEntity criador = usuariosRepository.findById(torneioDomain.criadorId())
+                    .orElseThrow(() -> new RuntimeException("Criador não encontrado com ID: " + torneioDomain.criadorId()));
+            entity.setCriadorId(criador);
+        }
+
+        return entity;
     }
 
     public TorneioDomain toDomain(TorneioEntity torneioEntity){
@@ -30,7 +42,7 @@ public class TorneioEntityMapper {
                 torneioEntity.getInicioDoTorneio(),
                 torneioEntity.getJogoDoTorneio(),
                 torneioEntity.getQuantidadeDeEquipes(),
-                torneioEntity.getCriadorDoTorneio(),
+                torneioEntity.getCriadorId() != null ? torneioEntity.getCriadorId().getId() : null,
                 torneioEntity.getStatusDoTorneio(),
                 torneioEntity.getPlataforma(),
                 torneioEntity.getDataCriacao()

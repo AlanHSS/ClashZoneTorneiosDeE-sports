@@ -13,7 +13,7 @@ public record TorneioDomain(Long id,
                             LocalDateTime inicioDoTorneio,
                             Games jogoDoTorneio,
                             Integer quantidadeDeEquipes,
-                            String criadorDoTorneio,
+                            Long criadorId,
                             StatusDoTorneio statusDoTorneio,
                             Plataforma plataforma,
                             LocalDateTime dataCriacao

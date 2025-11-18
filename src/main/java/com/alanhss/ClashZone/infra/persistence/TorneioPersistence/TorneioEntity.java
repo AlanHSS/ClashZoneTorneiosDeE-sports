@@ -3,6 +3,7 @@ package com.alanhss.ClashZone.infra.persistence.TorneioPersistence;
 import com.alanhss.ClashZone.core.enums.Games;
 import com.alanhss.ClashZone.core.enums.Plataforma;
 import com.alanhss.ClashZone.core.enums.StatusDoTorneio;
+import com.alanhss.ClashZone.infra.persistence.UsuariosPersistence.UsuariosEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,7 +33,9 @@ public class TorneioEntity {
 
     private Integer quantidadeDeEquipes;
 
-    private String criadorDoTorneio;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "criador_id", nullable = false)
+    private UsuariosEntity criadorId;
 
     @Enumerated(EnumType.STRING)
     private StatusDoTorneio statusDoTorneio;

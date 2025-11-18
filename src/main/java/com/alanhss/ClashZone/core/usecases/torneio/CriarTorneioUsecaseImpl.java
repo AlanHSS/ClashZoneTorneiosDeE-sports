@@ -37,10 +37,6 @@ public class CriarTorneioUsecaseImpl implements CriarTorneioUsecase {
             camposFaltantes.add("Quantidade de equipes");
         }
 
-        if (torneioDomain.criadorDoTorneio() == null) {
-            camposFaltantes.add("Criador do torneio");
-        }
-
         if (torneioDomain.statusDoTorneio() == null) {
             camposFaltantes.add("Status do torneio");
         }

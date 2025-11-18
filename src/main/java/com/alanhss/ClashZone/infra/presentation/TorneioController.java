@@ -7,10 +7,13 @@ import com.alanhss.ClashZone.infra.dtos.TorneioDto;
 import com.alanhss.ClashZone.infra.mappers.TorneiosMappers.TorneioAtualizarMapper;
 import com.alanhss.ClashZone.infra.mappers.TorneiosMappers.TorneioDtoMapper;
 import com.alanhss.ClashZone.infra.mappers.TorneiosMappers.TorneioFiltroMapper;
+import com.alanhss.ClashZone.infra.persistence.UsuariosPersistence.UsuariosEntity;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,15 +34,42 @@ public class TorneioController {
     private final TorneioFiltroMapper filtroMapper;
     private final TorneioDtoMapper mapper;
 
+    private Long getUsuarioAutenticadoId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.getPrincipal() instanceof UsuariosEntity) {
+            UsuariosEntity usuario = (UsuariosEntity) authentication.getPrincipal();
+            return usuario.getId();
+        }
+
+        throw new RuntimeException("Usuário não autenticado");
+    }
+
     @PostMapping("criartorneio")
     public ResponseEntity<Map<String, Object>> criarTorneio(@Valid @RequestBody TorneioDto torneioDto){
 
+        Long criadorId = getUsuarioAutenticadoId();
+
         TorneioDto dtoValidado = mapper.validarEPreparar(torneioDto);
 
-        TorneioDomain novoTorneioDomain = criarTorneioUsecase.execute(mapper.toDomain(dtoValidado));
+        TorneioDomain torneioDomain = mapper.toDomain(dtoValidado);
+
+        TorneioDomain torneioDomainComCriador = new TorneioDomain(
+                torneioDomain.id(),
+                torneioDomain.nomeDoTorneio(),
+                torneioDomain.descricaoDoTorneio(),
+                torneioDomain.inicioDoTorneio(),
+                torneioDomain.jogoDoTorneio(),
+                torneioDomain.quantidadeDeEquipes(),
+                criadorId,
+                torneioDomain.statusDoTorneio(),
+                torneioDomain.plataforma(),
+                torneioDomain.dataCriacao()
+        );
+
         Map<String, Object> response = new HashMap<>();
         response.put("Mensagem: ", "Torneio criado com sucesso!");
-        response.put("Dados do torneio: ", mapper.toDto(novoTorneioDomain));
+        response.put("Dados do torneio: ", mapper.toDto(torneioDomainComCriador));
 
         return ResponseEntity.ok(response);
     }
@@ -83,10 +113,12 @@ public class TorneioController {
     public ResponseEntity<Map<String, Object>> atualizarTorneio(@PathVariable Long id, @RequestBody AtualizarTorneioDto atualizarTorneioDto) {
         Map<String, Object> response = new HashMap<>();
 
+        Long usuarioAutenticadoId = getUsuarioAutenticadoId();
+
         AtualizarTorneioDto dtoValidado = atualizarMapper.validarEPrepararAtualizacao(atualizarTorneioDto);
 
         TorneioDomain torneioDomain = atualizarMapper.toDomain(id, dtoValidado);
-        TorneioDomain torneioAtualizado = atualizarTorneioUsecase.execute(id, torneioDomain);
+        TorneioDomain torneioAtualizado = atualizarTorneioUsecase.execute(id, torneioDomain, usuarioAutenticadoId);
         response.put("Mensagem: ", "Torneio atualizado com sucesso!");
         response.put("Dados do torneio: ", mapper.toDto(torneioAtualizado));
 

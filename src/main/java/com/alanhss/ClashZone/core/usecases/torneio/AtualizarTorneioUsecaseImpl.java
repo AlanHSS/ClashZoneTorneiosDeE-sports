@@ -1,6 +1,7 @@
 package com.alanhss.ClashZone.core.usecases.torneio;
 
 import com.alanhss.ClashZone.core.domain.TorneioDomain;
+import com.alanhss.ClashZone.core.exceptions.AcessoNegadoException;
 import com.alanhss.ClashZone.core.exceptions.CampoObrigatorioException;
 import com.alanhss.ClashZone.core.exceptions.DataInicioInvalidaException;
 import com.alanhss.ClashZone.core.gateway.TorneioGateway;
@@ -19,11 +20,17 @@ public class AtualizarTorneioUsecaseImpl implements AtualizarTorneioUsecase{
     }
 
     @Override
-    public TorneioDomain execute(Long id, TorneioDomain torneioDomain) {
+    public TorneioDomain execute(Long id, TorneioDomain torneioDomain, Long usuarioAutenticadoId) {
         torneioGateway.buscarPorId(id)
                 .orElseThrow(() -> new NaoEncontradoPorIdException(id, "torneio"));
 
         List<String> camposInvalidos = new ArrayList<>();
+
+        TorneioDomain torneioExistente = torneioGateway.buscarPorId(id)
+                .orElseThrow(() -> new NaoEncontradoPorIdException(id, "torneio"));
+        if (!torneioExistente.criadorId().equals(usuarioAutenticadoId)) {
+            throw new AcessoNegadoException("Apenas o criador do torneio pode modificá-lo");
+        }
 
         if (torneioDomain.nomeDoTorneio() != null && torneioDomain.nomeDoTorneio().trim().isEmpty()) {
             camposInvalidos.add("Nome do torneio não pode estar vazio");
@@ -31,10 +38,6 @@ public class AtualizarTorneioUsecaseImpl implements AtualizarTorneioUsecase{
 
         if (torneioDomain.quantidadeDeEquipes() != null && torneioDomain.quantidadeDeEquipes() <= 0) {
             camposInvalidos.add("Quantidade de equipes deve ser maior que zero");
-        }
-
-        if (torneioDomain.criadorDoTorneio() != null && torneioDomain.criadorDoTorneio().trim().isEmpty()) {
-            camposInvalidos.add("Criador do torneio não pode estar vazio");
         }
 
         if (!camposInvalidos.isEmpty()) {
