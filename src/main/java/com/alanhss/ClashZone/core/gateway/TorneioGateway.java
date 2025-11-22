@@ -15,4 +15,6 @@ public interface TorneioGateway {
     TorneioDomain atualizarTorneio(Long id, TorneioDomain torneioDomain);
 
     Optional<TorneioDomain> buscarPorId(Long id);
+
+    List<TorneioDomain> listarTorneiosPorCriador(Long id);
 }

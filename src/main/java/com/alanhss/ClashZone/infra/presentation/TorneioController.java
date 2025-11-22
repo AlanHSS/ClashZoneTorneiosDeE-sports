@@ -32,17 +32,17 @@ public class TorneioController {
     private final FiltrosTorneioUsecase filtrosTorneioUsecase;
     private final AtualizarTorneioUsecase atualizarTorneioUsecase;
     private final BuscarTorneioPorId buscarTorneioPorId;
+    private final ListarTorneiosPorCriador listarTorneiosPorCriador;
     private final TorneioRepository torneioRepository;
     private final TorneioAtualizarMapper atualizarMapper;
     private final TorneioFiltroMapper filtroMapper;
     private final TorneioDtoMapper mapper;
 
-    private Long getUsuarioAutenticadoId() {
+    private UsuariosEntity  getUsuarioAutenticado() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.getPrincipal() instanceof UsuariosEntity) {
-            UsuariosEntity usuario = (UsuariosEntity) authentication.getPrincipal();
-            return usuario.getId();
+            return (UsuariosEntity) authentication.getPrincipal();
         }
 
         throw new RuntimeException("Usuário não autenticado");
@@ -51,7 +51,7 @@ public class TorneioController {
     @PostMapping("criartorneio")
     public ResponseEntity<Map<String, Object>> criarTorneio(@Valid @RequestBody TorneioDto torneioDto){
 
-        Long criadorId = getUsuarioAutenticadoId();
+        Long criadorId = getUsuarioAutenticado().getId();
 
         TorneioDto dtoValidado = mapper.validarEPreparar(torneioDto);
 
@@ -118,10 +118,8 @@ public class TorneioController {
     public ResponseEntity<Map<String, Object>> atualizarTorneio(@PathVariable Long id, @RequestBody AtualizarTorneioDto atualizarTorneioDto) {
         Map<String, Object> response = new HashMap<>();
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UsuariosEntity usuarioAutenticado = (UsuariosEntity) authentication.getPrincipal();
-        Long usuarioAutenticadoId = usuarioAutenticado.getId();
-        Role roleUsuario = usuarioAutenticado.getRole();
+        Long usuarioAutenticadoId = getUsuarioAutenticado().getId();
+        Role roleUsuario = getUsuarioAutenticado().getRole();
 
         AtualizarTorneioDto dtoValidado = atualizarMapper.validarEPrepararAtualizacao(atualizarTorneioDto);
 
@@ -139,6 +137,16 @@ public class TorneioController {
         TorneioDto torneioDto = mapper.toDto(torneioDomain);
 
         return torneioDto;
+    }
+
+    @GetMapping("meustorneios")
+    public List<TorneioDto> listarMeusTorneios(){
+
+        Long criadorId = getUsuarioAutenticado().getId();
+        List<TorneioDomain> lista = listarTorneiosPorCriador.execute(criadorId);
+        return lista.stream()
+                .map(mapper::toDto)
+                .toList();
     }
 
 }

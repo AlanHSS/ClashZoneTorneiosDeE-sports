@@ -20,6 +20,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class BeanConfiguration {
 
+    // TORNEIOS
+
     @Bean
     public CriarTorneioUsecase criartorneio(TorneioGateway torneioGateway){
         return new CriarTorneioUsecaseImpl(torneioGateway);
@@ -46,6 +48,13 @@ public class BeanConfiguration {
     }
 
     @Bean
+    public ListarTorneiosPorCriador listarTorneiosPorCriador(TorneioGateway torneioGateway){
+        return new ListarTorneiosPorCriadorImpl(torneioGateway);
+    }
+
+    // USUÁRIOS
+
+    @Bean
     public ListarUsuariosUsecase listarusuarios(UsuariosGateway usuariosGateway){
         return new ListarUsuariosUsecaseImpl(usuariosGateway);
     }
@@ -60,6 +69,8 @@ public class BeanConfiguration {
         return new BuscarUsuarioPorIdImpl(usuariosGateway);
     }
 
+    // EQUIPES
+
     @Bean
     public CriarEquipeUsecase criarequipe(EquipeGateway equipeGateway){
         return new CriarEquipeUsecaseImpl(equipeGateway);
@@ -69,6 +80,8 @@ public class BeanConfiguration {
     public ListarEquipesUsecase listarEquipesUsecase(EquipeGateway equipeGateway){
         return new ListarEquipesUsecaseImpl(equipeGateway);
     }
+
+    // AUTENTICAÇÃO
 
     @Bean
     public RegisterUsecase registerUsecase(AuthGateway authGateway){

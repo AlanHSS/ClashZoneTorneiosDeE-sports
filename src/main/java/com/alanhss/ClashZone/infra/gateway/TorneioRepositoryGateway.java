@@ -93,4 +93,12 @@ public class TorneioRepositoryGateway implements TorneioGateway {
         TorneioEntity torneioAtualizado = torneioRepository.save(torneioExistente);
         return mapper.toDomain(torneioAtualizado);
     }
+
+    @Override
+    public List<TorneioDomain> listarTorneiosPorCriador(Long id) {
+        List<TorneioEntity> lista = torneioRepository.findByCriadorIdId(id);
+        return lista.stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
 }
