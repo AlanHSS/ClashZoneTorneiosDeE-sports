@@ -1,6 +1,7 @@
 package com.alanhss.ClashZone.core.usecases.usuario;
 
 import com.alanhss.ClashZone.core.domain.UsuariosDomain;
+import com.alanhss.ClashZone.core.enums.Role;
 import com.alanhss.ClashZone.core.exceptions.*;
 import com.alanhss.ClashZone.core.gateway.UsuariosGateway;
 
@@ -16,9 +17,13 @@ public class AtualizarUsuarioUsecaseImpl implements AtualizarUsuarioUsecase{
     }
 
     @Override
-    public UsuariosDomain execute(Long id, UsuariosDomain usuariosDomain) {
-        usuariosGateway.buscarPorId(id)
+    public UsuariosDomain execute(Long id, UsuariosDomain usuariosDomain, Long usuarioAutenticadoId, Role roleUsuario) {
+        UsuariosDomain usuarioExistente = usuariosGateway.buscarPorId(id)
                 .orElseThrow(() -> new NaoEncontradoPorIdException(id, "usuario"));
+
+        if (roleUsuario != Role.ADMIN && !usuarioExistente.id().equals(usuarioAutenticadoId)){
+            throw new AcessoNegadoException("Acesso negado");
+        }
 
         List<String> camposInvalidos = new ArrayList<>();
 
