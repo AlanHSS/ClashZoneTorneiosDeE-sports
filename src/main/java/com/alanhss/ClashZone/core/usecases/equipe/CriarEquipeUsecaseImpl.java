@@ -24,10 +24,6 @@ public class CriarEquipeUsecaseImpl implements CriarEquipeUsecase {
             camposFaltantes.add("Nome da equipe");
         }
 
-        if (equipeDomain.liderId() == null){
-            camposFaltantes.add("Lider da equipe");
-        }
-
         if (equipeDomain.nomeDaEquipe() == null) {
             camposFaltantes.add("Jogo da equipe");
         }

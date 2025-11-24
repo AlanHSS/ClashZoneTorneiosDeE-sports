@@ -14,7 +14,6 @@ public record EquipeDto(
         @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres")
         String nomeDaEquipe,
 
-        @NotNull(message = "Líder da equipe é obrigatório")
         Long liderId,
 
         @NotNull(message = "O jogo da equipe é obrigatório.")
