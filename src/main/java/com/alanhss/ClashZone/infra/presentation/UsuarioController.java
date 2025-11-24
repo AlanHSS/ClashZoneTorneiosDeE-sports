@@ -1,9 +1,7 @@
 package com.alanhss.ClashZone.infra.presentation;
 import com.alanhss.ClashZone.core.domain.UsuariosDomain;
 import com.alanhss.ClashZone.core.enums.Role;
-import com.alanhss.ClashZone.core.usecases.usuario.AtualizarUsuarioUsecase;
-import com.alanhss.ClashZone.core.usecases.usuario.BuscarUsuarioPorId;
-import com.alanhss.ClashZone.core.usecases.usuario.ListarUsuariosUsecase;
+import com.alanhss.ClashZone.core.usecases.usuario.*;
 import com.alanhss.ClashZone.infra.dtos.UsuariosDtos.AtualizarUsuariosDto;
 import com.alanhss.ClashZone.infra.dtos.UsuariosDtos.UsuariosDto;
 import com.alanhss.ClashZone.infra.mappers.UsuariosMappers.UsuariosAtualizarMapper;
@@ -11,6 +9,7 @@ import com.alanhss.ClashZone.infra.mappers.UsuariosMappers.UsuariosDtoMapper;
 import com.alanhss.ClashZone.infra.persistence.UsuariosPersistence.UsuariosEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +20,14 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping("clashzone/auth/")
+@RequestMapping("clashzone/usuarios/")
 @RequiredArgsConstructor
 public class UsuarioController {
 
     private final ListarUsuariosUsecase listarUsuariosUsecase;
     private final AtualizarUsuarioUsecase atualizarUsuarioUsecase;
-    private final BuscarUsuarioPorId buscarUsuarioPorId;
+    private final BuscarUsuarioPorIdUsecase buscarUsuarioPorIdUsecase;
+    private final DeletarUsuarioPorIdUsecase deletarUsuarioPorIdUsecase;
     private final UsuariosDtoMapper mapper;
     private final UsuariosAtualizarMapper atualizarMapper;
 
@@ -41,6 +41,7 @@ public class UsuarioController {
         throw new RuntimeException("Usuário não autenticado");
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("listarusuarios")
     public List<UsuariosDto> listarusuarios(){
         List<UsuariosDomain> lista = listarUsuariosUsecase.execute();
@@ -67,12 +68,29 @@ public class UsuarioController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     @GetMapping("userprofile/{id}")
     public UsuariosDto buscarUsuarioPorId(@PathVariable Long id){
-        UsuariosDomain usuariosDomain = buscarUsuarioPorId.execute(id);
+        UsuariosDomain usuariosDomain = buscarUsuarioPorIdUsecase.execute(id);
         UsuariosDto usuariosDto = mapper.toDto(usuariosDomain);
 
         return usuariosDto;
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
+    @DeleteMapping("deletarusuario/{id}")
+    public ResponseEntity<Map<String, Object>> deletarUsuario(@PathVariable Long id){
+        Map<String, Object> response = new HashMap<>();
+
+        Long usuarioAutenticadoId = getUsuarioAutenticado().getId();
+        Role roleUsuario = getUsuarioAutenticado().getRole();
+
+        deletarUsuarioPorIdUsecase.execute(id, usuarioAutenticadoId, roleUsuario);
+
+        response.put("Mensagem", "Usuário deletado com sucesso!");
+        response.put("Id deletado", id);
+
+        return ResponseEntity.ok(response);
     }
 
 }

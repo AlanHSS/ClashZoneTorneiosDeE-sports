@@ -19,4 +19,6 @@ public interface UsuariosGateway {
 
     Optional<UsuariosDomain> buscarPorEmail(String email);
 
+    void deletarUsuario(Long id);
+
 }

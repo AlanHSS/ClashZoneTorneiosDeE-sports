@@ -69,4 +69,9 @@ public class UsuariosRepositoryGateway implements UsuariosGateway {
         UsuariosEntity usuarioAtulizado = usuariosRepository.save(usurioExistente);
         return mapper.toDomain(usuarioAtulizado);
     }
+
+    @Override
+    public void deletarUsuario(Long id) {
+        usuariosRepository.deleteById(id);
+    }
 }

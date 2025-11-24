@@ -4,11 +4,11 @@ import com.alanhss.ClashZone.core.domain.UsuariosDomain;
 import com.alanhss.ClashZone.core.exceptions.NaoEncontradoPorIdException;
 import com.alanhss.ClashZone.core.gateway.UsuariosGateway;
 
-public class BuscarUsuarioPorIdImpl implements BuscarUsuarioPorId{
+public class BuscarUsuarioPorIdUsecaseImpl implements BuscarUsuarioPorIdUsecase {
 
     private final UsuariosGateway usuariosGateway;
 
-    public BuscarUsuarioPorIdImpl(UsuariosGateway usuariosGateway) {
+    public BuscarUsuarioPorIdUsecaseImpl(UsuariosGateway usuariosGateway) {
         this.usuariosGateway = usuariosGateway;
     }
 

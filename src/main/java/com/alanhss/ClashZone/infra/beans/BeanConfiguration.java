@@ -65,8 +65,13 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public BuscarUsuarioPorId buscarUsuarioPorId(UsuariosGateway usuariosGateway){
-        return new BuscarUsuarioPorIdImpl(usuariosGateway);
+    public BuscarUsuarioPorIdUsecase buscarUsuarioPorId(UsuariosGateway usuariosGateway){
+        return new BuscarUsuarioPorIdUsecaseImpl(usuariosGateway);
+    }
+
+    @Bean
+    public DeletarUsuarioPorIdUsecase deletarUsuarioPorIdUsecase(UsuariosGateway usuariosGateway){
+        return new DeletarUsuarioPorIdUsecaseImpl(usuariosGateway);
     }
 
     // EQUIPES
