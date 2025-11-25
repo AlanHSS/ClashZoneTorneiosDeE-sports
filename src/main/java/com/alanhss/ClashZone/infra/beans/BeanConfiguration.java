@@ -8,10 +8,7 @@ import com.alanhss.ClashZone.core.usecases.auth.LoginUsecase;
 import com.alanhss.ClashZone.core.usecases.auth.LoginUsecaseImpl;
 import com.alanhss.ClashZone.core.usecases.auth.RegisterUsecase;
 import com.alanhss.ClashZone.core.usecases.auth.RegisterUsecaseImpl;
-import com.alanhss.ClashZone.core.usecases.equipe.CriarEquipeUsecase;
-import com.alanhss.ClashZone.core.usecases.equipe.CriarEquipeUsecaseImpl;
-import com.alanhss.ClashZone.core.usecases.equipe.ListarEquipesUsecase;
-import com.alanhss.ClashZone.core.usecases.equipe.ListarEquipesUsecaseImpl;
+import com.alanhss.ClashZone.core.usecases.equipe.*;
 import com.alanhss.ClashZone.core.usecases.torneio.*;
 import com.alanhss.ClashZone.core.usecases.usuario.*;
 import org.springframework.context.annotation.Bean;
@@ -23,73 +20,83 @@ public class BeanConfiguration {
     // TORNEIOS
 
     @Bean
-    public CriarTorneioUsecase criartorneio(TorneioGateway torneioGateway){
+    public CriarTorneioUsecase criartorneio(TorneioGateway torneioGateway) {
         return new CriarTorneioUsecaseImpl(torneioGateway);
     }
 
     @Bean
-    public ListarTorneiosUsecase listartorneio(TorneioGateway torneioGateway){
+    public ListarTorneiosUsecase listartorneio(TorneioGateway torneioGateway) {
         return new ListarTorneiosUsecaseImpl(torneioGateway);
     }
 
     @Bean
-    public FiltrosTorneioUsecase filtrartorneio(TorneioGateway torneioGateway){
+    public FiltrosTorneioUsecase filtrartorneio(TorneioGateway torneioGateway) {
         return new FiltrosTorneioUsecaseImpl(torneioGateway);
     }
 
     @Bean
-    public AtualizarTorneioUsecase atualizartorneio(TorneioGateway torneioGateway){
+    public AtualizarTorneioUsecase atualizartorneio(TorneioGateway torneioGateway) {
         return new AtualizarTorneioUsecaseImpl(torneioGateway);
     }
 
     @Bean
-    public BuscarTorneioPorId buscartorneioporid(TorneioGateway torneioGateway){
+    public BuscarTorneioPorId buscartorneioporid(TorneioGateway torneioGateway) {
         return new BuscarTorneioPorIdImpl(torneioGateway);
     }
 
     @Bean
-    public ListarTorneiosPorCriador listarTorneiosPorCriador(TorneioGateway torneioGateway){
+    public ListarTorneiosPorCriador listarTorneiosPorCriador(TorneioGateway torneioGateway) {
         return new ListarTorneiosPorCriadorImpl(torneioGateway);
     }
 
     // USUÁRIOS
 
     @Bean
-    public ListarUsuariosUsecase listarusuarios(UsuariosGateway usuariosGateway){
+    public ListarUsuariosUsecase listarusuarios(UsuariosGateway usuariosGateway) {
         return new ListarUsuariosUsecaseImpl(usuariosGateway);
     }
 
     @Bean
-    public AtualizarUsuarioUsecase atualizarusuarios(UsuariosGateway usuariosGateway){
+    public AtualizarUsuarioUsecase atualizarusuarios(UsuariosGateway usuariosGateway) {
         return new AtualizarUsuarioUsecaseImpl(usuariosGateway);
     }
 
     @Bean
-    public BuscarUsuarioPorIdUsecase buscarUsuarioPorId(UsuariosGateway usuariosGateway){
+    public BuscarUsuarioPorIdUsecase buscarUsuarioPorId(UsuariosGateway usuariosGateway) {
         return new BuscarUsuarioPorIdUsecaseImpl(usuariosGateway);
     }
 
     @Bean
-    public DeletarUsuarioPorIdUsecase deletarUsuarioPorIdUsecase(UsuariosGateway usuariosGateway){
+    public DeletarUsuarioPorIdUsecase deletarUsuarioPorIdUsecase(UsuariosGateway usuariosGateway) {
         return new DeletarUsuarioPorIdUsecaseImpl(usuariosGateway);
     }
 
     // EQUIPES
 
     @Bean
-    public CriarEquipeUsecase criarequipe(EquipeGateway equipeGateway){
+    public CriarEquipeUsecase criarequipe(EquipeGateway equipeGateway) {
         return new CriarEquipeUsecaseImpl(equipeGateway);
     }
 
     @Bean
-    public ListarEquipesUsecase listarEquipesUsecase(EquipeGateway equipeGateway){
+    public ListarEquipesUsecase listarEquipesUsecase(EquipeGateway equipeGateway) {
         return new ListarEquipesUsecaseImpl(equipeGateway);
+    }
+
+    @Bean
+    public AtualizarEquipeUsecase atualizarEquipe(EquipeGateway equipeGateway) {
+        return new AtualizarEquipeUsecaseImpl(equipeGateway);
+    }
+
+    @Bean
+    public BuscarEquipePorIdUsecase buscarEquipePorId(EquipeGateway equipeGateway) {
+        return new BuscarEquipePorIdUsecaseImpl(equipeGateway);
     }
 
     // AUTENTICAÇÃO
 
     @Bean
-    public RegisterUsecase registerUsecase(AuthGateway authGateway){
+    public RegisterUsecase registerUsecase(AuthGateway authGateway) {
         return new RegisterUsecaseImpl(authGateway);
     }
 

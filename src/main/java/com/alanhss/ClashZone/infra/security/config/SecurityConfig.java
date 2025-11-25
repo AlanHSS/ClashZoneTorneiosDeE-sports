@@ -39,8 +39,8 @@ public class SecurityConfig {
                         .requestMatchers("clashzone/auth/register",
                                 "clashzone/auth/login",
                                 "clashzone/torneios/listartorneios",
-                                "clashzone/torneios/torneiosfiltrados").permitAll()
-                        .requestMatchers("/usuarios").hasRole("ADMIN")
+                                "clashzone/torneios/torneiosfiltrados",
+                                "clashzone/torneios/paginadotorneio/**").permitAll()
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

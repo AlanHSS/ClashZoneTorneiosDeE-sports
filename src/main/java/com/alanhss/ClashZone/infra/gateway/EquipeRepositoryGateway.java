@@ -8,6 +8,7 @@ import com.alanhss.ClashZone.infra.persistence.EquipePersistence.EquipeRepositor
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -32,5 +33,29 @@ public class EquipeRepositoryGateway implements EquipeGateway {
                 .map(mapper::toDomain)
                 .toList();
 
+    }
+
+    @Override
+    public Optional<EquipeDomain> buscarPorId(Long id) {
+        return equipeRepository.findById(id)
+                .map(mapper::toDomain);
+    }
+
+    @Override
+    public EquipeDomain atualizarEquipe(Long id, EquipeDomain equipeDomain) {
+
+        EquipeEntity equipeExistente = equipeRepository.findById(id).get();
+
+        if (equipeDomain.nomeDaEquipe() != null){
+            equipeExistente.setNomeDaEquipe(equipeDomain.nomeDaEquipe());
+        }
+        if (equipeDomain.jogo() != null){
+            equipeExistente.setJogo(equipeDomain.jogo());
+        }
+        equipeExistente.setInscrita(equipeDomain.inscrita());
+
+        EquipeEntity equipeAtualizada = equipeRepository.save(equipeExistente);
+
+        return mapper.toDomain(equipeAtualizada);
     }
 }

@@ -1,4 +1,5 @@
 package com.alanhss.ClashZone.infra.presentation;
+
 import com.alanhss.ClashZone.core.domain.TorneioDomain;
 import com.alanhss.ClashZone.core.enums.Role;
 import com.alanhss.ClashZone.core.usecases.torneio.*;
@@ -18,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +41,7 @@ public class TorneioController {
     private final TorneioFiltroMapper filtroMapper;
     private final TorneioDtoMapper mapper;
 
-    private UsuariosEntity  getUsuarioAutenticado() {
+    private UsuariosEntity getUsuarioAutenticado() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.getPrincipal() instanceof UsuariosEntity) {
@@ -51,7 +53,7 @@ public class TorneioController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PostMapping("criartorneio")
-    public ResponseEntity<Map<String, Object>> criarTorneio(@Valid @RequestBody TorneioDto torneioDto){
+    public ResponseEntity<Map<String, Object>> criarTorneio(@Valid @RequestBody TorneioDto torneioDto) {
 
         Long criadorId = getUsuarioAutenticado().getId();
 
@@ -82,11 +84,11 @@ public class TorneioController {
     }
 
     @GetMapping("listartorneios")
-    public List<TorneioDto> listarTorneios(){
+    public List<TorneioDto> listarTorneios() {
         List<TorneioDomain> lista = listarTorneiosUsecase.execute();
         List<TorneioDto> listaConvertida = new ArrayList<>();
 
-        for(int i = 0; i < lista.size(); i++){
+        for (int i = 0; i < lista.size(); i++) {
             TorneioDomain domain = lista.get(i);
             TorneioDto dto = mapper.toDto(domain);
 
@@ -96,18 +98,17 @@ public class TorneioController {
     }
 
     @PostMapping("torneiosfiltrados")
-    public ResponseEntity<Map<String, Object>> listarTorneiosFiltrados2(@RequestBody FiltroTorneioDto filtroTorneioDto){
+    public ResponseEntity<Map<String, Object>> listarTorneiosFiltrados2(@RequestBody FiltroTorneioDto filtroTorneioDto) {
         Map<String, Object> response = new HashMap<>();
 
         FiltroTorneioDto filtroValidado = filtroMapper.validarEPrepararFiltro(filtroTorneioDto);
         TorneioDomain filtroDomain = filtroMapper.toDomain(filtroValidado);
         List<TorneioDomain> torneiosFiltrados = filtrosTorneioUsecase.execute(filtroDomain);
 
-        if (torneiosFiltrados.isEmpty()){
+        if (torneiosFiltrados.isEmpty()) {
             response.put("Mensagem: ", "Não foi encontrado nenhum torneio com essas características");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
-        else {
+        } else {
             response.put("Total encontrado: ", torneiosFiltrados.size());
             response.put("Lista de torneios:", torneiosFiltrados.stream()
                     .map(mapper::toDto)
@@ -116,7 +117,6 @@ public class TorneioController {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     @PatchMapping("atualizartorneio/{id}")
     public ResponseEntity<Map<String, Object>> atualizarTorneio(@PathVariable Long id, @RequestBody AtualizarTorneioDto atualizarTorneioDto) {
         Map<String, Object> response = new HashMap<>();
@@ -135,7 +135,7 @@ public class TorneioController {
     }
 
     @GetMapping("paginadotorneio/{id}")
-    public TorneioDto buscarTorneioPorId(@PathVariable Long id){
+    public TorneioDto buscarTorneioPorId(@PathVariable Long id) {
         TorneioDomain torneioDomain = buscarTorneioPorId.execute(id);
         TorneioDto torneioDto = mapper.toDto(torneioDomain);
 
@@ -144,7 +144,7 @@ public class TorneioController {
 
     @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     @GetMapping("meustorneios")
-    public List<TorneioDto> listarMeusTorneios(){
+    public List<TorneioDto> listarMeusTorneios() {
 
         Long criadorId = getUsuarioAutenticado().getId();
         List<TorneioDomain> lista = listarTorneiosPorCriador.execute(criadorId);
