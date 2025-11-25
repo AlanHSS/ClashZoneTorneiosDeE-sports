@@ -42,8 +42,8 @@ public class UsuarioController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("listarusuarios")
-    public List<UsuariosDto> listarusuarios(){
+    @GetMapping("listartodosusuarios")
+    public List<UsuariosDto> listarTodosUsuarios(){
         List<UsuariosDomain> lista = listarUsuariosUsecase.execute();
 
         return lista.stream()
@@ -51,6 +51,7 @@ public class UsuarioController {
                 .collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     @PatchMapping("atualizarusuario/{id}")
     public ResponseEntity<Map<String, Object>> atualizarUsuario(@PathVariable Long id, @RequestBody AtualizarUsuariosDto atualizarUsuariosDto) {
         Map<String, Object> response = new HashMap<>();

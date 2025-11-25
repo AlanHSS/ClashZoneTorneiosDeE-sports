@@ -10,6 +10,7 @@ import com.alanhss.ClashZone.infra.persistence.UsuariosPersistence.UsuariosEntit
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +39,7 @@ public class EquipeCotroller {
         throw new RuntimeException("Usuário não autenticado");
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PostMapping("criarequipe")
     public ResponseEntity<Map<String, Object>> criarEquipe(@Valid @RequestBody EquipeDto equipeDto){
 
@@ -65,8 +67,9 @@ public class EquipeCotroller {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("listarequipes")
-    public List<EquipeDto> listarEquipes(){
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("listartodasequipes")
+    public List<EquipeDto> listarTodasEquipes(){
         List<EquipeDomain> lista = listarEquipesUsecase.execute();
 
         return lista.stream().map(mapper::toDto)
