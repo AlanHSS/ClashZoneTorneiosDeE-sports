@@ -63,4 +63,12 @@ public class EquipeRepositoryGateway implements EquipeGateway {
     public void deletarEquipe(Long id) {
         equipeRepository.deleteById(id);
     }
+
+    @Override
+    public List<EquipeDomain> listarEquipesPorLider(Long id) {
+        List<EquipeEntity> lista = equipeRepository.findByLiderId(id);
+        return lista.stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
 }

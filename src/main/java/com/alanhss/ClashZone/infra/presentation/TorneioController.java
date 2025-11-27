@@ -34,7 +34,7 @@ public class TorneioController {
     private final ListarTorneiosUsecase listarTorneiosUsecase;
     private final FiltrosTorneioUsecase filtrosTorneioUsecase;
     private final AtualizarTorneioUsecase atualizarTorneioUsecase;
-    private final BuscarTorneioPorId buscarTorneioPorId;
+    private final BuscarTorneioPorIdUsecase buscarTorneioPorIdUsecase;
     private final ListarTorneiosPorCriador listarTorneiosPorCriador;
     private final TorneioRepository torneioRepository;
     private final TorneioAtualizarMapper atualizarMapper;
@@ -136,13 +136,12 @@ public class TorneioController {
 
     @GetMapping("paginadotorneio/{id}")
     public TorneioDto buscarTorneioPorId(@PathVariable Long id) {
-        TorneioDomain torneioDomain = buscarTorneioPorId.execute(id);
+        TorneioDomain torneioDomain = buscarTorneioPorIdUsecase.execute(id);
         TorneioDto torneioDto = mapper.toDto(torneioDomain);
 
         return torneioDto;
     }
 
-    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     @GetMapping("meustorneios")
     public List<TorneioDto> listarMeusTorneios() {
 

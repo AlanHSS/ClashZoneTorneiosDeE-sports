@@ -4,11 +4,11 @@ import com.alanhss.ClashZone.core.domain.TorneioDomain;
 import com.alanhss.ClashZone.core.exceptions.NaoEncontradoPorIdException;
 import com.alanhss.ClashZone.core.gateway.TorneioGateway;
 
-public class BuscarTorneioPorIdImpl implements BuscarTorneioPorId{
+public class BuscarTorneioPorIdUsecaseImpl implements BuscarTorneioPorIdUsecase {
 
     private final TorneioGateway torneioGateway;
 
-    public BuscarTorneioPorIdImpl(TorneioGateway torneioGateway) {
+    public BuscarTorneioPorIdUsecaseImpl(TorneioGateway torneioGateway) {
         this.torneioGateway = torneioGateway;
     }
 

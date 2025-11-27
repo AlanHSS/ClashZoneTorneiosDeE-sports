@@ -40,8 +40,8 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public BuscarTorneioPorId buscartorneioporid(TorneioGateway torneioGateway) {
-        return new BuscarTorneioPorIdImpl(torneioGateway);
+    public BuscarTorneioPorIdUsecase buscarTorneioPorIdUsecase(TorneioGateway torneioGateway) {
+        return new BuscarTorneioPorIdUsecaseImpl(torneioGateway);
     }
 
     @Bean
@@ -96,6 +96,11 @@ public class BeanConfiguration {
     @Bean
     public DeletarEquipePorIdUsecase deletarEquipePorIdUsecase(EquipeGateway equipeGateway){
         return new DeletarEquipePorIdUsecaseImpl(equipeGateway);
+    }
+
+    @Bean
+    public ListarEquipesPorLiderUsecase listarEquipesPorLiderUsecase(EquipeGateway equipeGateway){
+        return new ListarEquipesPorLiderUsecaseImpl(equipeGateway);
     }
 
     // AUTENTICAÇÃO

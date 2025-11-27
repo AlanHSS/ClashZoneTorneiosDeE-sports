@@ -16,4 +16,6 @@ public interface EquipeGateway {
     Optional<EquipeDomain> buscarPorId(Long id);
 
     void deletarEquipe(Long id);
+
+    List<EquipeDomain> listarEquipesPorLider(Long id);
 }

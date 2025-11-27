@@ -30,6 +30,7 @@ public class EquipeCotroller {
     private final AtualizarEquipeUsecase atualizarEquipeUsecase;
     private final BuscarEquipePorIdUsecase buscarEquipePorIdUsecase;
     private final DeletarEquipePorIdUsecase deletarEquipePorIdUsecase;
+    private final ListarEquipesPorLiderUsecase listarEquipesPorLiderUsecase;
     private final EquipeAtualizarMapper atualizarMapper;
     private final EquipeDtoMapper mapper;
 
@@ -117,5 +118,15 @@ public class EquipeCotroller {
         response.put("Id deletado", id);
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("minhasequipes")
+    public List<EquipeDto> listarMinhasEquipes(){
+
+        Long liderId = getUsuarioAutenticado().getId();
+        List<EquipeDomain> lista = listarEquipesPorLiderUsecase.execute(liderId);
+        return lista.stream()
+                .map(mapper::toDto)
+                .toList();
     }
 }
