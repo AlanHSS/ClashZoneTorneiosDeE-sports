@@ -58,4 +58,9 @@ public class EquipeRepositoryGateway implements EquipeGateway {
 
         return mapper.toDomain(equipeAtualizada);
     }
+
+    @Override
+    public void deletarEquipe(Long id) {
+        equipeRepository.deleteById(id);
+    }
 }

@@ -14,4 +14,6 @@ public interface EquipeGateway {
     EquipeDomain atualizarEquipe(Long id, EquipeDomain equipeDomain);
 
     Optional<EquipeDomain> buscarPorId(Long id);
+
+    void deletarEquipe(Long id);
 }

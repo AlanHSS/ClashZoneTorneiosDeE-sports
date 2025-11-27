@@ -2,10 +2,7 @@ package com.alanhss.ClashZone.infra.presentation;
 
 import com.alanhss.ClashZone.core.domain.EquipeDomain;
 import com.alanhss.ClashZone.core.enums.Role;
-import com.alanhss.ClashZone.core.usecases.equipe.AtualizarEquipeUsecase;
-import com.alanhss.ClashZone.core.usecases.equipe.BuscarEquipePorIdUsecase;
-import com.alanhss.ClashZone.core.usecases.equipe.CriarEquipeUsecase;
-import com.alanhss.ClashZone.core.usecases.equipe.ListarEquipesUsecase;
+import com.alanhss.ClashZone.core.usecases.equipe.*;
 import com.alanhss.ClashZone.infra.dtos.EquipesDtos.AtualizarEquipeDto;
 import com.alanhss.ClashZone.infra.dtos.EquipesDtos.EquipeDto;
 import com.alanhss.ClashZone.infra.mappers.EquipeMappers.EquipeAtualizarMapper;
@@ -32,6 +29,7 @@ public class EquipeCotroller {
     private final ListarEquipesUsecase listarEquipesUsecase;
     private final AtualizarEquipeUsecase atualizarEquipeUsecase;
     private final BuscarEquipePorIdUsecase buscarEquipePorIdUsecase;
+    private final DeletarEquipePorIdUsecase deletarEquipePorIdUsecase;
     private final EquipeAtualizarMapper atualizarMapper;
     private final EquipeDtoMapper mapper;
 
@@ -104,5 +102,20 @@ public class EquipeCotroller {
     @GetMapping("informacoesdaequipe/{id}")
     public EquipeDto buscarEquipePorId(@PathVariable Long id){
         return mapper.toDto(buscarEquipePorIdUsecase.execute(id));
+    }
+
+    @DeleteMapping("deletarequipe/{id}")
+    public ResponseEntity<Map<String, Object>> deletarEquipe(@PathVariable Long id){
+        Map<String, Object> response = new HashMap<>();
+
+        Long usuarioAutenticadoId = getUsuarioAutenticado().getId();
+        Role roleUsuario = getUsuarioAutenticado().getRole();
+
+        deletarEquipePorIdUsecase.execute(id, usuarioAutenticadoId, roleUsuario);
+
+        response.put("Mensagem", "Equipe deletada com sucesso!");
+        response.put("Id deletado", id);
+
+        return ResponseEntity.ok(response);
     }
 }

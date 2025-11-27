@@ -93,6 +93,11 @@ public class BeanConfiguration {
         return new BuscarEquipePorIdUsecaseImpl(equipeGateway);
     }
 
+    @Bean
+    public DeletarEquipePorIdUsecase deletarEquipePorIdUsecase(EquipeGateway equipeGateway){
+        return new DeletarEquipePorIdUsecaseImpl(equipeGateway);
+    }
+
     // AUTENTICAÇÃO
 
     @Bean
