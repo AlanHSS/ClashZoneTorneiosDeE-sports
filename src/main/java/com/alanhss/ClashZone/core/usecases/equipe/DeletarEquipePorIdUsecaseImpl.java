@@ -5,7 +5,6 @@ import com.alanhss.ClashZone.core.enums.Role;
 import com.alanhss.ClashZone.core.exceptions.AcessoNegadoException;
 import com.alanhss.ClashZone.core.exceptions.NaoEncontradoPorIdException;
 import com.alanhss.ClashZone.core.gateway.EquipeGateway;
-import com.alanhss.ClashZone.infra.persistence.EquipePersistence.EquipeEntity;
 
 public class DeletarEquipePorIdUsecaseImpl implements DeletarEquipePorIdUsecase{
 
