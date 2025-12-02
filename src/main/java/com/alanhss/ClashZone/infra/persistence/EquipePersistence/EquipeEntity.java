@@ -23,6 +23,7 @@ public class EquipeEntity {
 
     private Long liderId;
 
+    @Enumerated(EnumType.STRING)
     private Games jogo;
 
     @Column(name = "data_criacao", updatable = false, insertable = false)
