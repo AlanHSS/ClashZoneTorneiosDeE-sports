@@ -1,14 +1,13 @@
 package com.alanhss.ClashZone.infra.beans;
 
-import com.alanhss.ClashZone.core.gateway.AuthGateway;
-import com.alanhss.ClashZone.core.gateway.EquipeGateway;
-import com.alanhss.ClashZone.core.gateway.TorneioGateway;
-import com.alanhss.ClashZone.core.gateway.UsuariosGateway;
+import com.alanhss.ClashZone.core.gateway.*;
 import com.alanhss.ClashZone.core.usecases.auth.LoginUsecase;
 import com.alanhss.ClashZone.core.usecases.auth.LoginUsecaseImpl;
 import com.alanhss.ClashZone.core.usecases.auth.RegisterUsecase;
 import com.alanhss.ClashZone.core.usecases.auth.RegisterUsecaseImpl;
 import com.alanhss.ClashZone.core.usecases.equipe.*;
+import com.alanhss.ClashZone.core.usecases.membro.AdicionarMembrosEquipeUsecase;
+import com.alanhss.ClashZone.core.usecases.membro.AdicionarMembrosEquipeUsecaseImpl;
 import com.alanhss.ClashZone.core.usecases.torneio.*;
 import com.alanhss.ClashZone.core.usecases.usuario.*;
 import org.springframework.context.annotation.Bean;
@@ -101,6 +100,13 @@ public class BeanConfiguration {
     @Bean
     public ListarEquipesPorLiderUsecase listarEquipesPorLiderUsecase(EquipeGateway equipeGateway){
         return new ListarEquipesPorLiderUsecaseImpl(equipeGateway);
+    }
+
+    // MEMRBOS_EQUIPE
+
+    @Bean
+    public AdicionarMembrosEquipeUsecase adicionarMembrosEquipe(MembroEquipeGateway membroEquipeGateway, EquipeGateway equipeGateway){
+        return new AdicionarMembrosEquipeUsecaseImpl(membroEquipeGateway, equipeGateway);
     }
 
     // AUTENTICAÇÃO

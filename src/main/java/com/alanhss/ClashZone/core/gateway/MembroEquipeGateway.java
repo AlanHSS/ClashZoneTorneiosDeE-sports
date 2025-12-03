@@ -1,4 +1,16 @@
 package com.alanhss.ClashZone.core.gateway;
 
+import com.alanhss.ClashZone.core.domain.MembroEquipeDomain;
+
+import java.util.List;
+
 public interface MembroEquipeGateway {
+
+    List<MembroEquipeDomain> adicionarMembros(List<MembroEquipeDomain> membros);
+
+    List<MembroEquipeDomain> buscarMembrosPorEquipe(Long equipeId);
+
+    int contarTitularesPorEquipe(Long equipeId);
+
+    int contarReservasPorEquipe(Long equipeId);
 }

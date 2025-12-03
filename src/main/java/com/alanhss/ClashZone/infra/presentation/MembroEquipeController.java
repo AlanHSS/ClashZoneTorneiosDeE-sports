@@ -1,11 +1,69 @@
 package com.alanhss.ClashZone.infra.presentation;
 
+import com.alanhss.ClashZone.core.domain.MembroEquipeDomain;
+import com.alanhss.ClashZone.core.usecases.membro.AdicionarMembrosEquipeUsecase;
+import com.alanhss.ClashZone.infra.dtos.MembrosDtos.MembroEquipeDto;
+import com.alanhss.ClashZone.infra.mappers.MembrosMappers.MembroEquipeAtualizarMapper;
+import com.alanhss.ClashZone.infra.mappers.MembrosMappers.MembroEquipeDtoMapper;
+import com.alanhss.ClashZone.infra.persistence.UsuariosPersistence.UsuariosEntity;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("clashzone/membros/")
+@RequestMapping("clashzone/equipes/{equipeId}/membros/")
 @RequiredArgsConstructor
-public class MembrosController {
+public class MembroEquipeController {
+
+    private final AdicionarMembrosEquipeUsecase adicionarMembrosEquipeUsecase;
+    private final MembroEquipeAtualizarMapper atualizarMapper;
+    private final MembroEquipeDtoMapper mapper;
+
+    private UsuariosEntity getUsuarioAutenticado() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.getPrincipal() instanceof UsuariosEntity) {
+            return (UsuariosEntity) authentication.getPrincipal();
+        }
+
+        throw new RuntimeException("Usuário não autenticado");
+    }
+
+    @PostMapping("adicionar")
+    public ResponseEntity<Map<String, Object>> adicionarMembro(@PathVariable Long equipeId, @Valid @RequestBody List<MembroEquipeDto> membroEquipeDto){
+        Map<String, Object> response = new HashMap<>();
+
+        UsuariosEntity usuarioAutenticado = getUsuarioAutenticado();
+
+        List<MembroEquipeDto> membrosValidados = membroEquipeDto.stream()
+                .map(mapper::validarEPreparar)
+                .toList();
+
+        List<MembroEquipeDomain> membrosDomain = membrosValidados.stream()
+                .map(dto -> mapper.toDomainWithEquipeId(equipeId, dto))
+                .toList();
+
+        List<MembroEquipeDomain> membrosAdicionados = adicionarMembrosEquipeUsecase.execute(
+                equipeId,
+                membrosDomain,
+                usuarioAutenticado.getId(),
+                usuarioAutenticado.getRole()
+        );
+
+        response.put("Mensagem", "Membros adicionados com sucesso!");
+        response.put("Total adicionado", membrosAdicionados.size());
+        response.put("Membros", membrosAdicionados.stream()
+                .map(mapper::toDto)
+                .toList());
+
+        return ResponseEntity.ok(response);
+
+    }
 }

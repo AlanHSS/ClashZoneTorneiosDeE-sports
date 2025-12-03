@@ -24,6 +24,7 @@ public class EquipeEntity {
     private Long liderId;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Games jogo;
 
     @Column(name = "data_criacao", updatable = false, insertable = false)

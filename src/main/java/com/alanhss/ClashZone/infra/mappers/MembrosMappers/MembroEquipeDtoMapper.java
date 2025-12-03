@@ -29,6 +29,17 @@ public class MembroEquipeDtoMapper {
         );
     }
 
+    public MembroEquipeDomain toDomainWithEquipeId(Long equipeId, MembroEquipeDto membroEquipeDto) {
+        return new MembroEquipeDomain(
+                null,
+                equipeId,
+                membroEquipeDto.nickname(),
+                membroEquipeDto.tipo(),
+                membroEquipeDto.rank(),
+                null
+        );
+    }
+
     public MembroEquipeDto validarEPreparar(MembroEquipeDto membroEquipeDto) {
         String nicknameNormalizado = membroEquipeDto.nickname() != null
                 ? membroEquipeDto.nickname().trim()
