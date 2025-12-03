@@ -32,6 +32,6 @@ public class MembroEquipeEntity {
     @Column(length = 50)
     private String rank;
 
-    @Column(name = "data_criacao", updatable = false, insertable = false)
+    @Column(name = "data_adicao", updatable = false, insertable = false)
     private LocalDateTime dataAdicao;
 }
