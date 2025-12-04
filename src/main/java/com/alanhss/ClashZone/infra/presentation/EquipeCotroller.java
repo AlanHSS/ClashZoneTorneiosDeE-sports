@@ -10,6 +10,7 @@ import com.alanhss.ClashZone.infra.mappers.EquipeMappers.EquipeDtoMapper;
 import com.alanhss.ClashZone.infra.persistence.UsuariosPersistence.UsuariosEntity;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -121,12 +122,22 @@ public class EquipeCotroller {
     }
 
     @GetMapping("minhasequipes")
-    public List<EquipeDto> listarMinhasEquipes(){
+    public ResponseEntity<Map<String, Object>> listarMinhasEquipes(){
+        Map<String, Object> response = new HashMap<>();
 
         Long liderId = getUsuarioAutenticado().getId();
         List<EquipeDomain> lista = listarEquipesPorLiderUsecase.execute(liderId);
-        return lista.stream()
-                .map(mapper::toDto)
-                .toList();
+
+        if(lista.isEmpty()){
+            response.put("Mensagem: ", "Você ainda não criou nenhuma equipe");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        else {
+            response.put("Total encontrado: ", lista.size());
+            response.put("Suas equipes:", lista.stream()
+                    .map(mapper::toDto)
+                    .toList());
+            return ResponseEntity.ok(response);
+        }
     }
 }
