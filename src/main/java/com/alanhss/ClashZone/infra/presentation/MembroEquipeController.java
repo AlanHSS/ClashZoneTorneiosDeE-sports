@@ -1,7 +1,10 @@
 package com.alanhss.ClashZone.infra.presentation;
 
 import com.alanhss.ClashZone.core.domain.MembroEquipeDomain;
+import com.alanhss.ClashZone.core.enums.TipoMembro;
 import com.alanhss.ClashZone.core.usecases.membro.AdicionarMembrosEquipeUsecase;
+import com.alanhss.ClashZone.core.usecases.membro.ListarMembrosPorEquipeUsecase;
+import com.alanhss.ClashZone.infra.dtos.EquipesDtos.EquipeDto;
 import com.alanhss.ClashZone.infra.dtos.MembrosDtos.MembroEquipeDto;
 import com.alanhss.ClashZone.infra.mappers.MembrosMappers.MembroEquipeAtualizarMapper;
 import com.alanhss.ClashZone.infra.mappers.MembrosMappers.MembroEquipeDtoMapper;
@@ -13,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +27,7 @@ import java.util.Map;
 public class MembroEquipeController {
 
     private final AdicionarMembrosEquipeUsecase adicionarMembrosEquipeUsecase;
+    private final ListarMembrosPorEquipeUsecase listarMembrosPorEquipeUsecase;
     private final MembroEquipeAtualizarMapper atualizarMapper;
     private final MembroEquipeDtoMapper mapper;
 
@@ -65,5 +70,16 @@ public class MembroEquipeController {
 
         return ResponseEntity.ok(response);
 
+    }
+
+    @GetMapping("listarmembros")
+    public List<MembroEquipeDto> listarMembrosPorEquipe(@PathVariable Long equipeId){
+        Long equipe = getUsuarioAutenticado().getId();
+        List<MembroEquipeDomain> lista = listarMembrosPorEquipeUsecase.execute(equipeId);
+
+        return lista.stream()
+                .map(mapper::toDto)
+                .sorted(Comparator.comparing(m -> m.tipo() == TipoMembro.RESERVA))
+                .toList();
     }
 }

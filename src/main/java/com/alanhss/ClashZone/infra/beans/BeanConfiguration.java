@@ -8,6 +8,8 @@ import com.alanhss.ClashZone.core.usecases.auth.RegisterUsecaseImpl;
 import com.alanhss.ClashZone.core.usecases.equipe.*;
 import com.alanhss.ClashZone.core.usecases.membro.AdicionarMembrosEquipeUsecase;
 import com.alanhss.ClashZone.core.usecases.membro.AdicionarMembrosEquipeUsecaseImpl;
+import com.alanhss.ClashZone.core.usecases.membro.ListarMembrosPorEquipeUsecase;
+import com.alanhss.ClashZone.core.usecases.membro.ListarMembrosPorEquipeUsecaseImpl;
 import com.alanhss.ClashZone.core.usecases.torneio.*;
 import com.alanhss.ClashZone.core.usecases.usuario.*;
 import org.springframework.context.annotation.Bean;
@@ -107,6 +109,11 @@ public class BeanConfiguration {
     @Bean
     public AdicionarMembrosEquipeUsecase adicionarMembrosEquipe(MembroEquipeGateway membroEquipeGateway, EquipeGateway equipeGateway){
         return new AdicionarMembrosEquipeUsecaseImpl(membroEquipeGateway, equipeGateway);
+    }
+
+    @Bean
+    public ListarMembrosPorEquipeUsecase listarMembrosPorEquipeUsecase(MembroEquipeGateway membroEquipeGateway){
+        return new ListarMembrosPorEquipeUsecaseImpl(membroEquipeGateway);
     }
 
     // AUTENTICAÇÃO
