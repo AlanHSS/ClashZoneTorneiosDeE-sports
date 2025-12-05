@@ -1,12 +1,16 @@
 package com.alanhss.ClashZone.infra.presentation;
 
 import com.alanhss.ClashZone.core.domain.EquipeDomain;
+import com.alanhss.ClashZone.core.domain.MembroEquipeDomain;
 import com.alanhss.ClashZone.core.enums.Role;
+import com.alanhss.ClashZone.core.enums.TipoMembro;
 import com.alanhss.ClashZone.core.usecases.equipe.*;
+import com.alanhss.ClashZone.core.usecases.membro.ListarMembrosPorEquipeUsecase;
 import com.alanhss.ClashZone.infra.dtos.EquipesDtos.AtualizarEquipeDto;
 import com.alanhss.ClashZone.infra.dtos.EquipesDtos.EquipeDto;
 import com.alanhss.ClashZone.infra.mappers.EquipeMappers.EquipeAtualizarMapper;
 import com.alanhss.ClashZone.infra.mappers.EquipeMappers.EquipeDtoMapper;
+import com.alanhss.ClashZone.infra.mappers.MembrosMappers.MembroEquipeDtoMapper;
 import com.alanhss.ClashZone.infra.persistence.UsuariosPersistence.UsuariosEntity;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +37,9 @@ public class EquipeCotroller {
     private final BuscarEquipePorIdUsecase buscarEquipePorIdUsecase;
     private final DeletarEquipePorIdUsecase deletarEquipePorIdUsecase;
     private final ListarEquipesPorLiderUsecase listarEquipesPorLiderUsecase;
+    private final ListarMembrosPorEquipeUsecase listarMembrosPorEquipeUsecase;
     private final EquipeAtualizarMapper atualizarMapper;
+    private final MembroEquipeDtoMapper membroMapper;
     private final EquipeDtoMapper mapper;
 
     private UsuariosEntity getUsuarioAutenticado() {
@@ -126,18 +133,35 @@ public class EquipeCotroller {
         Map<String, Object> response = new HashMap<>();
 
         Long liderId = getUsuarioAutenticado().getId();
-        List<EquipeDomain> lista = listarEquipesPorLiderUsecase.execute(liderId);
+        List<EquipeDomain> listaEquipes = listarEquipesPorLiderUsecase.execute(liderId);
 
-        if(lista.isEmpty()){
+        if(listaEquipes.isEmpty()){
             response.put("Mensagem: ", "Você ainda não criou nenhuma equipe");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
-        else {
-            response.put("Total encontrado: ", lista.size());
-            response.put("Suas equipes:", lista.stream()
-                    .map(mapper::toDto)
-                    .toList());
-            return ResponseEntity.ok(response);
-        }
+
+        List<Map<String, Object>> equipesComMembros = listaEquipes.stream()
+                .map(equipe -> {
+                    List<MembroEquipeDomain> membros = listarMembrosPorEquipeUsecase.execute(equipe.id());
+
+                    Map<String, Object> equipeComMembros = new HashMap<>();
+                    equipeComMembros.put("equipe", mapper.toDto(equipe));
+                    equipeComMembros.put("membros da equipe " + equipe.nomeDaEquipe(), membros.stream()
+                            .map(membroMapper::toDto)
+                            .sorted(Comparator.comparing(m -> m.tipo() == TipoMembro.RESERVA))
+                            .toList());
+                    if (membros.isEmpty()){
+                        equipeComMembros.put("membros", "A equipe " + equipe.nomeDaEquipe() + " não possui membros cadastrados");
+                    }
+
+                    return equipeComMembros;
+                })
+                .toList();
+
+        response.put("Total encontrado", listaEquipes.size());
+        response.put("Suas equipes", equipesComMembros);
+
+        return ResponseEntity.ok(response);
+
     }
 }
