@@ -21,10 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("clashzone/equipes/")
@@ -52,7 +49,6 @@ public class EquipeCotroller {
         throw new RuntimeException("Usuário não autenticado");
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PostMapping("criarequipe")
     public ResponseEntity<Map<String, Object>> criarEquipe(@Valid @RequestBody EquipeDto equipeDto){
 
@@ -109,8 +105,29 @@ public class EquipeCotroller {
     }
 
     @GetMapping("informacoesdaequipe/{id}")
-    public EquipeDto buscarEquipePorId(@PathVariable Long id){
-        return mapper.toDto(buscarEquipePorIdUsecase.execute(id));
+    public ResponseEntity<Map<String, Object>> buscarEquipePorId(@PathVariable Long id){
+        Map<String, Object> response = new HashMap<>();
+
+        Long usuarioAutenticadoId = getUsuarioAutenticado().getId();
+        Role usuarioRole = getUsuarioAutenticado().getRole();
+
+        EquipeDomain equipe = buscarEquipePorIdUsecase.execute(id, usuarioAutenticadoId, usuarioRole);
+        List<MembroEquipeDomain> membros = listarMembrosPorEquipeUsecase.execute(equipe.id());
+
+        Map<String, Object> equipeComMembros = new LinkedHashMap<>();
+        equipeComMembros.put("equipe", mapper.toDto(equipe));
+        equipeComMembros.put("membros da equipe " + equipe.nomeDaEquipe(), membros.stream()
+                .map(membroMapper::toDto)
+                .sorted(Comparator.comparing(m -> m.tipo() == TipoMembro.RESERVA))
+                .toList());
+        if (membros.isEmpty()){
+            equipeComMembros.remove("membros da equipe " + equipe.nomeDaEquipe());
+            equipeComMembros.put("membros", "A equipe " + equipe.nomeDaEquipe() + " não possui membros cadastrados");
+        }
+
+        response.put("Suas equipes", equipeComMembros);
+
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("deletarequipe/{id}")
@@ -144,13 +161,14 @@ public class EquipeCotroller {
                 .map(equipe -> {
                     List<MembroEquipeDomain> membros = listarMembrosPorEquipeUsecase.execute(equipe.id());
 
-                    Map<String, Object> equipeComMembros = new HashMap<>();
+                    Map<String, Object> equipeComMembros = new LinkedHashMap<>();
                     equipeComMembros.put("equipe", mapper.toDto(equipe));
                     equipeComMembros.put("membros da equipe " + equipe.nomeDaEquipe(), membros.stream()
                             .map(membroMapper::toDto)
                             .sorted(Comparator.comparing(m -> m.tipo() == TipoMembro.RESERVA))
                             .toList());
                     if (membros.isEmpty()){
+                        equipeComMembros.remove("membros da equipe " + equipe.nomeDaEquipe());
                         equipeComMembros.put("membros", "A equipe " + equipe.nomeDaEquipe() + " não possui membros cadastrados");
                     }
 
