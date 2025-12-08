@@ -109,8 +109,8 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public ListarMembrosPorEquipeUsecase listarMembrosPorEquipeUsecase(MembroEquipeGateway membroEquipeGateway){
-        return new ListarMembrosPorEquipeUsecaseImpl(membroEquipeGateway);
+    public ListarMembrosPorEquipeUsecase listarMembrosPorEquipeUsecase(MembroEquipeGateway membroEquipeGateway, EquipeGateway equipeGateway){
+        return new ListarMembrosPorEquipeUsecaseImpl(membroEquipeGateway, equipeGateway);
     }
 
     @Bean
