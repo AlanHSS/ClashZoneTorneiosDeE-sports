@@ -3,6 +3,7 @@ package com.alanhss.ClashZone.core.gateway;
 import com.alanhss.ClashZone.core.domain.MembroEquipeDomain;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MembroEquipeGateway {
 
@@ -13,4 +14,8 @@ public interface MembroEquipeGateway {
     int contarTitularesPorEquipe(Long equipeId);
 
     int contarReservasPorEquipe(Long equipeId);
+
+    Optional<MembroEquipeDomain> buscarPorId(Long id);
+
+    void deletarMembroEquipe(Long id);
 }

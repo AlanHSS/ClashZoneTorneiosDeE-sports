@@ -6,10 +6,7 @@ import com.alanhss.ClashZone.core.usecases.auth.LoginUsecaseImpl;
 import com.alanhss.ClashZone.core.usecases.auth.RegisterUsecase;
 import com.alanhss.ClashZone.core.usecases.auth.RegisterUsecaseImpl;
 import com.alanhss.ClashZone.core.usecases.equipe.*;
-import com.alanhss.ClashZone.core.usecases.membro.AdicionarMembrosEquipeUsecase;
-import com.alanhss.ClashZone.core.usecases.membro.AdicionarMembrosEquipeUsecaseImpl;
-import com.alanhss.ClashZone.core.usecases.membro.ListarMembrosPorEquipeUsecase;
-import com.alanhss.ClashZone.core.usecases.membro.ListarMembrosPorEquipeUsecaseImpl;
+import com.alanhss.ClashZone.core.usecases.membro.*;
 import com.alanhss.ClashZone.core.usecases.torneio.*;
 import com.alanhss.ClashZone.core.usecases.usuario.*;
 import org.springframework.context.annotation.Bean;
@@ -114,6 +111,11 @@ public class BeanConfiguration {
     @Bean
     public ListarMembrosPorEquipeUsecase listarMembrosPorEquipeUsecase(MembroEquipeGateway membroEquipeGateway){
         return new ListarMembrosPorEquipeUsecaseImpl(membroEquipeGateway);
+    }
+
+    @Bean
+    public DeletarMembroEquipeUsecase deletarMembroEquipeUsecase(MembroEquipeGateway membroEquipeGateway, EquipeGateway equipeGateway) {
+        return new DeletarMembroEquipeUsecaseImpl(membroEquipeGateway, equipeGateway);
     }
 
     // AUTENTICAÇÃO

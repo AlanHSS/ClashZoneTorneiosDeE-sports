@@ -3,6 +3,7 @@ package com.alanhss.ClashZone.infra.presentation;
 import com.alanhss.ClashZone.core.domain.MembroEquipeDomain;
 import com.alanhss.ClashZone.core.enums.TipoMembro;
 import com.alanhss.ClashZone.core.usecases.membro.AdicionarMembrosEquipeUsecase;
+import com.alanhss.ClashZone.core.usecases.membro.DeletarMembroEquipeUsecase;
 import com.alanhss.ClashZone.core.usecases.membro.ListarMembrosPorEquipeUsecase;
 import com.alanhss.ClashZone.infra.dtos.EquipesDtos.EquipeDto;
 import com.alanhss.ClashZone.infra.dtos.MembrosDtos.MembroEquipeDto;
@@ -17,10 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("clashzone/equipes/{equipeId}/membros/")
@@ -29,6 +27,7 @@ public class MembroEquipeController {
 
     private final AdicionarMembrosEquipeUsecase adicionarMembrosEquipeUsecase;
     private final ListarMembrosPorEquipeUsecase listarMembrosPorEquipeUsecase;
+    private final DeletarMembroEquipeUsecase deletarMembroEquipeUsecase;
     private final MembroEquipeAtualizarMapper atualizarMapper;
     private final MembroEquipeDtoMapper mapper;
 
@@ -83,5 +82,21 @@ public class MembroEquipeController {
                 .map(mapper::toDto)
                 .sorted(Comparator.comparing(m -> m.tipo() == TipoMembro.RESERVA))
                 .toList();
+    }
+
+    @DeleteMapping("deletar/{membroId}")
+    public ResponseEntity<Map<String, Object>> deletarMembro(@PathVariable Long equipeId, @PathVariable Long membroId) {
+
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        UsuariosEntity usuarioAutenticado = getUsuarioAutenticado();
+
+        deletarMembroEquipeUsecase.execute(equipeId, membroId, usuarioAutenticado.getId(), usuarioAutenticado.getRole());
+
+        response.put("Mensagem", "Membro removido com sucesso!");
+        response.put("Equipe ID", equipeId);
+        response.put("Membro ID removido", membroId);
+
+        return ResponseEntity.ok(response);
     }
 }

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -51,5 +52,16 @@ public class MembroEquipeRepositoryGateway implements MembroEquipeGateway {
         return (int) membroEquipeRepository.findByEquipeId(equipeId).stream()
                 .filter(m -> m.getTipo() == TipoMembro.RESERVA)
                 .count();
+    }
+
+    @Override
+    public Optional<MembroEquipeDomain> buscarPorId(Long id) {
+        return membroEquipeRepository.findById(id)
+                .map(mapper::toDomain);
+    }
+
+    @Override
+    public void deletarMembroEquipe(Long id) {
+        membroEquipeRepository.deleteById(id);
     }
 }
