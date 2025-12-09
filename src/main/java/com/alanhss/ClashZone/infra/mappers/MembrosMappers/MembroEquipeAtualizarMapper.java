@@ -28,6 +28,7 @@ public class MembroEquipeAtualizarMapper {
                 : null;
 
         return new AtualizarMembroDto(
+                atualizarMembroDto.id(),
                 nicknameNormalizado,
                 atualizarMembroDto.tipo(),
                 rankNormalizado

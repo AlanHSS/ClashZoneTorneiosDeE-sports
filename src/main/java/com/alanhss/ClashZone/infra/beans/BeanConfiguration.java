@@ -118,6 +118,11 @@ public class BeanConfiguration {
         return new DeletarMembroEquipeUsecaseImpl(membroEquipeGateway, equipeGateway);
     }
 
+    @Bean
+    public AtualizarMembrosEquipeUsecase atualizarMembrosEquipeUsecase(MembroEquipeGateway membroEquipeGateway, EquipeGateway equipeGateway) {
+        return new AtualizarMembrosEquipeUsecaseImpl(membroEquipeGateway, equipeGateway);
+    }
+
     // AUTENTICAÇÃO
 
     @Bean

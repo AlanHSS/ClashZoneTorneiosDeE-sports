@@ -18,4 +18,6 @@ public interface MembroEquipeGateway {
     Optional<MembroEquipeDomain> buscarPorId(Long id);
 
     void deletarMembroEquipe(Long id);
+
+    MembroEquipeDomain atualizarMembros(Long id, MembroEquipeDomain membros);
 }

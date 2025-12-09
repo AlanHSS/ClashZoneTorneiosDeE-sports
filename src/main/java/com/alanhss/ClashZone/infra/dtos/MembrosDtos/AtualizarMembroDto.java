@@ -4,6 +4,9 @@ import com.alanhss.ClashZone.core.enums.TipoMembro;
 import jakarta.validation.constraints.Size;
 
 public record AtualizarMembroDto(
+
+        Long id,
+
         @Size(min = 3, max = 50, message = "Nickname deve ter entre 3 e 50 caracteres")
         String nickname,
 

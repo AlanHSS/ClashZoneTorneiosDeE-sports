@@ -3,9 +3,12 @@ package com.alanhss.ClashZone.infra.presentation;
 import com.alanhss.ClashZone.core.domain.MembroEquipeDomain;
 import com.alanhss.ClashZone.core.enums.TipoMembro;
 import com.alanhss.ClashZone.core.usecases.membro.AdicionarMembrosEquipeUsecase;
+import com.alanhss.ClashZone.core.usecases.membro.AtualizarMembrosEquipeUsecase;
 import com.alanhss.ClashZone.core.usecases.membro.DeletarMembroEquipeUsecase;
 import com.alanhss.ClashZone.core.usecases.membro.ListarMembrosPorEquipeUsecase;
+import com.alanhss.ClashZone.infra.dtos.EquipesDtos.AtualizarEquipeDto;
 import com.alanhss.ClashZone.infra.dtos.EquipesDtos.EquipeDto;
+import com.alanhss.ClashZone.infra.dtos.MembrosDtos.AtualizarMembroDto;
 import com.alanhss.ClashZone.infra.dtos.MembrosDtos.MembroEquipeDto;
 import com.alanhss.ClashZone.infra.mappers.MembrosMappers.MembroEquipeAtualizarMapper;
 import com.alanhss.ClashZone.infra.mappers.MembrosMappers.MembroEquipeDtoMapper;
@@ -28,6 +31,7 @@ public class MembroEquipeController {
     private final AdicionarMembrosEquipeUsecase adicionarMembrosEquipeUsecase;
     private final ListarMembrosPorEquipeUsecase listarMembrosPorEquipeUsecase;
     private final DeletarMembroEquipeUsecase deletarMembroEquipeUsecase;
+    private final AtualizarMembrosEquipeUsecase atualizarMembrosEquipeUsecase;
     private final MembroEquipeAtualizarMapper atualizarMapper;
     private final MembroEquipeDtoMapper mapper;
 
@@ -96,6 +100,39 @@ public class MembroEquipeController {
         response.put("Mensagem", "Membro removido com sucesso!");
         response.put("Equipe ID", equipeId);
         response.put("Membro ID removido", membroId);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("atualizar")
+    public ResponseEntity<Map<String, Object>> atualizarMembros(@PathVariable Long equipeId, @Valid @RequestBody List<AtualizarMembroDto> membroEquipeDtos) {
+
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        UsuariosEntity usuarioAutenticado = getUsuarioAutenticado();
+
+        List<AtualizarMembroDto> membrosValidados = membroEquipeDtos.stream()
+                .map(atualizarMapper::validarEPreparar)
+                .toList();
+
+        List<MembroEquipeDomain> membrosDomain = membrosValidados.stream()
+                .map(dto -> new MembroEquipeDomain(
+                        dto.id(),
+                        equipeId,
+                        dto.nickname(),
+                        dto.tipo(),
+                        dto.rank(),
+                        null
+                ))
+                .toList();
+
+        List<MembroEquipeDomain> membrosAtualizados = atualizarMembrosEquipeUsecase.execute(equipeId, membrosDomain, usuarioAutenticado.getId(), usuarioAutenticado.getRole());
+
+        response.put("Mensagem", "Membros atualizados com sucesso!");
+        response.put("Total atualizado", membrosAtualizados.size());
+        response.put("Membros", membrosAtualizados.stream()
+                .map(mapper::toDto)
+                .toList());
 
         return ResponseEntity.ok(response);
     }

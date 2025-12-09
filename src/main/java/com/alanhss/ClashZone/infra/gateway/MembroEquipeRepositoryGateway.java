@@ -64,4 +64,23 @@ public class MembroEquipeRepositoryGateway implements MembroEquipeGateway {
     public void deletarMembroEquipe(Long id) {
         membroEquipeRepository.deleteById(id);
     }
+
+    @Override
+    public MembroEquipeDomain atualizarMembros(Long id, MembroEquipeDomain membros) {
+
+        MembroEquipeEntity membroExistente = membroEquipeRepository.findById(id).get();
+
+        if (membros.nickname() != null) {
+            membroExistente.setNickname(membros.nickname());
+        }
+        if (membros.tipo() != null) {
+            membroExistente.setTipo(membros.tipo());
+        }
+        if (membros.rank() != null) {
+            membroExistente.setRank(membros.rank());
+        }
+
+        MembroEquipeEntity membroAtualizado = membroEquipeRepository.save(membroExistente);
+        return mapper.toDomain(membroAtualizado);
+    }
 }
