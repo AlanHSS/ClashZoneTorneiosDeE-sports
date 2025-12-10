@@ -19,18 +19,14 @@ public class InscricaoTorneioAtualizarMapper {
         );
     }
 
-    public InscricaoTorneioDto validarEPreparar(InscricaoTorneioDto dto) {
+    public AtualizarInscricaoDto validarEPreparar(AtualizarInscricaoDto dto) {
         String motivoNormalizado = dto.motivoRecusa() != null
                 ? dto.motivoRecusa().trim()
                 : null;
 
-        return new InscricaoTorneioDto(
-                dto.id(),
-                dto.torneioId(),
-                dto.equipeId(),
+        return new AtualizarInscricaoDto(
                 dto.statusInscricao(),
-                motivoNormalizado,
-                dto.dataInscricao()
+                motivoNormalizado
         );
     }
 }

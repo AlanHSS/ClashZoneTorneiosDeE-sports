@@ -16,7 +16,5 @@ public record InscricaoTorneioDto(
 
         StatusInscricao statusInscricao,
 
-        String motivoRecusa,
-
         LocalDateTime dataInscricao
 ) {}

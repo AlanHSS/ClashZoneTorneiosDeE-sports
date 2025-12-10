@@ -12,7 +12,6 @@ public class InscricaoTorneioDtoMapper {
                 domain.torneioId(),
                 domain.equipeId(),
                 domain.statusInscricao(),
-                domain.motivoRecusa(),
                 domain.dataInscricao()
         );
     }
@@ -23,7 +22,7 @@ public class InscricaoTorneioDtoMapper {
                 dto.torneioId(),
                 dto.equipeId(),
                 dto.statusInscricao(),
-                dto.motivoRecusa(),
+                null,
                 dto.dataInscricao()
         );
     }
