@@ -6,6 +6,8 @@ import com.alanhss.ClashZone.core.usecases.auth.LoginUsecaseImpl;
 import com.alanhss.ClashZone.core.usecases.auth.RegisterUsecase;
 import com.alanhss.ClashZone.core.usecases.auth.RegisterUsecaseImpl;
 import com.alanhss.ClashZone.core.usecases.equipe.*;
+import com.alanhss.ClashZone.core.usecases.inscricao.CriarInscricaoTorneioUsecase;
+import com.alanhss.ClashZone.core.usecases.inscricao.CriarInscricaoTorneioUsecaseImpl;
 import com.alanhss.ClashZone.core.usecases.membro.*;
 import com.alanhss.ClashZone.core.usecases.torneio.*;
 import com.alanhss.ClashZone.core.usecases.usuario.*;
@@ -121,6 +123,14 @@ public class BeanConfiguration {
     @Bean
     public AtualizarMembrosEquipeUsecase atualizarMembrosEquipeUsecase(MembroEquipeGateway membroEquipeGateway, EquipeGateway equipeGateway) {
         return new AtualizarMembrosEquipeUsecaseImpl(membroEquipeGateway, equipeGateway);
+    }
+
+    // INSCRIÇÃO_TORNEIO
+
+    @Bean
+    public CriarInscricaoTorneioUsecase criarInscricaoTorneioUsecase(InscricaoTorneioGateway inscricaoTorneioGateway, TorneioGateway torneioGateway, EquipeGateway equipeGateway, MembroEquipeGateway membroEquipeGateway) {
+        return new CriarInscricaoTorneioUsecaseImpl(inscricaoTorneioGateway, torneioGateway, equipeGateway, membroEquipeGateway
+        );
     }
 
     // AUTENTICAÇÃO
