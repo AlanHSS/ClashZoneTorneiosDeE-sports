@@ -86,6 +86,7 @@ public class CriarInscricaoTorneioUsecaseImpl implements CriarInscricaoTorneioUs
         if (!camposFaltantes.isEmpty()) {
             throw new CampoObrigatorioException(camposFaltantes);
         }
+
     }
 
     private void validarStatusTorneio(TorneioDomain torneio) {
