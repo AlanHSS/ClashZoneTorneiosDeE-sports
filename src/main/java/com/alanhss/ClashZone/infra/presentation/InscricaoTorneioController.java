@@ -1,9 +1,12 @@
 package com.alanhss.ClashZone.infra.presentation;
 
+import com.alanhss.ClashZone.core.domain.EquipeDomain;
 import com.alanhss.ClashZone.core.domain.InscricaoTorneioDomain;
 import com.alanhss.ClashZone.core.enums.Role;
 import com.alanhss.ClashZone.core.enums.StatusInscricao;
+import com.alanhss.ClashZone.core.usecases.equipe.ListarEquipesPorLiderUsecase;
 import com.alanhss.ClashZone.core.usecases.inscricao.CriarInscricaoTorneioUsecase;
+import com.alanhss.ClashZone.core.usecases.inscricao.ListarInscricoesPorEquipeUsecase;
 import com.alanhss.ClashZone.core.usecases.inscricao.ListarInscricoesPorTorneioUsecase;
 import com.alanhss.ClashZone.infra.dtos.InscricaoDtos.InscricaoDetalhadaDto;
 import com.alanhss.ClashZone.infra.dtos.InscricaoDtos.InscricaoTorneioDto;
@@ -32,6 +35,8 @@ public class InscricaoTorneioController {
 
     private final CriarInscricaoTorneioUsecase criarInscricaoTorneioUsecase;
     private final ListarInscricoesPorTorneioUsecase listarInscricoesPorTorneioUsecase;
+    private final ListarInscricoesPorEquipeUsecase listarInscricoesPorEquipeUsecase;
+    private final ListarEquipesPorLiderUsecase listarEquipesPorLiderUsecase;
     private final InscricaoTorneioRepository inscricaoTorneioRepository;
     private final InscricaoDetalhadaDtoMapper detalhadaMapper;
     private final InscricaoTorneioDtoMapper mapper;
@@ -99,6 +104,103 @@ public class InscricaoTorneioController {
         }
         response.put("Total encontrado", inscricoesDetalhadas.size());
         response.put("Inscrições", inscricoesDetalhadas);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("equipe/{equipeId}")
+    public ResponseEntity<Map<String, Object>> listarInscricoesPorEquipe(
+            @PathVariable Long equipeId,
+            @RequestParam(required = false) StatusInscricao status) {
+
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        Long usuarioAutenticadoId = getUsuarioAutenticado().getId();
+        Role roleUsuario = getUsuarioAutenticado().getRole();
+
+        List<InscricaoTorneioDomain> inscricoes = listarInscricoesPorEquipeUsecase.execute(
+                equipeId,
+                status,
+                usuarioAutenticadoId,
+                roleUsuario
+        );
+
+        if (inscricoes.isEmpty()) {
+            String mensagem = status != null
+                    ? "Esta equipe não possui inscrições com status " + status.name()
+                    : "Esta equipe ainda não se inscreveu em nenhum torneio";
+            response.put("Mensagem", mensagem);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        // Busca dados detalhados de cada inscrição
+        List<InscricaoDetalhadaDto> inscricoesDetalhadas = inscricoes.stream()
+                .map(inscricao -> {
+                    InscricaoTorneioEntity entity = inscricaoTorneioRepository.findById(inscricao.id()).get();
+                    return detalhadaMapper.toDto(entity);
+                })
+                .sorted(Comparator.comparing(InscricaoDetalhadaDto::dataInscricao).reversed())
+                .toList();
+
+        response.put("Equipe ID", equipeId);
+        if (status != null) {
+            response.put("Filtro Status", status.getDescricao());
+        }
+        response.put("Total encontrado", inscricoesDetalhadas.size());
+        response.put("Histórico de Inscrições", inscricoesDetalhadas);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("minhasinscricoes")
+    public ResponseEntity<Map<String, Object>> listarMinhasInscricoes(
+            @RequestParam(required = false) StatusInscricao status) {
+
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        Long usuarioAutenticadoId = getUsuarioAutenticado().getId();
+        Role usuarioAutenticadoRole = getUsuarioAutenticado().getRole();
+
+        List<EquipeDomain> minhasEquipes = listarEquipesPorLiderUsecase.execute(usuarioAutenticadoId);
+
+        if (minhasEquipes.isEmpty()) {
+            response.put("Mensagem", "Você não possui nenhuma equipe");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        List<InscricaoDetalhadaDto> todasInscricoes = minhasEquipes.stream()
+                .flatMap(equipe -> {
+                    List<InscricaoTorneioDomain> inscricoes = listarInscricoesPorEquipeUsecase.execute(equipe.id(), status, usuarioAutenticadoId, usuarioAutenticadoRole);
+
+                    if (status != null) {
+                        inscricoes = inscricoes.stream()
+                                .filter(i -> i.statusInscricao() == status)
+                                .toList();
+                    }
+
+                    return inscricoes.stream()
+                            .map(inscricao -> {
+                                InscricaoTorneioEntity entity = inscricaoTorneioRepository.findById(inscricao.id()).get();
+                                return detalhadaMapper.toDto(entity);
+                            });
+                })
+                .sorted(Comparator.comparing(InscricaoDetalhadaDto::dataInscricao).reversed())
+                .toList();
+
+        if (todasInscricoes.isEmpty()) {
+            String mensagem = status != null
+                    ? "Suas equipes não possuem inscrições com status " + status.name()
+                    : "Suas equipes ainda não se inscreveram em nenhum torneio";
+            response.put("Mensagem", mensagem);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        if (status != null) {
+            response.put("Filtro Status", status.getDescricao());
+        }
+        response.put("Total de equipes", minhasEquipes.size());
+        response.put("Total de inscrições", todasInscricoes.size());
+        response.put("Minhas Inscrições", todasInscricoes);
 
         return ResponseEntity.ok(response);
     }
