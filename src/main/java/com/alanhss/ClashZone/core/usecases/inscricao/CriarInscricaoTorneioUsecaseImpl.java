@@ -8,10 +8,7 @@ import com.alanhss.ClashZone.core.enums.Games;
 import com.alanhss.ClashZone.core.enums.StatusDoTorneio;
 import com.alanhss.ClashZone.core.enums.StatusInscricao;
 import com.alanhss.ClashZone.core.enums.TipoMembro;
-import com.alanhss.ClashZone.core.exceptions.AcessoNegadoException;
-import com.alanhss.ClashZone.core.exceptions.CampoObrigatorioException;
-import com.alanhss.ClashZone.core.exceptions.DadoInvalidoException;
-import com.alanhss.ClashZone.core.exceptions.NaoEncontradoPorIdException;
+import com.alanhss.ClashZone.core.exceptions.*;
 import com.alanhss.ClashZone.core.gateway.EquipeGateway;
 import com.alanhss.ClashZone.core.gateway.InscricaoTorneioGateway;
 import com.alanhss.ClashZone.core.gateway.MembroEquipeGateway;
@@ -91,22 +88,13 @@ public class CriarInscricaoTorneioUsecaseImpl implements CriarInscricaoTorneioUs
 
     private void validarStatusTorneio(TorneioDomain torneio) {
         if (torneio.statusDoTorneio() != StatusDoTorneio.AGENDADO) {
-            throw new DadoInvalidoException(
-                    "torneio",
-                    "Só é possível se inscrever em torneios com status AGENDADO. Status atual: " +
-                            torneio.statusDoTorneio().name()
-            );
+            throw new TorneioNaoDisponivelException(torneio.id(), torneio.statusDoTorneio());
         }
     }
 
     private void validarJogoCompativel(Games jogoEquipe, Games jogoTorneio) {
         if (jogoEquipe != jogoTorneio) {
-            throw new DadoInvalidoException(
-                    "jogo",
-                    String.format("A equipe joga %s mas o torneio é de %s",
-                            jogoEquipe.getNomeExibicao(),
-                            jogoTorneio.getNomeExibicao())
-            );
+            throw new JogoIncompativelException(jogoEquipe, jogoTorneio);
         }
     }
 
@@ -114,11 +102,10 @@ public class CriarInscricaoTorneioUsecaseImpl implements CriarInscricaoTorneioUs
         int inscricoesAprovadas = inscricaoTorneioGateway.contarInscricoesAprovadas(torneio.id());
 
         if (inscricoesAprovadas >= torneio.quantidadeDeEquipes()) {
-            throw new DadoInvalidoException(
-                    "vagas",
-                    String.format("O torneio já atingiu o número máximo de equipes (%d/%d)",
-                            inscricoesAprovadas,
-                            torneio.quantidadeDeEquipes())
+            throw new TorneioSemVagasException(
+                    torneio.id(),
+                    inscricoesAprovadas,
+                    torneio.quantidadeDeEquipes()
             );
         }
     }
@@ -133,12 +120,11 @@ public class CriarInscricaoTorneioUsecaseImpl implements CriarInscricaoTorneioUs
         int minimoNecessario = jogo.getMinimoJogadores();
 
         if (titulares < minimoNecessario) {
-            throw new DadoInvalidoException(
-                    "jogadores",
-                    String.format("A equipe precisa ter pelo menos %d jogadores titulares para se inscrever. " +
-                                    "Atualmente possui: %d",
-                            minimoNecessario,
-                            titulares)
+            throw new EquipeIncompletaException(
+                    equipe.id(),
+                    (int) titulares,
+                    minimoNecessario,
+                    jogo
             );
         }
     }

@@ -159,5 +159,87 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
     }
 
+    @ExceptionHandler(InscricaoDuplicadaException.class)
+    public ResponseEntity<Map<String, Object>> handleInscricaoDuplicada(
+            InscricaoDuplicadaException ex, WebRequest request) {
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("timestamp", LocalDateTime.now());
+        response.put("status", HttpStatus.CONFLICT.value());
+        response.put("error", "Conflict");
+        response.put("message", ex.getMessage());
+        response.put("torneioId", ex.getTorneioId());
+        response.put("equipeId", ex.getEquipeId());
+        response.put("path", request.getDescription(false).replace("uri=", ""));
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
+    @ExceptionHandler(TorneioSemVagasException.class)
+    public ResponseEntity<Map<String, Object>> handleTorneioSemVagas(
+            TorneioSemVagasException ex, WebRequest request) {
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("timestamp", LocalDateTime.now());
+        response.put("status", HttpStatus.BAD_REQUEST.value());
+        response.put("error", "Bad Request");
+        response.put("message", ex.getMessage());
+        response.put("torneioId", ex.getTorneioId());
+        response.put("vagasOcupadas", ex.getVagasOcupadas());
+        response.put("vagasTotais", ex.getVagasTotais());
+        response.put("path", request.getDescription(false).replace("uri=", ""));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(JogoIncompativelException.class)
+    public ResponseEntity<Map<String, Object>> handleJogoIncompativel(
+            JogoIncompativelException ex, WebRequest request) {
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("timestamp", LocalDateTime.now());
+        response.put("status", HttpStatus.BAD_REQUEST.value());
+        response.put("error", "Bad Request");
+        response.put("message", ex.getMessage());
+        response.put("jogoEquipe", ex.getJogoEquipe().getNomeExibicao());
+        response.put("jogoTorneio", ex.getJogoTorneio().getNomeExibicao());
+        response.put("path", request.getDescription(false).replace("uri=", ""));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(EquipeIncompletaException.class)
+    public ResponseEntity<Map<String, Object>> handleEquipeIncompleta(
+            EquipeIncompletaException ex, WebRequest request) {
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("timestamp", LocalDateTime.now());
+        response.put("status", HttpStatus.BAD_REQUEST.value());
+        response.put("error", "Bad Request");
+        response.put("message", ex.getMessage());
+        response.put("equipeId", ex.getEquipeId());
+        response.put("jogadoresAtuais", ex.getJogadoresAtuais());
+        response.put("jogadoresMinimos", ex.getJogadoresMinimos());
+        response.put("jogo", ex.getJogo().getNomeExibicao());
+        response.put("path", request.getDescription(false).replace("uri=", ""));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(TorneioNaoDisponivelException.class)
+    public ResponseEntity<Map<String, Object>> handleTorneioNaoDisponivel(
+            TorneioNaoDisponivelException ex, WebRequest request) {
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("timestamp", LocalDateTime.now());
+        response.put("status", HttpStatus.BAD_REQUEST.value());
+        response.put("error", "Bad Request");
+        response.put("message", ex.getMessage());
+        response.put("torneioId", ex.getTorneioId());
+        response.put("statusAtual", ex.getStatusAtual().name());
+        response.put("path", request.getDescription(false).replace("uri=", ""));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
 
 }
