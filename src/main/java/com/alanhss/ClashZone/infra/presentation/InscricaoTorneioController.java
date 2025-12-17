@@ -4,13 +4,15 @@ import com.alanhss.ClashZone.core.domain.EquipeDomain;
 import com.alanhss.ClashZone.core.domain.InscricaoTorneioDomain;
 import com.alanhss.ClashZone.core.enums.Role;
 import com.alanhss.ClashZone.core.enums.StatusInscricao;
+import com.alanhss.ClashZone.core.exceptions.NaoEncontradoPorIdException;
+import com.alanhss.ClashZone.core.gateway.InscricaoTorneioGateway;
 import com.alanhss.ClashZone.core.usecases.equipe.ListarEquipesPorLiderUsecase;
-import com.alanhss.ClashZone.core.usecases.inscricao.CriarInscricaoTorneioUsecase;
-import com.alanhss.ClashZone.core.usecases.inscricao.ListarInscricoesPorEquipeUsecase;
-import com.alanhss.ClashZone.core.usecases.inscricao.ListarInscricoesPorTorneioUsecase;
+import com.alanhss.ClashZone.core.usecases.inscricao.*;
+import com.alanhss.ClashZone.infra.dtos.InscricaoDtos.AtualizarInscricaoDto;
 import com.alanhss.ClashZone.infra.dtos.InscricaoDtos.InscricaoDetalhadaDto;
 import com.alanhss.ClashZone.infra.dtos.InscricaoDtos.InscricaoTorneioDto;
 import com.alanhss.ClashZone.infra.mappers.InscricaoMappers.InscricaoDetalhadaDtoMapper;
+import com.alanhss.ClashZone.infra.mappers.InscricaoMappers.InscricaoTorneioAtualizarMapper;
 import com.alanhss.ClashZone.infra.mappers.InscricaoMappers.InscricaoTorneioDtoMapper;
 import com.alanhss.ClashZone.infra.persistence.InscricaoPersistence.InscricaoTorneioEntity;
 import com.alanhss.ClashZone.infra.persistence.InscricaoPersistence.InscricaoTorneioRepository;
@@ -38,7 +40,10 @@ public class InscricaoTorneioController {
     private final ListarInscricoesPorEquipeUsecase listarInscricoesPorEquipeUsecase;
     private final ListarEquipesPorLiderUsecase listarEquipesPorLiderUsecase;
     private final InscricaoTorneioRepository inscricaoTorneioRepository;
+    private final AtualizarInscricaoUsecase atualizarInscricaoUsecase;
+    private final BuscarInscricaoPorIdUsecase buscarInscricaoPorIdUsecase;
     private final InscricaoDetalhadaDtoMapper detalhadaMapper;
+    private final InscricaoTorneioAtualizarMapper atualizarMapper;
     private final InscricaoTorneioDtoMapper mapper;
 
     private UsuariosEntity getUsuarioAutenticado() {
@@ -201,6 +206,41 @@ public class InscricaoTorneioController {
         response.put("Total de equipes", minhasEquipes.size());
         response.put("Total de inscrições", todasInscricoes.size());
         response.put("Minhas Inscrições", todasInscricoes);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("atualizar/{inscricaoId}")
+    public ResponseEntity<Map<String, Object>> atualizarInscricao(@PathVariable Long inscricaoId, @Valid @RequestBody AtualizarInscricaoDto atualizarInscricaoDto) {
+
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        Long usuarioAutenticadoId = getUsuarioAutenticado().getId();
+        Role roleUsuario = getUsuarioAutenticado().getRole();
+
+        AtualizarInscricaoDto dtoValidado = atualizarMapper.validarEPreparar(atualizarInscricaoDto);
+
+        InscricaoTorneioDomain inscricaoExistente = buscarInscricaoPorIdUsecase.execute(inscricaoId);
+
+        InscricaoTorneioDomain inscricaoDomain = atualizarMapper.toDomain(
+                inscricaoId,
+                inscricaoExistente.torneioId(),
+                inscricaoExistente.equipeId(),
+                dtoValidado
+        );
+
+        InscricaoTorneioDomain inscricaoAtualizada = atualizarInscricaoUsecase.execute(
+                inscricaoId,
+                inscricaoDomain,
+                usuarioAutenticadoId,
+                roleUsuario
+        );
+
+        InscricaoTorneioEntity entity = inscricaoTorneioRepository.findById(inscricaoAtualizada.id()).get();
+        InscricaoDetalhadaDto inscricaoDetalhada = detalhadaMapper.toDto(entity);
+
+        response.put("Mensagem", "Inscrição atualizada com sucesso!");
+        response.put("Inscrição", inscricaoDetalhada);
 
         return ResponseEntity.ok(response);
     }

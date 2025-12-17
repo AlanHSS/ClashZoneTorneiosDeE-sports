@@ -72,4 +72,20 @@ public class IncricaoTorneioRepositoryGateway implements InscricaoTorneioGateway
     public int contarInscricoesAprovadas(Long torneioId) {
         return inscricaoTorneioRepository.contarInscricoesAprovadas(torneioId);
     }
+
+    @Override
+    public InscricaoTorneioDomain atualizarInscricao(Long id, InscricaoTorneioDomain inscricaoTorneioDomain) {
+        InscricaoTorneioEntity inscricaoExistente = inscricaoTorneioRepository.findById(id).get();
+
+        if (inscricaoTorneioDomain.statusInscricao() != null){
+            inscricaoExistente.setStatusInscricao(inscricaoTorneioDomain.statusInscricao());
+        }
+        if (inscricaoTorneioDomain.motivoRecusa() != null){
+            inscricaoExistente.setMotivoRecusa(inscricaoTorneioDomain.motivoRecusa());
+        }
+
+        InscricaoTorneioEntity inscricaoAtualizada = inscricaoTorneioRepository.save(inscricaoExistente);
+
+        return mapper.toDomain(inscricaoAtualizada);
+    }
 }

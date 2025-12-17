@@ -1,5 +1,6 @@
 package com.alanhss.ClashZone.infra.beans;
 
+import com.alanhss.ClashZone.core.domain.InscricaoTorneioDomain;
 import com.alanhss.ClashZone.core.gateway.*;
 import com.alanhss.ClashZone.core.usecases.auth.LoginUsecase;
 import com.alanhss.ClashZone.core.usecases.auth.LoginUsecaseImpl;
@@ -140,6 +141,16 @@ public class BeanConfiguration {
     @Bean
     public ListarInscricoesPorEquipeUsecase listarInscricoesPorEquipeUsecase(InscricaoTorneioGateway inscricaoTorneioGateway, EquipeGateway equipeGateway) {
         return new ListarInscricoesPorEquipeUsecaseImpl(inscricaoTorneioGateway, equipeGateway);
+    }
+
+    @Bean
+    public AtualizarInscricaoUsecase atualizarInscricaoTorneioUsecase(InscricaoTorneioGateway inscricaoTorneioGateway, TorneioGateway torneioGateway, EquipeGateway equipeGateway) {
+        return new AtualizarInscricaoUsecaseImpl(inscricaoTorneioGateway, torneioGateway, equipeGateway);
+    }
+
+    @Bean
+    public BuscarInscricaoPorIdUsecase buscarInscricaoPorIdUsecase(InscricaoTorneioGateway inscricaoTorneioGateway) {
+        return new BuscarInscricaoPorIdUsecaseImpl(inscricaoTorneioGateway);
     }
 
     // AUTENTICAÇÃO

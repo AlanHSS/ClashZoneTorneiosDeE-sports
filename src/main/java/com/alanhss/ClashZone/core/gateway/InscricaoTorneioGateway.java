@@ -23,4 +23,6 @@ public interface InscricaoTorneioGateway {
     Optional<InscricaoTorneioDomain> buscarPorId(Long id);
 
     int contarInscricoesAprovadas(Long torneioId);
+
+    InscricaoTorneioDomain atualizarInscricao(Long id, InscricaoTorneioDomain inscricaoTorneioDomain);
 }

@@ -242,4 +242,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
+    @ExceptionHandler(StatusInscricaoInvalidoException.class)
+    public ResponseEntity<Map<String, Object>> handleStatusInscricaoInvalido(
+            StatusInscricaoInvalidoException ex, WebRequest request) {
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("timestamp", LocalDateTime.now());
+        response.put("status", HttpStatus.BAD_REQUEST.value());
+        response.put("error", "Bad Request");
+        response.put("message", ex.getMessage());
+        response.put("statusAtual", ex.getStatusAtual().name());
+        response.put("novoStatus", ex.getNovoStatus().name());
+        response.put("path", request.getDescription(false).replace("uri=", ""));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
 }
