@@ -1,6 +1,7 @@
 package com.alanhss.ClashZone.infra.gateway;
 
 import com.alanhss.ClashZone.core.domain.TorneioDomain;
+import com.alanhss.ClashZone.core.enums.StatusDoTorneio;
 import com.alanhss.ClashZone.core.gateway.TorneioGateway;
 import com.alanhss.ClashZone.infra.mappers.TorneiosMappers.TorneioEntityMapper;
 import com.alanhss.ClashZone.infra.persistence.TorneioPersistence.TorneioEntity;
@@ -98,6 +99,14 @@ public class TorneioRepositoryGateway implements TorneioGateway {
     public List<TorneioDomain> listarTorneiosPorCriador(Long id) {
         List<TorneioEntity> lista = torneioRepository.findByCriadorIdId(id);
         return lista.stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<TorneioDomain> listarTorneioPorStatus(StatusDoTorneio status) {
+        List<TorneioEntity> entities = torneioRepository.findByStatusDoTorneio(status);
+        return entities.stream()
                 .map(mapper::toDomain)
                 .toList();
     }

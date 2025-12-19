@@ -1,6 +1,7 @@
 package com.alanhss.ClashZone.core.gateway;
 
 import com.alanhss.ClashZone.core.domain.TorneioDomain;
+import com.alanhss.ClashZone.core.enums.StatusDoTorneio;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,4 +18,6 @@ public interface TorneioGateway {
     Optional<TorneioDomain> buscarPorId(Long id);
 
     List<TorneioDomain> listarTorneiosPorCriador(Long id);
+
+    List<TorneioDomain> listarTorneioPorStatus(StatusDoTorneio status);
 }
