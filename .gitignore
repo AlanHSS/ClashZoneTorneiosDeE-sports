@@ -36,4 +36,4 @@ build/
 .env
 
 ### Outros ###
-/presentaion/TestsController
+src/main/java/com/alanhss/ClashZone/infra/presentation/TestsController.java
