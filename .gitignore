@@ -37,3 +37,4 @@ build/
 
 ### Outros ###
 src/main/java/com/alanhss/ClashZone/infra/presentation/TestsController.java
+/docker/scripts
