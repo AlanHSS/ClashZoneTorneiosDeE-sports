@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.alanhss</groupId>
-	<artifactId>ClashZone</artifactId>
+	<artifactId>ClashZone-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ClashZone</name>
 	<description>API para gerenciar torneios de e-sports desenvolvida com Java</description>
