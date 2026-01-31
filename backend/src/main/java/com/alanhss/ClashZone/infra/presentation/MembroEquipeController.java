@@ -6,8 +6,6 @@ import com.alanhss.ClashZone.core.usecases.membro.AdicionarMembrosEquipeUsecase;
 import com.alanhss.ClashZone.core.usecases.membro.AtualizarMembrosEquipeUsecase;
 import com.alanhss.ClashZone.core.usecases.membro.DeletarMembroEquipeUsecase;
 import com.alanhss.ClashZone.core.usecases.membro.ListarMembrosPorEquipeUsecase;
-import com.alanhss.ClashZone.infra.dtos.EquipesDtos.AtualizarEquipeDto;
-import com.alanhss.ClashZone.infra.dtos.EquipesDtos.EquipeDto;
 import com.alanhss.ClashZone.infra.dtos.MembrosDtos.AtualizarMembroDto;
 import com.alanhss.ClashZone.infra.dtos.MembrosDtos.MembroEquipeDto;
 import com.alanhss.ClashZone.infra.mappers.MembrosMappers.MembroEquipeAtualizarMapper;

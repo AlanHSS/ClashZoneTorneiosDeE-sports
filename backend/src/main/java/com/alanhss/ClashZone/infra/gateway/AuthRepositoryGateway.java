@@ -2,7 +2,6 @@ package com.alanhss.ClashZone.infra.gateway;
 
 import com.alanhss.ClashZone.core.domain.AuthDomain;
 import com.alanhss.ClashZone.core.domain.UsuariosDomain;
-import com.alanhss.ClashZone.core.exceptions.CampoDuplicadoException;
 import com.alanhss.ClashZone.core.gateway.AuthGateway;
 import com.alanhss.ClashZone.infra.mappers.UsuariosMappers.UsuariosEntityMapper;
 import com.alanhss.ClashZone.infra.persistence.UsuariosPersistence.UsuariosEntity;

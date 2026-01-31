@@ -6,10 +6,8 @@ import com.alanhss.ClashZone.infra.mappers.UsuariosMappers.UsuariosEntityMapper;
 import com.alanhss.ClashZone.infra.persistence.UsuariosPersistence.UsuariosEntity;
 import com.alanhss.ClashZone.infra.persistence.UsuariosPersistence.UsuariosRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Component;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

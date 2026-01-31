@@ -1,19 +1,49 @@
-target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-
-### IDE ###
-.idea
-*.iws
-*.iml
-*.ipr
-.vscode/
-
-### Environment ###
-.env
-
-### Outros ###
-*.md
+############################
+# GIT
+############################
 .git
 .gitignore
+
+############################
+# ENV
+############################
+backend/.env
+.env.*
+
+############################
+# BACKEND - JAVA / SPRING
+############################
+backend/target
+backend/.mvn/wrapper/maven-wrapper.jar
+backend/*.log
+
+############################
+# FRONTEND - ANGULAR / NODE
+############################
+frontend/node_modules
+frontend/dist
+frontend/.angular
+frontend/npm-debug.log
+frontend/yarn-error.log
+frontend/pnpm-debug.log
+
+############################
+# IDEs
+############################
+.idea
+.vscode
+*.iml
+*.iws
+*.ipr
+
+############################
+# OS
+############################
+.DS_Store
+Thumbs.db
+
+############################
+# DOCUMENTAÇÃO
+############################
+*.md
+.editorconfig

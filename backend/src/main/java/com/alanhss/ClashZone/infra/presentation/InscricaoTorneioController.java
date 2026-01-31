@@ -4,8 +4,6 @@ import com.alanhss.ClashZone.core.domain.EquipeDomain;
 import com.alanhss.ClashZone.core.domain.InscricaoTorneioDomain;
 import com.alanhss.ClashZone.core.enums.Role;
 import com.alanhss.ClashZone.core.enums.StatusInscricao;
-import com.alanhss.ClashZone.core.exceptions.NaoEncontradoPorIdException;
-import com.alanhss.ClashZone.core.gateway.InscricaoTorneioGateway;
 import com.alanhss.ClashZone.core.usecases.equipe.ListarEquipesPorLiderUsecase;
 import com.alanhss.ClashZone.core.usecases.inscricao.*;
 import com.alanhss.ClashZone.infra.dtos.InscricaoDtos.AtualizarInscricaoDto;

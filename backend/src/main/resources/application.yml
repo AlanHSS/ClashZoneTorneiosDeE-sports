@@ -1,7 +1,7 @@
 server:
   port: 8058
 
-Spring:
+spring:
   application:
     name: ClashZone
 
@@ -12,7 +12,7 @@ Spring:
     driver-class-name: org.postgresql.Driver
 
   jpa:
-    show-slq: true
+    show-sql: true
 
   flyway:
     enabled: true
