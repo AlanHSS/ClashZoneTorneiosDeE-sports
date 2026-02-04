@@ -2,7 +2,6 @@ package com.alanhss.ClashZone.infra.mappers.InscricaoMappers;
 
 import com.alanhss.ClashZone.core.domain.InscricaoTorneioDomain;
 import com.alanhss.ClashZone.infra.dtos.InscricaoDtos.AtualizarInscricaoDto;
-import com.alanhss.ClashZone.infra.dtos.InscricaoDtos.InscricaoTorneioDto;
 import org.springframework.stereotype.Component;
 
 @Component

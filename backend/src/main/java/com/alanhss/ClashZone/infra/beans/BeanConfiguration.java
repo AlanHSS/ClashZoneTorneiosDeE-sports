@@ -1,6 +1,5 @@
 package com.alanhss.ClashZone.infra.beans;
 
-import com.alanhss.ClashZone.core.domain.InscricaoTorneioDomain;
 import com.alanhss.ClashZone.core.gateway.*;
 import com.alanhss.ClashZone.core.usecases.auth.LoginUsecase;
 import com.alanhss.ClashZone.core.usecases.auth.LoginUsecaseImpl;
