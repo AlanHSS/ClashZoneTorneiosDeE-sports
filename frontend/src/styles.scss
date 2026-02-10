@@ -8,6 +8,8 @@
 
 @include mat.core();
 
+@import 'status-badges';
+
 html {
   height: 100%;
   @include mat.theme((

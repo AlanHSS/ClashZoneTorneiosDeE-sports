@@ -1,0 +1,46 @@
+<mat-card class="tournament-card">
+  <mat-card-header>
+    <mat-card-title>{{ tournament.nomeDoTorneio }}</mat-card-title>
+    <mat-card-subtitle>
+      {{ tournament.jogoDoTorneio | gameName }} • {{ tournament.plataforma }}
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    @if (tournament.descricaoDoTorneio) {
+    <p class="description">{{ tournament.descricaoDoTorneio }}</p>
+    }
+
+    <div class="info">
+      <div class="info-item">
+        <mat-icon>event</mat-icon>
+        <span>{{ tournament.inicioDoTorneio | date: 'dd/MM/yyyy HH:mm' }}</span>
+      </div>
+
+      <div class="info-item">
+        <mat-icon>groups</mat-icon>
+        <span>{{ tournament.quantidadeDeEquipes }} equipes</span>
+      </div>
+    </div>
+
+    <mat-chip-set>
+      <mat-chip [ngClass]="tournament.statusDoTorneio | statusBadge">
+        {{ tournament.statusDoTorneio }}
+      </mat-chip>
+    </mat-chip-set>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-button (click)="onViewDetails()">
+      <mat-icon>visibility</mat-icon>
+      Ver Detalhes
+    </button>
+
+    @if (tournament.statusDoTorneio === 'AGENDADO') {
+    <button mat-raised-button color="primary" (click)="onRegister()">
+      <mat-icon>how_to_reg</mat-icon>
+      Inscrever
+    </button>
+    }
+  </mat-card-actions>
+</mat-card>
