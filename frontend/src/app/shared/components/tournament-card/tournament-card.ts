@@ -20,8 +20,8 @@ import { StatusBadgePipe } from '@shared/pipes/status-badge.pipe';
     GameNamePipe,
     StatusBadgePipe
   ],
-  templateUrl: './tournament-card.component.html',
-  styleUrl: './tournament-card.component.scss'
+  templateUrl: './tournament-card.html',
+  styleUrl: './tournament-card.scss'
 })
 export class TournamentCardComponent {
   @Input({ required: true }) tournament!: TorneioDomain;

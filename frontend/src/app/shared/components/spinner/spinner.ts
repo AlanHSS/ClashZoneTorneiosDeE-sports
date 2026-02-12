@@ -7,8 +7,8 @@ import { LoadingService } from '@core/services/loading.service';
   selector: 'app-spinner',
   standalone: true,
   imports: [CommonModule, MatProgressSpinnerModule],
-  templateUrl: './spinner.component.html',
-  styleUrl: './spinner.component.scss'
+  templateUrl: './spinner.html',
+  styleUrl: './spinner.scss'
 })
 export class SpinnerComponent {
   loadingService = inject(LoadingService);

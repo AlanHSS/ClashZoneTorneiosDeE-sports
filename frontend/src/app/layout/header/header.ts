@@ -5,7 +5,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { AuthService } from '@core/services/auth.service';
+import { AuthService } from '@core/services/auth';
 
 @Component({
   selector: 'app-header',
@@ -18,8 +18,8 @@ import { AuthService } from '@core/services/auth.service';
     MatIconModule,
     MatMenuModule
   ],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  templateUrl: './header.html',
+  styleUrl: './header.scss'
 })
 export class HeaderComponent {
   authService = inject(AuthService);

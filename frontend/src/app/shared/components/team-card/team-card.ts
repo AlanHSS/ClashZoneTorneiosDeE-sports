@@ -18,8 +18,8 @@ import { GameNamePipe } from '@shared/pipes/game-name.pipe';
     MatChipsModule,
     GameNamePipe
   ],
-  templateUrl: './team-card.component.html',
-  styleUrl: './team-card.component.scss'
+  templateUrl: './team-card.html',
+  styleUrl: './team-card.scss'
 })
 export class TeamCardComponent {
   @Input({ required: true }) team!: EquipeDomain;
