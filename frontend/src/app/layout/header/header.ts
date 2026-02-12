@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { AuthService } from '@core/services/auth';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-header',
@@ -17,6 +18,7 @@ import { AuthService } from '@core/services/auth';
     MatButtonModule,
     MatIconModule,
     MatMenuModule
+    MatDividerModule
   ],
   templateUrl: './header.html',
   styleUrl: './header.scss'
