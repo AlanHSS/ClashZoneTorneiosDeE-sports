@@ -1,0 +1,95 @@
+<div class="register-container">
+  <mat-card class="register-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>sports_esports</mat-icon>
+        Criar Conta
+      </mat-card-title>
+      <mat-card-subtitle>Junte-se ao ClashZone</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline">
+          <mat-label>Nome Completo</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="nomeDoUsuário"
+            placeholder="João Silva"
+          >
+          <mat-icon matPrefix>person</mat-icon>
+          @if (registerForm.get('nomeDoUsuário')?.invalid && registerForm.get('nomeDoUsuário')?.touched) {
+          <mat-error>{{ getErrorMessage('nomeDoUsuário') }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Nickname</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="nickname"
+            placeholder="jogador123"
+          >
+          <mat-icon matPrefix>tag</mat-icon>
+          @if (registerForm.get('nickname')?.invalid && registerForm.get('nickname')?.touched) {
+          <mat-error>{{ getErrorMessage('nickname') }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            type="email"
+            formControlName="emailDoUsuario"
+            placeholder="seu@email.com"
+          >
+          <mat-icon matPrefix>email</mat-icon>
+          @if (registerForm.get('emailDoUsuario')?.invalid && registerForm.get('emailDoUsuario')?.touched) {
+          <mat-error>{{ getErrorMessage('emailDoUsuario') }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Senha</mat-label>
+          <input
+            matInput
+            [type]="hidePassword ? 'password' : 'text'"
+            formControlName="senhaDoUsuario"
+            placeholder="******"
+          >
+          <mat-icon matPrefix>lock</mat-icon>
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hidePassword = !hidePassword"
+          >
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          @if (registerForm.get('senhaDoUsuario')?.invalid && registerForm.get('senhaDoUsuario')?.touched) {
+          <mat-error>{{ getErrorMessage('senhaDoUsuario') }}</mat-error>
+          }
+        </mat-form-field>
+
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="submit-button"
+        >
+          Criar Conta
+        </button>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <p class="login-link">
+        Já tem uma conta?
+        <a routerLink="/auth/login">Faça login</a>
+      </p>
+    </mat-card-actions>
+  </mat-card>
+</div>

@@ -17,7 +17,7 @@ import { MatDividerModule } from '@angular/material/divider';
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
-    MatMenuModule
+    MatMenuModule,
     MatDividerModule
   ],
   templateUrl: './header.html',

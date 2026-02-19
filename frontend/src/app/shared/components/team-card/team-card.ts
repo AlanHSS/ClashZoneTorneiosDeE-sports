@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { EquipeDomain } from '@core/models';
-import { GameNamePipe } from '@shared/pipes/game-name.pipe';
+import { GameNamePipe } from '@shared/pipes/game-name-pipe';
 
 @Component({
   selector: 'app-team-card',

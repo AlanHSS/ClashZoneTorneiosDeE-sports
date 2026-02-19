@@ -5,8 +5,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { TorneioDomain } from '@core/models';
-import { GameNamePipe } from '@shared/pipes/game-name.pipe';
-import { StatusBadgePipe } from '@shared/pipes/status-badge.pipe';
+import { GameNamePipe } from '@shared/pipes/game-name-pipe';
+import { StatusBadgePipe } from '@shared/pipes/status-badge-pipe';
 
 @Component({
   selector: 'app-tournament-card',
