@@ -1,0 +1,132 @@
+<div class="tournament-detail-container">
+  @if (tournament) {
+  <div class="detail-header">
+    <button mat-icon-button (click)="onBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1>{{ tournament.nomeDoTorneio }}</h1>
+  </div>
+
+  <div class="detail-content">
+    <!-- Card Principal -->
+    <mat-card class="main-card">
+      <mat-card-header>
+        <mat-card-title>
+          <div class="title-section">
+            <span>{{ tournament.jogoDoTorneio | gameName }}</span>
+            <mat-chip [ngClass]="tournament.statusDoTorneio | statusBadge">
+              {{ tournament.statusDoTorneio }}
+            </mat-chip>
+          </div>
+        </mat-card-title>
+        <mat-card-subtitle>{{ tournament.plataforma }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        @if (tournament.descricaoDoTorneio) {
+        <div class="description-section">
+          <h3>Descrição</h3>
+          <p>{{ tournament.descricaoDoTorneio }}</p>
+        </div>
+        <mat-divider></mat-divider>
+        }
+
+        <div class="info-grid">
+          <div class="info-item">
+            <mat-icon>event</mat-icon>
+            <div>
+              <strong>Início</strong>
+              <p>{{ tournament.inicioDoTorneio | date: 'dd/MM/yyyy HH:mm' }}</p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <mat-icon>groups</mat-icon>
+            <div>
+              <strong>Equipes</strong>
+              <p>{{ getInscriptionsCount() }} / {{ tournament.quantidadeDeEquipes }}</p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <mat-icon>check_circle</mat-icon>
+            <div>
+              <strong>Vagas Disponíveis</strong>
+              <p>{{ getAvailableSlots() }} vagas</p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <mat-icon>calendar_today</mat-icon>
+            <div>
+              <strong>Criado em</strong>
+              <p>{{ tournament.dataCriacao | date: 'dd/MM/yyyy' }}</p>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <div class="actions-left">
+          @if (canRegister()) {
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="onRegister()"
+          >
+            <mat-icon>how_to_reg</mat-icon>
+            Inscrever Equipe
+          </button>
+          }
+        </div>
+
+        <div class="actions-right">
+          @if (canEdit()) {
+          <button mat-button (click)="onEdit()">
+            <mat-icon>edit</mat-icon>
+            Editar
+          </button>
+          <button mat-button color="warn" (click)="onDelete()">
+            <mat-icon>delete</mat-icon>
+            Excluir
+          </button>
+          }
+        </div>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- Card de Inscrições -->
+    @if (inscriptions.length > 0) {
+    <mat-card class="inscriptions-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>assignment</mat-icon>
+          Inscrições ({{ inscriptions.length }})
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="inscriptions-list">
+          @for (inscription of inscriptions; track inscription.id) {
+          <div class="inscription-item">
+            <div class="inscription-info">
+              <mat-icon>emoji_events</mat-icon>
+              <span>Equipe #{{ inscription.equipeId }}</span>
+            </div>
+            <mat-chip [ngClass]="inscription.statusInscricao | statusBadge">
+              {{ inscription.statusInscricao }}
+            </mat-chip>
+          </div>
+          }
+        </div>
+      </mat-card-content>
+    </mat-card>
+    }
+  </div>
+  } @else {
+  <div class="loading-state">
+    <mat-icon>hourglass_empty</mat-icon>
+    <p>Carregando...</p>
+  </div>
+  }
+</div>

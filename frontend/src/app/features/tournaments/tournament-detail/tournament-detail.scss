@@ -1,0 +1,382 @@
+.tournament-detail-container {
+  min-height: 100vh;
+  padding: 40px 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+  background: #0a0a0f;
+
+  .detail-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+    animation: fadeInDown 0.6s ease-out;
+
+    button {
+      color: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(102, 126, 234, 0.3);
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba(102, 126, 234, 0.15);
+        border-color: #667eea;
+      }
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 36px;
+      font-weight: 900;
+      color: #ffffff;
+    }
+  }
+
+  .detail-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    animation: fadeInUp 0.6s ease-out;
+
+    // ==========================================
+    // MAIN CARD
+    // ==========================================
+    .main-card {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border: 1px solid rgba(102, 126, 234, 0.3);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+      mat-card-header {
+        background: rgba(0, 0, 0, 0.2);
+        padding: 24px;
+        border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+
+        .title-section {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          flex-wrap: wrap;
+
+          span {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffffff;
+          }
+
+          mat-chip {
+            font-weight: 600;
+            font-size: 14px;
+          }
+        }
+
+        mat-card-subtitle {
+          margin-top: 8px;
+          color: rgba(255, 255, 255, 0.7);
+          font-size: 16px;
+        }
+      }
+
+      mat-card-content {
+        padding: 32px 24px;
+
+        .description-section {
+          margin-bottom: 24px;
+
+          h3 {
+            margin: 0 0 12px 0;
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            &::before {
+              content: '';
+              width: 4px;
+              height: 20px;
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              border-radius: 2px;
+            }
+          }
+
+          p {
+            margin: 0;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 16px;
+          }
+        }
+
+        mat-divider {
+          margin: 32px 0;
+          background-color: rgba(102, 126, 234, 0.2);
+        }
+
+        .info-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+          gap: 24px;
+
+          .info-item {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+
+            &:hover {
+              border-color: #667eea;
+              background: rgba(102, 126, 234, 0.1);
+            }
+
+            mat-icon {
+              color: #667eea;
+              margin-top: 2px;
+              font-size: 24px;
+              width: 24px;
+              height: 24px;
+            }
+
+            div {
+              flex: 1;
+
+              strong {
+                display: block;
+                font-size: 12px;
+                color: rgba(255, 255, 255, 0.6);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: 6px;
+              }
+
+              p {
+                margin: 0;
+                font-size: 18px;
+                font-weight: 600;
+                color: #ffffff;
+              }
+            }
+          }
+        }
+      }
+
+      mat-card-actions {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px 24px;
+        background: rgba(0, 0, 0, 0.2);
+        border-top: 1px solid rgba(102, 126, 234, 0.2);
+        flex-wrap: wrap;
+        gap: 12px;
+
+        .actions-left,
+        .actions-right {
+          display: flex;
+          gap: 12px;
+          flex-wrap: wrap;
+        }
+
+        button {
+          border-radius: 20px;
+          font-weight: 600;
+          transition: all 0.3s ease;
+
+          mat-icon {
+            margin-right: 6px;
+          }
+
+          &[color="primary"] {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+
+            &:hover {
+              transform: translateY(-2px);
+              box-shadow: 0 6px 24px rgba(102, 126, 234, 0.6);
+            }
+          }
+
+          &[color="warn"] {
+            color: #ff6b6b;
+            border: 1px solid rgba(255, 107, 107, 0.3);
+
+            &:hover {
+              background: rgba(255, 107, 107, 0.1);
+              border-color: #ff6b6b;
+            }
+          }
+
+          &:not([color]):not([color="warn"]) {
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            color: rgba(255, 255, 255, 0.9);
+
+            &:hover {
+              background: rgba(102, 126, 234, 0.15);
+              border-color: #667eea;
+            }
+          }
+        }
+      }
+    }
+
+    // ==========================================
+    // INSCRIPTIONS CARD
+    // ==========================================
+    .inscriptions-card {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border: 1px solid rgba(102, 126, 234, 0.3);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+      mat-card-header {
+        background: rgba(0, 0, 0, 0.2);
+        padding: 20px 24px;
+        border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+
+        mat-card-title {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          font-size: 20px;
+          font-weight: 700;
+          color: #ffffff;
+
+          mat-icon {
+            color: #667eea;
+          }
+        }
+      }
+
+      mat-card-content {
+        padding: 24px;
+
+        .inscriptions-list {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+
+          .inscription-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+
+            &:hover {
+              border-color: #667eea;
+              background: rgba(102, 126, 234, 0.1);
+            }
+
+            .inscription-info {
+              display: flex;
+              align-items: center;
+              gap: 12px;
+
+              mat-icon {
+                color: #667eea;
+              }
+
+              span {
+                font-weight: 600;
+                color: #ffffff;
+              }
+            }
+
+            mat-chip {
+              font-weight: 600;
+              font-size: 12px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .loading-state {
+    text-align: center;
+    padding: 80px 24px;
+    color: rgba(255, 255, 255, 0.6);
+
+    mat-icon {
+      font-size: 80px;
+      width: 80px;
+      height: 80px;
+      margin-bottom: 24px;
+      color: #667eea;
+      animation: spin 2s linear infinite;
+    }
+
+    p {
+      margin: 0;
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Responsivo
+@media (max-width: 768px) {
+  .tournament-detail-container {
+    padding: 24px 16px;
+
+    .detail-header h1 {
+      font-size: 28px;
+    }
+
+    .main-card {
+      mat-card-header .title-section span {
+        font-size: 22px;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      mat-card-actions {
+        flex-direction: column;
+
+        .actions-left,
+        .actions-right {
+          width: 100%;
+
+          button {
+            flex: 1;
+          }
+        }
+      }
+    }
+  }
+}

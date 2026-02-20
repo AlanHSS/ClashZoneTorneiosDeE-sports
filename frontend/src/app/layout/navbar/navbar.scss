@@ -1,0 +1,350 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(10, 10, 15, 0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+  transition: all 0.3s ease;
+
+  &.scrolled {
+    background: rgba(10, 10, 15, 0.95);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+    border-bottom-color: rgba(102, 126, 234, 0.2);
+  }
+
+  .navbar-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  // ==========================================
+  // BRAND/LOGO
+  // ==========================================
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    .brand-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+      color: #667eea;
+      filter: drop-shadow(0 0 8px rgba(102, 126, 234, 0.5));
+    }
+
+    .brand-name {
+      font-size: 24px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+
+  // ==========================================
+  // DESKTOP MENU
+  // ==========================================
+  .navbar-menu {
+    display: flex;
+    gap: 8px;
+    flex: 1;
+    justify-content: center;
+
+    .nav-link {
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 500;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      position: relative;
+
+      mat-icon {
+        margin-right: 6px;
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%) scaleX(0);
+        width: 80%;
+        height: 2px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        transition: transform 0.3s ease;
+      }
+
+      &:hover {
+        color: #ffffff;
+        background: rgba(102, 126, 234, 0.1);
+
+        &::after {
+          transform: translateX(-50%) scaleX(1);
+        }
+      }
+
+      &.active {
+        color: #667eea;
+        background: rgba(102, 126, 234, 0.15);
+
+        &::after {
+          transform: translateX(-50%) scaleX(1);
+        }
+      }
+    }
+  }
+
+  // ==========================================
+  // USER ACTIONS
+  // ==========================================
+  .navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .user-button {
+      color: rgba(255, 255, 255, 0.9);
+      padding: 8px 16px;
+      border: 1px solid rgba(102, 126, 234, 0.3);
+      border-radius: 24px;
+      transition: all 0.3s ease;
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+
+      .user-name {
+        margin: 0 8px;
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .dropdown-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+
+      &:hover {
+        background: rgba(102, 126, 234, 0.15);
+        border-color: #667eea;
+      }
+    }
+
+    .login-button {
+      color: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(102, 126, 234, 0.3);
+      border-radius: 24px;
+      transition: all 0.3s ease;
+
+      mat-icon {
+        margin-right: 6px;
+      }
+
+      &:hover {
+        background: rgba(102, 126, 234, 0.15);
+        border-color: #667eea;
+        color: #ffffff;
+      }
+    }
+
+    .register-button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #ffffff;
+      border-radius: 24px;
+      padding: 8px 24px;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+      transition: all 0.3s ease;
+
+      mat-icon {
+        margin-right: 6px;
+      }
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+      }
+    }
+  }
+
+  // ==========================================
+  // MOBILE MENU TOGGLE
+  // ==========================================
+  .mobile-menu-toggle {
+    display: none;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  // ==========================================
+  // MOBILE MENU
+  // ==========================================
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: rgba(10, 10, 15, 0.98);
+    backdrop-filter: blur(20px);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+
+    &.open {
+      max-height: calc(100vh - 64px);
+      overflow-y: auto;
+    }
+
+    .mobile-menu-content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      .mobile-nav-link {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 16px;
+        color: rgba(255, 255, 255, 0.9);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+
+        mat-icon {
+          margin-right: 12px;
+        }
+
+        &:hover {
+          background: rgba(102, 126, 234, 0.15);
+          color: #ffffff;
+        }
+
+        &.logout-link {
+          color: #ff6b6b;
+
+          &:hover {
+            background: rgba(255, 107, 107, 0.1);
+          }
+        }
+      }
+
+      .mobile-register-button {
+        width: 100%;
+        height: 48px;
+        margin-top: 8px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #ffffff;
+        border-radius: 24px;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+
+        mat-icon {
+          margin-right: 8px;
+        }
+      }
+
+      mat-divider {
+        margin: 8px 0;
+        background-color: rgba(102, 126, 234, 0.2);
+      }
+    }
+  }
+}
+
+// ==========================================
+// USER MENU DROPDOWN STYLING
+// ==========================================
+::ng-deep .user-menu-panel {
+  background: #1a1a2e !important;
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  border-radius: 12px;
+  margin-top: 8px;
+
+  .mat-mdc-menu-item {
+    color: rgba(255, 255, 255, 0.9) !important;
+
+    mat-icon {
+      color: #667eea !important;
+      margin-right: 12px;
+    }
+
+    &:hover {
+      background: rgba(102, 126, 234, 0.15) !important;
+    }
+  }
+
+  .mat-divider {
+    background-color: rgba(102, 126, 234, 0.2);
+  }
+}
+
+// ==========================================
+// RESPONSIVE
+// ==========================================
+@media (max-width: 768px) {
+  .navbar {
+    .navbar-container {
+      padding: 12px 16px;
+    }
+
+    .desktop-menu,
+    .desktop-actions {
+      display: none;
+    }
+
+    .mobile-menu-toggle {
+      display: block;
+    }
+
+    .mobile-menu {
+      display: block;
+    }
+
+    .navbar-brand {
+      .brand-name {
+        font-size: 20px;
+      }
+
+      .brand-icon {
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
+      }
+    }
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .navbar {
+    .navbar-menu {
+      gap: 4px;
+    }
+
+    .navbar-actions {
+      .user-name {
+        display: none;
+      }
+    }
+  }
+}

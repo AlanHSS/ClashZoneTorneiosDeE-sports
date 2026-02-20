@@ -1,0 +1,138 @@
+<div class="tournament-form-container">
+  <div class="form-header">
+    <h1>
+      <mat-icon>{{ isEditMode ? 'edit' : 'add' }}</mat-icon>
+      {{ isEditMode ? 'Editar Torneio' : 'Criar Novo Torneio' }}
+    </h1>
+  </div>
+
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="tournamentForm" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <!-- Nome -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nome do Torneio</mat-label>
+            <input
+              matInput
+              formControlName="nomeDoTorneio"
+              placeholder="Ex: Campeonato Nacional de LoL"
+            >
+            <mat-icon matPrefix>emoji_events</mat-icon>
+            @if (tournamentForm.get('nomeDoTorneio')?.invalid && tournamentForm.get('nomeDoTorneio')?.touched) {
+            <mat-error>{{ getErrorMessage('nomeDoTorneio') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- Descrição -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Descrição</mat-label>
+            <textarea
+              matInput
+              formControlName="descricaoDoTorneio"
+              placeholder="Descreva o torneio..."
+              rows="4"
+            ></textarea>
+            <mat-icon matPrefix>description</mat-icon>
+          </mat-form-field>
+
+          <!-- Jogo -->
+          <mat-form-field appearance="outline">
+            <mat-label>Jogo</mat-label>
+            <mat-select formControlName="jogoDoTorneio">
+              @for (game of games; track game) {
+              <mat-option [value]="game">{{ game }}</mat-option>
+              }
+            </mat-select>
+            <mat-icon matPrefix>sports_esports</mat-icon>
+            @if (tournamentForm.get('jogoDoTorneio')?.invalid && tournamentForm.get('jogoDoTorneio')?.touched) {
+            <mat-error>{{ getErrorMessage('jogoDoTorneio') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- Plataforma -->
+          <mat-form-field appearance="outline">
+            <mat-label>Plataforma</mat-label>
+            <mat-select formControlName="plataforma">
+              @for (plat of plataformas; track plat) {
+              <mat-option [value]="plat">{{ plat }}</mat-option>
+              }
+            </mat-select>
+            <mat-icon matPrefix>devices</mat-icon>
+            @if (tournamentForm.get('plataforma')?.invalid && tournamentForm.get('plataforma')?.touched) {
+            <mat-error>{{ getErrorMessage('plataforma') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- Data/Hora de Início -->
+          <mat-form-field appearance="outline">
+            <mat-label>Data e Hora de Início</mat-label>
+            <input
+              matInput
+              type="datetime-local"
+              formControlName="inicioDoTorneio"
+            >
+            <mat-icon matPrefix>event</mat-icon>
+            @if (tournamentForm.get('inicioDoTorneio')?.invalid && tournamentForm.get('inicioDoTorneio')?.touched) {
+            <mat-error>{{ getErrorMessage('inicioDoTorneio') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- Quantidade de Equipes -->
+          <mat-form-field appearance="outline">
+            <mat-label>Quantidade de Equipes</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="quantidadeDeEquipes"
+              placeholder="Ex: 16"
+              min="2"
+              max="128"
+            >
+            <mat-icon matPrefix>groups</mat-icon>
+            @if (tournamentForm.get('quantidadeDeEquipes')?.invalid && tournamentForm.get('quantidadeDeEquipes')?.touched) {
+            <mat-error>{{ getErrorMessage('quantidadeDeEquipes') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- Status -->
+          @if (isEditMode) {
+          <mat-form-field appearance="outline">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="statusDoTorneio">
+              @for (s of status; track s) {
+              <mat-option [value]="s">{{ s }}</mat-option>
+              }
+            </mat-select>
+            <mat-icon matPrefix>info</mat-icon>
+            @if (tournamentForm.get('statusDoTorneio')?.invalid && tournamentForm.get('statusDoTorneio')?.touched) {
+            <mat-error>{{ getErrorMessage('statusDoTorneio') }}</mat-error>
+            }
+          </mat-form-field>
+          }
+        </div>
+
+        <!-- Botões -->
+        <div class="form-actions">
+          <button
+            mat-button
+            type="button"
+            (click)="onCancel()"
+          >
+            <mat-icon>close</mat-icon>
+            Cancelar
+          </button>
+
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+          >
+            <mat-icon>{{ isEditMode ? 'save' : 'add' }}</mat-icon>
+            {{ isEditMode ? 'Salvar Alterações' : 'Criar Torneio' }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

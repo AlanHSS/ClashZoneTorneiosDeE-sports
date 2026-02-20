@@ -1,65 +1,152 @@
-// Estilos globais para badges de status
-// Adicione este import no styles.scss: @import 'status-badges';
+// Estilos globais para badges de status - Dark Theme
 
-// Status de Torneio
+// ==========================================
+// STATUS DE TORNEIO
+// ==========================================
 .status-agendado {
-  background-color: #2196f3 !important;
+  background: linear-gradient(135deg, #667eea 0%, #4158d0 100%) !important;
   color: white !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
 .status-em-andamento {
-  background-color: #ff9800 !important;
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%) !important;
   color: white !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
 }
 
 .status-finalizado {
-  background-color: #4caf50 !important;
+  background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%) !important;
   color: white !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
 }
 
 .status-cancelado {
-  background-color: #f44336 !important;
+  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%) !important;
   color: white !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
 }
 
-// Status de Inscrição
+// ==========================================
+// STATUS DE INSCRIÇÃO
+// ==========================================
 .status-pendente {
-  background-color: #ff9800 !important;
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%) !important;
   color: white !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
 }
 
 .status-aprovada {
-  background-color: #4caf50 !important;
+  background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%) !important;
   color: white !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
 }
 
 .status-recusada {
-  background-color: #f44336 !important;
+  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%) !important;
   color: white !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
 }
 
 .status-cancelada {
-  background-color: #757575 !important;
+  background: linear-gradient(135deg, #757575 0%, #616161 100%) !important;
   color: white !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(117, 117, 117, 0.3);
 }
 
-// Snackbar styles
+// ==========================================
+// SNACKBAR STYLES
+// ==========================================
 .snackbar-success {
-  --mdc-snackbar-container-color: #4caf50 !important;
-  --mat-snack-bar-button-color: white !important;
+  --mdc-snackbar-container-color: #1a1a2e !important;
+  --mat-snack-bar-button-color: #4caf50 !important;
+
+  .mdc-snackbar__surface {
+    background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%) !important;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    box-shadow: 0 8px 24px rgba(76, 175, 80, 0.4);
+  }
+
+  .mat-mdc-snack-bar-label {
+    color: white !important;
+    font-weight: 600;
+  }
 }
 
 .snackbar-error {
-  --mdc-snackbar-container-color: #f44336 !important;
-  --mat-snack-bar-button-color: white !important;
+  --mdc-snackbar-container-color: #1a1a2e !important;
+  --mat-snack-bar-button-color: #f44336 !important;
+
+  .mdc-snackbar__surface {
+    background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%) !important;
+    border: 1px solid rgba(244, 67, 54, 0.3);
+    box-shadow: 0 8px 24px rgba(244, 67, 54, 0.4);
+  }
+
+  .mat-mdc-snack-bar-label {
+    color: white !important;
+    font-weight: 600;
+  }
 }
 
 .snackbar-warning {
-  --mdc-snackbar-container-color: #ff9800 !important;
-  --mat-snack-bar-button-color: white !important;
+  --mdc-snackbar-container-color: #1a1a2e !important;
+  --mat-snack-bar-button-color: #ff9800 !important;
+
+  .mdc-snackbar__surface {
+    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%) !important;
+    border: 1px solid rgba(255, 152, 0, 0.3);
+    box-shadow: 0 8px 24px rgba(255, 152, 0, 0.4);
+  }
+
+  .mat-mdc-snack-bar-label {
+    color: white !important;
+    font-weight: 600;
+  }
 }
 
 .snackbar-info {
-  --mdc-snackbar-container-color: #2196f3 !important;
-  --mat-snack-bar-button-color: white !important;
+  --mdc-snackbar-container-color: #1a1a2e !important;
+  --mat-snack-bar-button-color: #667eea !important;
+
+  .mdc-snackbar__surface {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border: 1px solid rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+  }
+
+  .mat-mdc-snack-bar-label {
+    color: white !important;
+    font-weight: 600;
+  }
+}
+
+// ==========================================
+// MATERIAL CHIP OVERRIDES (GLOBAL)
+// ==========================================
+::ng-deep {
+  mat-chip {
+    &.status-agendado,
+    &.status-em-andamento,
+    &.status-finalizado,
+    &.status-cancelado,
+    &.status-pendente,
+    &.status-aprovada,
+    &.status-recusada,
+    &.status-cancelada {
+      font-weight: 600 !important;
+      border-radius: 12px !important;
+      padding: 6px 16px !important;
+      height: auto !important;
+      min-height: 28px !important;
+    }
+  }
 }

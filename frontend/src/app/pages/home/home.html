@@ -1,0 +1,183 @@
+<div class="home-container">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-background">
+      <div class="hero-overlay"></div>
+      <div class="particles"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="logo-section">
+        <mat-icon class="logo-icon">sports_esports</mat-icon>
+        <h1 class="brand-name">ClashZone</h1>
+      </div>
+
+      <h2 class="hero-title">
+        A Arena Definitiva para
+        <span class="highlight"> E-Sports Competitivo</span>
+      </h2>
+
+      <p class="hero-subtitle">
+        Organize torneios, monte equipes épicas e domine a competição.
+        Sua jornada rumo à glória começa aqui.
+      </p>
+
+      <div class="hero-actions">
+        @if (authService.currentUser$ | async) {
+        <button
+          mat-raised-button
+          color="primary"
+          class="cta-button primary"
+          (click)="onViewTournaments()"
+        >
+          <mat-icon>emoji_events</mat-icon>
+          Ver Torneios
+        </button>
+        } @else {
+        <button
+          mat-raised-button
+          color="primary"
+          class="cta-button primary"
+          (click)="onGetStarted()"
+        >
+          <mat-icon>rocket_launch</mat-icon>
+          Começar Agora
+        </button>
+        <button
+          mat-stroked-button
+          class="cta-button secondary"
+          routerLink="/auth/login"
+        >
+          <mat-icon>login</mat-icon>
+          Já tenho conta
+        </button>
+        }
+      </div>
+
+      <button
+        mat-icon-button
+        class="scroll-down"
+        (click)="scrollToFeatures()"
+      >
+        <mat-icon>keyboard_arrow_down</mat-icon>
+      </button>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section" id="features">
+    <div class="section-header">
+      <h2>Por que escolher ClashZone?</h2>
+      <p>Tudo que você precisa para dominar o cenário competitivo</p>
+    </div>
+
+    <div class="features-grid">
+      @for (feature of features; track feature.title) {
+      <mat-card class="feature-card">
+        <div class="feature-icon">
+          <mat-icon>{{ feature.icon }}</mat-icon>
+        </div>
+        <h3>{{ feature.title }}</h3>
+        <p>{{ feature.description }}</p>
+      </mat-card>
+      }
+    </div>
+  </section>
+
+  <!-- Games Section -->
+  <section class="games-section">
+    <div class="section-header">
+      <h2>Jogos Suportados</h2>
+      <p>Competições para os principais títulos de e-sports</p>
+    </div>
+
+    <div class="games-grid">
+      @for (game of games; track game.name) {
+      <div class="game-card">
+        <div class="game-icon">{{ game.image }}</div>
+        <span>{{ game.name }}</span>
+      </div>
+      }
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <mat-icon>emoji_events</mat-icon>
+        <h3>500+</h3>
+        <p>Torneios Realizados</p>
+      </div>
+      <div class="stat-item">
+        <mat-icon>groups</mat-icon>
+        <h3>10K+</h3>
+        <p>Jogadores Ativos</p>
+      </div>
+      <div class="stat-item">
+        <mat-icon>military_tech</mat-icon>
+        <h3>R$ 1M+</h3>
+        <p>Em Prêmios</p>
+      </div>
+      <div class="stat-item">
+        <mat-icon>public</mat-icon>
+        <h3>50+</h3>
+        <p>Países</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2>Pronto para Competir?</h2>
+      <p>Junte-se à maior comunidade de e-sports competitivo do Brasil</p>
+
+      @if (!(authService.currentUser$ | async)) {
+      <div class="cta-actions">
+        <button
+          mat-raised-button
+          color="primary"
+          class="cta-button-large"
+          (click)="onGetStarted()"
+        >
+          <mat-icon>rocket_launch</mat-icon>
+          Criar Conta Grátis
+        </button>
+      </div>
+      }
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="home-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <mat-icon>sports_esports</mat-icon>
+        <span>ClashZone</span>
+      </div>
+
+      <div class="footer-links">
+        <a routerLink="/tournaments">Torneios</a>
+        <a routerLink="/auth/register">Cadastro</a>
+        <a routerLink="/auth/login">Login</a>
+      </div>
+
+      <div class="footer-social">
+        <button mat-icon-button>
+          <mat-icon>code</mat-icon>
+        </button>
+        <button mat-icon-button>
+          <mat-icon>chat</mat-icon>
+        </button>
+        <button mat-icon-button>
+          <mat-icon>alternate_email</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2025 ClashZone. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+</div>

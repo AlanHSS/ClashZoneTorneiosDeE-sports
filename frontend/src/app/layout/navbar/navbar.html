@@ -1,0 +1,239 @@
+<nav class="navbar" [class.scrolled]="isScrolled">
+  <div class="navbar-container">
+    <!-- Logo/Brand -->
+    <div class="navbar-brand" routerLink="/">
+      <mat-icon class="brand-icon">sports_esports</mat-icon>
+      <span class="brand-name">ClashZone</span>
+    </div>
+
+    <!-- Desktop Menu -->
+    <div class="navbar-menu desktop-menu">
+      <a
+        mat-button
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: true}"
+        class="nav-link"
+      >
+        <mat-icon>home</mat-icon>
+        Home
+      </a>
+
+      @if (authService.currentUser$ | async) {
+      <a
+        mat-button
+        routerLink="/tournaments"
+        routerLinkActive="active"
+        class="nav-link"
+      >
+        <mat-icon>emoji_events</mat-icon>
+        Torneios
+      </a>
+
+      <a
+        mat-button
+        routerLink="/teams"
+        routerLinkActive="active"
+        class="nav-link"
+      >
+        <mat-icon>groups</mat-icon>
+        Equipes
+      </a>
+
+      <a
+        mat-button
+        routerLink="/inscriptions"
+        routerLinkActive="active"
+        class="nav-link"
+      >
+        <mat-icon>assignment</mat-icon>
+        Inscrições
+      </a>
+      }
+    </div>
+
+    <!-- User Actions (Desktop) -->
+    <div class="navbar-actions desktop-actions">
+      @if (authService.currentUser$ | async; as user) {
+      <!-- User Menu -->
+      <button
+        mat-button
+        [matMenuTriggerFor]="userMenu"
+        class="user-button"
+      >
+        <mat-icon>account_circle</mat-icon>
+        <span class="user-name">{{ user.nickname }}</span>
+        <mat-icon class="dropdown-icon">arrow_drop_down</mat-icon>
+      </button>
+
+      <mat-menu #userMenu="matMenu" class="user-menu-panel">
+        <button mat-menu-item routerLink="/profile">
+          <mat-icon>person</mat-icon>
+          <span>Meu Perfil</span>
+        </button>
+
+        @if (authService.isAdmin()) {
+        <button mat-menu-item routerLink="/tournaments/create">
+          <mat-icon>add_circle</mat-icon>
+          <span>Criar Torneio</span>
+        </button>
+
+        <mat-divider></mat-divider>
+
+        <button mat-menu-item routerLink="/admin">
+          <mat-icon>admin_panel_settings</mat-icon>
+          <span>Painel Admin</span>
+        </button>
+        }
+
+        <mat-divider></mat-divider>
+
+        <button mat-menu-item (click)="onLogout()">
+          <mat-icon>logout</mat-icon>
+          <span>Sair</span>
+        </button>
+      </mat-menu>
+      } @else {
+      <!-- Auth Buttons -->
+      <button
+        mat-button
+        routerLink="/auth/login"
+        class="login-button"
+      >
+        <mat-icon>login</mat-icon>
+        Entrar
+      </button>
+
+      <button
+        mat-raised-button
+        routerLink="/auth/register"
+        class="register-button"
+      >
+        <mat-icon>rocket_launch</mat-icon>
+        Criar Conta
+      </button>
+      }
+    </div>
+
+    <!-- Mobile Menu Toggle -->
+    <button
+      mat-icon-button
+      class="mobile-menu-toggle"
+      (click)="toggleMobileMenu()"
+    >
+      <mat-icon>{{ mobileMenuOpen ? 'close' : 'menu' }}</mat-icon>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" [class.open]="mobileMenuOpen">
+    <div class="mobile-menu-content">
+      <a
+        mat-button
+        routerLink="/"
+        (click)="closeMobileMenu()"
+        class="mobile-nav-link"
+      >
+        <mat-icon>home</mat-icon>
+        Home
+      </a>
+
+      @if (authService.currentUser$ | async) {
+      <a
+        mat-button
+        routerLink="/tournaments"
+        (click)="closeMobileMenu()"
+        class="mobile-nav-link"
+      >
+        <mat-icon>emoji_events</mat-icon>
+        Torneios
+      </a>
+
+      <a
+        mat-button
+        routerLink="/teams"
+        (click)="closeMobileMenu()"
+        class="mobile-nav-link"
+      >
+        <mat-icon>groups</mat-icon>
+        Equipes
+      </a>
+
+      <a
+        mat-button
+        routerLink="/inscriptions"
+        (click)="closeMobileMenu()"
+        class="mobile-nav-link"
+      >
+        <mat-icon>assignment</mat-icon>
+        Inscrições
+      </a>
+
+      <mat-divider></mat-divider>
+
+      <a
+        mat-button
+        routerLink="/profile"
+        (click)="closeMobileMenu()"
+        class="mobile-nav-link"
+      >
+        <mat-icon>person</mat-icon>
+        Meu Perfil
+      </a>
+
+      @if (authService.isAdmin()) {
+      <a
+        mat-button
+        routerLink="/tournaments/create"
+        (click)="closeMobileMenu()"
+        class="mobile-nav-link"
+      >
+        <mat-icon>add_circle</mat-icon>
+        Criar Torneio
+      </a>
+
+      <a
+        mat-button
+        routerLink="/admin"
+        (click)="closeMobileMenu()"
+        class="mobile-nav-link"
+      >
+        <mat-icon>admin_panel_settings</mat-icon>
+        Painel Admin
+      </a>
+      }
+
+      <mat-divider></mat-divider>
+
+      <button
+        mat-button
+        (click)="onLogout()"
+        class="mobile-nav-link logout-link"
+      >
+        <mat-icon>logout</mat-icon>
+        Sair
+      </button>
+      } @else {
+      <a
+        mat-button
+        routerLink="/auth/login"
+        (click)="closeMobileMenu()"
+        class="mobile-nav-link"
+      >
+        <mat-icon>login</mat-icon>
+        Entrar
+      </a>
+
+      <button
+        mat-raised-button
+        routerLink="/auth/register"
+        (click)="closeMobileMenu()"
+        class="mobile-register-button"
+      >
+        <mat-icon>rocket_launch</mat-icon>
+        Criar Conta
+      </button>
+      }
+    </div>
+  </div>
+</nav>

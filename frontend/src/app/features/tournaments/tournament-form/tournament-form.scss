@@ -1,0 +1,266 @@
+.tournament-form-container {
+  min-height: 100vh;
+  padding: 40px 24px;
+  max-width: 900px;
+  margin: 0 auto;
+  background: #0a0a0f;
+
+  .form-header {
+    margin-bottom: 32px;
+    animation: fadeInDown 0.6s ease-out;
+
+    h1 {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 0;
+      font-size: 36px;
+      font-weight: 900;
+      color: #ffffff;
+
+      mat-icon {
+        font-size: 42px;
+        width: 42px;
+        height: 42px;
+        color: #667eea;
+        filter: drop-shadow(0 0 12px rgba(102, 126, 234, 0.5));
+      }
+    }
+  }
+
+  mat-card {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 1px solid rgba(102, 126, 234, 0.3);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 0.6s ease-out;
+
+    mat-card-content {
+      padding: 32px;
+
+      form {
+        .form-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 24px;
+
+          .full-width {
+            grid-column: 1 / -1;
+          }
+
+          mat-form-field {
+            width: 100%;
+
+            ::ng-deep {
+              .mat-mdc-text-field-wrapper {
+                background-color: rgba(0, 0, 0, 0.3);
+                border-radius: 12px;
+              }
+
+              .mat-mdc-form-field-focus-overlay {
+                background-color: transparent;
+              }
+
+              .mat-mdc-form-field-error {
+                color: #ff6b6b;
+              }
+
+              input,
+              textarea,
+              .mat-mdc-select {
+                color: #ffffff;
+                caret-color: #667eea;
+              }
+
+              label,
+              .mat-mdc-select-value {
+                color: rgba(255, 255, 255, 0.7);
+              }
+
+              .mat-icon {
+                color: #667eea;
+              }
+
+              .mdc-notched-outline__leading,
+              .mdc-notched-outline__notch,
+              .mdc-notched-outline__trailing {
+                border-color: rgba(102, 126, 234, 0.3) !important;
+              }
+
+              .mdc-text-field--focused {
+                .mdc-notched-outline__leading,
+                .mdc-notched-outline__notch,
+                .mdc-notched-outline__trailing {
+                  border-color: #667eea !important;
+                  border-width: 2px !important;
+                }
+              }
+
+              textarea {
+                min-height: 100px;
+                resize: vertical;
+              }
+            }
+          }
+        }
+
+        .form-actions {
+          display: flex;
+          justify-content: flex-end;
+          gap: 12px;
+          margin-top: 40px;
+          padding-top: 32px;
+          border-top: 1px solid rgba(102, 126, 234, 0.2);
+
+          button {
+            height: 48px;
+            padding: 0 32px;
+            border-radius: 24px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+
+            mat-icon {
+              margin-right: 6px;
+            }
+
+            &[color="primary"] {
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+
+              &:hover:not(:disabled) {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 24px rgba(102, 126, 234, 0.6);
+              }
+
+              &:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+              }
+            }
+
+            &:not([color]) {
+              border: 1px solid rgba(102, 126, 234, 0.3);
+              color: rgba(255, 255, 255, 0.9);
+
+              &:hover {
+                background: rgba(102, 126, 234, 0.15);
+                border-color: #667eea;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Dropdown menus
+::ng-deep .mat-mdc-select-panel {
+  background: #1a1a2e !important;
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  border-radius: 12px;
+
+  .mat-mdc-option {
+    color: rgba(255, 255, 255, 0.9) !important;
+
+    &:hover {
+      background: rgba(102, 126, 234, 0.15) !important;
+    }
+
+    &.mat-mdc-option-active {
+      background: rgba(102, 126, 234, 0.2) !important;
+    }
+  }
+}
+
+// Datepicker
+::ng-deep .mat-datepicker-content {
+  background: #1a1a2e;
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  border-radius: 12px;
+
+  .mat-calendar {
+    color: #ffffff;
+
+    .mat-calendar-header {
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .mat-calendar-body-label {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .mat-calendar-body-cell-content {
+      color: #ffffff;
+      border-color: transparent;
+
+      &:hover {
+        background: rgba(102, 126, 234, 0.15);
+      }
+    }
+
+    .mat-calendar-body-selected {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #ffffff;
+    }
+
+    .mat-calendar-body-today:not(.mat-calendar-body-selected) {
+      border-color: #667eea;
+    }
+  }
+}
+
+// Responsivo
+@media (max-width: 768px) {
+  .tournament-form-container {
+    padding: 24px 16px;
+
+    .form-header h1 {
+      font-size: 28px;
+
+      mat-icon {
+        font-size: 32px;
+        width: 32px;
+        height: 32px;
+      }
+    }
+
+    mat-card-content {
+      padding: 20px !important;
+
+      .form-grid {
+        grid-template-columns: 1fr !important;
+      }
+
+      .form-actions {
+        flex-direction: column-reverse;
+
+        button {
+          width: 100%;
+        }
+      }
+    }
+  }
+}

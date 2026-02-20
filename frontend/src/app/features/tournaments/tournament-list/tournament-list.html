@@ -1,0 +1,108 @@
+<div class="tournament-list-container">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1>
+        <mat-icon>emoji_events</mat-icon>
+        Torneios
+      </h1>
+      <p class="subtitle">Explore e participe de torneios de e-sports</p>
+    </div>
+
+    <div class="header-actions">
+      <button
+        mat-raised-button
+        (click)="toggleFilters()"
+        [color]="showFilters ? 'primary' : 'default'"
+      >
+        <mat-icon>filter_list</mat-icon>
+        Filtros
+      </button>
+
+      @if (canCreateTournament()) {
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="onCreateTournament()"
+      >
+        <mat-icon>add</mat-icon>
+        Criar Torneio
+      </button>
+      }
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  @if (showFilters) {
+  <mat-card class="filters-card">
+    <mat-card-content>
+      <form [formGroup]="filterForm" class="filters-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Nome do Torneio</mat-label>
+          <input matInput formControlName="nomeDoTorneio" placeholder="Buscar...">
+          <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Jogo</mat-label>
+          <mat-select formControlName="jogoDoTorneio">
+            <mat-option [value]="''">Todos</mat-option>
+            @for (game of games; track game) {
+            <mat-option [value]="game">{{ game }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="statusDoTorneio">
+            <mat-option [value]="''">Todos</mat-option>
+            @for (s of status; track s) {
+            <mat-option [value]="s">{{ s }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Plataforma</mat-label>
+          <mat-select formControlName="plataforma">
+            <mat-option [value]="''">Todas</mat-option>
+            @for (plat of plataformas; track plat) {
+            <mat-option [value]="plat">{{ plat }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <button
+          mat-button
+          type="button"
+          (click)="clearFilters()"
+          class="clear-button"
+        >
+          <mat-icon>clear</mat-icon>
+          Limpar Filtros
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+  }
+
+  <!-- Lista de Torneios -->
+  <div class="tournaments-grid">
+    @if (filteredTournaments.length > 0) {
+    @for (tournament of filteredTournaments; track tournament.id) {
+    <app-tournament-card
+      [tournament]="tournament"
+      (viewDetails)="onViewDetails($event)"
+      (register)="onRegister($event)"
+    ></app-tournament-card>
+    }
+    } @else {
+    <div class="empty-state">
+      <mat-icon>search_off</mat-icon>
+      <h3>Nenhum torneio encontrado</h3>
+      <p>Tente ajustar os filtros ou criar um novo torneio</p>
+    </div>
+    }
+  </div>
+</div>
