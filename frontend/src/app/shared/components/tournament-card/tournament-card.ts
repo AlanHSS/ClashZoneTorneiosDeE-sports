@@ -7,6 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { TorneioDomain } from '@core/models';
 import { GameNamePipe } from '@shared/pipes/game-name-pipe';
 import { StatusBadgePipe } from '@shared/pipes/status-badge-pipe';
+import { StatusNamePipe } from '@shared/pipes/status-name-pipe';
+import { PlatformNamePipe } from '@shared/pipes/platform-name-pipe';
 
 @Component({
   selector: 'app-tournament-card',
@@ -18,7 +20,9 @@ import { StatusBadgePipe } from '@shared/pipes/status-badge-pipe';
     MatChipsModule,
     MatIconModule,
     GameNamePipe,
-    StatusBadgePipe
+    StatusBadgePipe,
+    StatusNamePipe,
+    PlatformNamePipe
   ],
   templateUrl: './tournament-card.html',
   styleUrl: './tournament-card.scss'

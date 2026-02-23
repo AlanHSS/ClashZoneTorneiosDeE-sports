@@ -1,108 +1,151 @@
 <div class="tournament-list-container">
-  <!-- Header -->
-  <div class="page-header">
-    <div class="header-content">
-      <h1>
-        <mat-icon>emoji_events</mat-icon>
-        Torneios
-      </h1>
-      <p class="subtitle">Explore e participe de torneios de e-sports</p>
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-background">
+      <div class="hero-overlay"></div>
+      <div class="particles"></div>
     </div>
 
-    <div class="header-actions">
-      <button
-        mat-raised-button
-        (click)="toggleFilters()"
-        [color]="showFilters ? 'primary' : 'default'"
-      >
-        <mat-icon>filter_list</mat-icon>
-        Filtros
-      </button>
+    <div class="hero-content">
+      <div class="header-icon">
+        <mat-icon>emoji_events</mat-icon>
+      </div>
+
+      <h1 class="page-title">
+        Torneios <span class="highlight">Disponíveis</span>
+      </h1>
+
+      <p class="page-subtitle">
+        Explore competições épicas, inscreva sua equipe e conquiste a glória
+      </p>
 
       @if (canCreateTournament()) {
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="onCreateTournament()"
-      >
-        <mat-icon>add</mat-icon>
-        Criar Torneio
-      </button>
+      <div class="hero-actions">
+        <button
+          mat-raised-button
+          class="create-tournament-button"
+          (click)="onCreateTournament()"
+        >
+          <mat-icon>add_circle</mat-icon>
+          Criar Novo Torneio
+        </button>
+      </div>
       }
     </div>
-  </div>
+  </section>
 
-  <!-- Filtros -->
-  @if (showFilters) {
-  <mat-card class="filters-card">
-    <mat-card-content>
+  <!-- Filters Section -->
+  <section class="filters-section">
+    <div class="filters-header">
+      <h2>
+        <mat-icon>filter_list</mat-icon>
+        Filtrar Torneios
+      </h2>
+      <button
+        mat-button
+        class="toggle-filters-btn"
+        (click)="toggleFilters()"
+      >
+        <mat-icon>{{ showFilters ? 'expand_less' : 'expand_more' }}</mat-icon>
+        {{ showFilters ? 'Ocultar' : 'Mostrar' }} Filtros
+      </button>
+    </div>
+
+    @if (showFilters) {
+    <div class="filters-content">
       <form [formGroup]="filterForm" class="filters-form">
         <mat-form-field appearance="outline">
-          <mat-label>Nome do Torneio</mat-label>
-          <input matInput formControlName="nomeDoTorneio" placeholder="Buscar...">
+          <mat-label>Buscar por nome</mat-label>
+          <input matInput formControlName="nomeDoTorneio" placeholder="Digite o nome...">
           <mat-icon matPrefix>search</mat-icon>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Jogo</mat-label>
           <mat-select formControlName="jogoDoTorneio">
-            <mat-option [value]="''">Todos</mat-option>
+            <mat-option [value]="''">Todos os jogos</mat-option>
             @for (game of games; track game) {
             <mat-option [value]="game">{{ game }}</mat-option>
             }
           </mat-select>
+          <mat-icon matPrefix>sports_esports</mat-icon>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Status</mat-label>
           <mat-select formControlName="statusDoTorneio">
-            <mat-option [value]="''">Todos</mat-option>
+            <mat-option [value]="''">Todos os status</mat-option>
             @for (s of status; track s) {
             <mat-option [value]="s">{{ s }}</mat-option>
             }
           </mat-select>
+          <mat-icon matPrefix>info</mat-icon>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Plataforma</mat-label>
           <mat-select formControlName="plataforma">
-            <mat-option [value]="''">Todas</mat-option>
+            <mat-option [value]="''">Todas as plataformas</mat-option>
             @for (plat of plataformas; track plat) {
             <mat-option [value]="plat">{{ plat }}</mat-option>
             }
           </mat-select>
+          <mat-icon matPrefix>devices</mat-icon>
         </mat-form-field>
 
         <button
-          mat-button
+          mat-stroked-button
           type="button"
           (click)="clearFilters()"
-          class="clear-button"
+          class="clear-filters-btn"
         >
-          <mat-icon>clear</mat-icon>
+          <mat-icon>clear_all</mat-icon>
           Limpar Filtros
         </button>
       </form>
-    </mat-card-content>
-  </mat-card>
-  }
-
-  <!-- Lista de Torneios -->
-  <div class="tournaments-grid">
-    @if (filteredTournaments.length > 0) {
-    @for (tournament of filteredTournaments; track tournament.id) {
-    <app-tournament-card
-      [tournament]="tournament"
-      (viewDetails)="onViewDetails($event)"
-      (register)="onRegister($event)"
-    ></app-tournament-card>
-    }
-    } @else {
-    <div class="empty-state">
-      <mat-icon>search_off</mat-icon>
-      <h3>Nenhum torneio encontrado</h3>
-      <p>Tente ajustar os filtros ou criar um novo torneio</p>
     </div>
     }
-  </div>
+  </section>
+
+  <!-- Tournaments Grid -->
+  <section class="tournaments-section">
+    <div class="section-header">
+      <h2>
+        <mat-icon>emoji_events</mat-icon>
+        {{ filteredTournaments.length }}
+        {{ filteredTournaments.length === 1 ? 'Torneio Encontrado' : 'Torneios Encontrados' }}
+      </h2>
+    </div>
+
+    <div class="tournaments-grid">
+      @if (filteredTournaments.length > 0) {
+      @for (tournament of filteredTournaments; track tournament.id) {
+      <app-tournament-card
+        [tournament]="tournament"
+        (viewDetails)="onViewDetails($event)"
+        (register)="onRegister($event)"
+      ></app-tournament-card>
+      }
+      } @else {
+      <div class="empty-state">
+        <div class="empty-icon">
+          <mat-icon>search_off</mat-icon>
+        </div>
+        <h3>Nenhum torneio encontrado</h3>
+        <p>Tente ajustar os filtros ou aguarde novos torneios</p>
+        @if (canCreateTournament()) {
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="onCreateTournament()"
+          class="empty-action-btn"
+        >
+          <mat-icon>add_circle</mat-icon>
+          Criar Primeiro Torneio
+        </button>
+        }
+      </div>
+      }
+    </div>
+  </section>
 </div>

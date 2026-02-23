@@ -23,7 +23,8 @@
       </p>
 
       <div class="hero-actions">
-        @if (authService.currentUser$ | async) {
+        @if (authService.currentUser$ | async; as user) {
+        <!-- Usuário Logado -->
         <button
           mat-raised-button
           color="primary"
@@ -33,7 +34,19 @@
           <mat-icon>emoji_events</mat-icon>
           Ver Torneios
         </button>
+
+        @if (authService.isAdmin()) {
+        <button
+          mat-raised-button
+          class="cta-button accent"
+          routerLink="/tournaments/create"
+        >
+          <mat-icon>add_circle</mat-icon>
+          Criar Torneio
+        </button>
+        }
         } @else {
+        <!-- Usuário NÃO Logado -->
         <button
           mat-raised-button
           color="primary"
@@ -130,10 +143,41 @@
   <!-- CTA Section -->
   <section class="cta-section">
     <div class="cta-content">
+      @if (authService.currentUser$ | async; as user) {
+      <!-- CTA para usuários logados -->
+      <h2>Organize seu Torneio</h2>
+      <p>Crie competições épicas e gerencie equipes com facilidade</p>
+
+      @if (authService.isAdmin()) {
+      <div class="cta-actions">
+        <button
+          mat-raised-button
+          color="primary"
+          class="cta-button-large"
+          routerLink="/tournaments/create"
+        >
+          <mat-icon>add_circle</mat-icon>
+          Criar Novo Torneio
+        </button>
+      </div>
+      } @else {
+      <div class="cta-actions">
+        <button
+          mat-raised-button
+          color="primary"
+          class="cta-button-large"
+          routerLink="/tournaments"
+        >
+          <mat-icon>emoji_events</mat-icon>
+          Explorar Torneios
+        </button>
+      </div>
+      }
+      } @else {
+      <!-- CTA para usuários não logados -->
       <h2>Pronto para Competir?</h2>
       <p>Junte-se à maior comunidade de e-sports competitivo do Brasil</p>
 
-      @if (!(authService.currentUser$ | async)) {
       <div class="cta-actions">
         <button
           mat-raised-button
@@ -159,6 +203,9 @@
 
       <div class="footer-links">
         <a routerLink="/tournaments">Torneios</a>
+        @if (authService.isAdmin()) {
+        <a routerLink="/tournaments/create">Criar Torneio</a>
+        }
         <a routerLink="/auth/register">Cadastro</a>
         <a routerLink="/auth/login">Login</a>
       </div>

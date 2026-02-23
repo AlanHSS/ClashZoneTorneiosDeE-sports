@@ -21,7 +21,7 @@ import { AuthService } from '@core/services/auth';
 })
 export class HomeComponent {
   private router = inject(Router);
-  authService = inject(AuthService);
+  authService = inject(AuthService); // Public para usar no template
 
   features = [
     {

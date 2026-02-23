@@ -13,6 +13,9 @@ import { NotificationService } from '@core/services/notification';
 import { AuthService } from '@core/services/auth';
 import { TorneioDomain, Games, StatusDoTorneio, Plataforma } from '@core/models';
 import { TournamentCardComponent } from '@shared/components/tournament-card/tournament-card';
+import { GameNamePipe } from '@shared/pipes/game-name-pipe';
+import { StatusNamePipe } from '@shared/pipes/status-name-pipe';
+import { PlatformNamePipe } from '@shared/pipes/platform-name-pipe';
 
 @Component({
   selector: 'app-tournament-list',
@@ -26,7 +29,10 @@ import { TournamentCardComponent } from '@shared/components/tournament-card/tour
     MatFormFieldModule,
     MatSelectModule,
     MatInputModule,
-    TournamentCardComponent
+    TournamentCardComponent,
+    GameNamePipe,
+    StatusNamePipe,
+    PlatformNamePipe
   ],
   templateUrl: './tournament-list.html',
   styleUrl: './tournament-list.scss'
@@ -34,7 +40,7 @@ import { TournamentCardComponent } from '@shared/components/tournament-card/tour
 export class TournamentListComponent implements OnInit {
   private tournamentService = inject(TournamentService);
   private notificationService = inject(NotificationService);
-  private authService = inject(AuthService);
+  authService = inject(AuthService); // Mudar para public
   private router = inject(Router);
   private fb = inject(FormBuilder);
 
