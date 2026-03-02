@@ -65,7 +65,7 @@
           <mat-select formControlName="jogoDoTorneio">
             <mat-option [value]="''">Todos os jogos</mat-option>
             @for (game of games; track game) {
-            <mat-option [value]="game">{{ game }}</mat-option>
+            <mat-option [value]="game">{{ game | gameName }}</mat-option>
             }
           </mat-select>
           <mat-icon matPrefix>sports_esports</mat-icon>
@@ -76,7 +76,7 @@
           <mat-select formControlName="statusDoTorneio">
             <mat-option [value]="''">Todos os status</mat-option>
             @for (s of status; track s) {
-            <mat-option [value]="s">{{ s }}</mat-option>
+            <mat-option [value]="s">{{ s | statusName }}</mat-option>
             }
           </mat-select>
           <mat-icon matPrefix>info</mat-icon>
@@ -87,7 +87,7 @@
           <mat-select formControlName="plataforma">
             <mat-option [value]="''">Todas as plataformas</mat-option>
             @for (plat of plataformas; track plat) {
-            <mat-option [value]="plat">{{ plat }}</mat-option>
+            <mat-option [value]="plat">{{ plat | platformName }}</mat-option>
             }
           </mat-select>
           <mat-icon matPrefix>devices</mat-icon>

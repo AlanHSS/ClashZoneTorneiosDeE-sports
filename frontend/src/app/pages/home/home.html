@@ -35,7 +35,6 @@
           Ver Torneios
         </button>
 
-        @if (authService.isAdmin()) {
         <button
           mat-raised-button
           class="cta-button accent"
@@ -44,7 +43,6 @@
           <mat-icon>add_circle</mat-icon>
           Criar Torneio
         </button>
-        }
         } @else {
         <!-- Usuário NÃO Logado -->
         <button
@@ -148,7 +146,6 @@
       <h2>Organize seu Torneio</h2>
       <p>Crie competições épicas e gerencie equipes com facilidade</p>
 
-      @if (authService.isAdmin()) {
       <div class="cta-actions">
         <button
           mat-raised-button
@@ -160,19 +157,6 @@
           Criar Novo Torneio
         </button>
       </div>
-      } @else {
-      <div class="cta-actions">
-        <button
-          mat-raised-button
-          color="primary"
-          class="cta-button-large"
-          routerLink="/tournaments"
-        >
-          <mat-icon>emoji_events</mat-icon>
-          Explorar Torneios
-        </button>
-      </div>
-      }
       } @else {
       <!-- CTA para usuários não logados -->
       <h2>Pronto para Competir?</h2>
@@ -203,7 +187,7 @@
 
       <div class="footer-links">
         <a routerLink="/tournaments">Torneios</a>
-        @if (authService.isAdmin()) {
+        @if (authService.currentUser$ | async) {
         <a routerLink="/tournaments/create">Criar Torneio</a>
         }
         <a routerLink="/auth/register">Cadastro</a>

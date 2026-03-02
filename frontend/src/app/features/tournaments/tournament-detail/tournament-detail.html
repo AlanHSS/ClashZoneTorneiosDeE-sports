@@ -15,11 +15,11 @@
           <div class="title-section">
             <span>{{ tournament.jogoDoTorneio | gameName }}</span>
             <mat-chip [ngClass]="tournament.statusDoTorneio | statusBadge">
-              {{ tournament.statusDoTorneio }}
+              {{ tournament.statusDoTorneio | statusName }}
             </mat-chip>
           </div>
         </mat-card-title>
-        <mat-card-subtitle>{{ tournament.plataforma }}</mat-card-subtitle>
+        <mat-card-subtitle>{{ tournament.plataforma | platformName }}</mat-card-subtitle>
       </mat-card-header>
 
       <mat-card-content>
@@ -53,6 +53,14 @@
             <div>
               <strong>Vagas Disponíveis</strong>
               <p>{{ getAvailableSlots() }} vagas</p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <mat-icon>person</mat-icon>
+            <div>
+              <strong>Organizador</strong>
+              <p>{{ criadorNome || 'Carregando...' }}</p>
             </div>
           </div>
 
@@ -114,7 +122,7 @@
               <span>Equipe #{{ inscription.equipeId }}</span>
             </div>
             <mat-chip [ngClass]="inscription.statusInscricao | statusBadge">
-              {{ inscription.statusInscricao }}
+              {{ inscription.statusInscricao | statusName }}
             </mat-chip>
           </div>
           }

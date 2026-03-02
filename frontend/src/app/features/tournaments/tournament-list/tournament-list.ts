@@ -40,7 +40,7 @@ import { PlatformNamePipe } from '@shared/pipes/platform-name-pipe';
 export class TournamentListComponent implements OnInit {
   private tournamentService = inject(TournamentService);
   private notificationService = inject(NotificationService);
-  authService = inject(AuthService); // Mudar para public
+  authService = inject(AuthService);
   private router = inject(Router);
   private fb = inject(FormBuilder);
 
@@ -126,7 +126,8 @@ export class TournamentListComponent implements OnInit {
     this.router.navigate(['/tournaments/create']);
   }
 
+  // MUDANÇA: Qualquer usuário logado pode criar torneios
   canCreateTournament(): boolean {
-    return this.authService.isAdmin();
+    return this.authService.isAuthenticated();
   }
 }

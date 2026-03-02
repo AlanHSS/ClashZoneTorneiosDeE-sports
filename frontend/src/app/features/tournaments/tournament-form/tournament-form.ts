@@ -13,6 +13,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { TournamentService } from '@core/services/tournament';
 import { NotificationService } from '@core/services/notification';
 import { Games, StatusDoTorneio, Plataforma } from '@core/models';
+import { GameNamePipe } from '@shared/pipes/game-name-pipe';
+import { StatusNamePipe } from '@shared/pipes/status-name-pipe';
+import { PlatformNamePipe } from '@shared/pipes/platform-name-pipe';
 
 @Component({
   selector: 'app-tournament-form',
@@ -27,7 +30,10 @@ import { Games, StatusDoTorneio, Plataforma } from '@core/models';
     MatButtonModule,
     MatIconModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    GameNamePipe,
+    StatusNamePipe,
+    PlatformNamePipe
   ],
   templateUrl: './tournament-form.html',
   styleUrl: './tournament-form.scss'
@@ -47,6 +53,9 @@ export class TournamentFormComponent implements OnInit {
   status = Object.values(StatusDoTorneio);
   plataformas = Object.values(Plataforma);
 
+  // ✅ QUANTIDADES PREDEFINIDAS
+  quantidadesDisponiveis = [4, 8, 16, 32, 64, 128];
+
   minDate = new Date();
 
   constructor() {
@@ -55,7 +64,7 @@ export class TournamentFormComponent implements OnInit {
       descricaoDoTorneio: [''],
       inicioDoTorneio: ['', Validators.required],
       jogoDoTorneio: ['', Validators.required],
-      quantidadeDeEquipes: ['', [Validators.required, Validators.min(2), Validators.max(128)]],
+      quantidadeDeEquipes: ['', Validators.required], // Sem min/max, apenas required
       statusDoTorneio: ['AGENDADO', Validators.required],
       plataforma: ['', Validators.required]
     });
@@ -76,7 +85,7 @@ export class TournamentFormComponent implements OnInit {
         this.tournamentForm.patchValue({
           nomeDoTorneio: data.nomeDoTorneio,
           descricaoDoTorneio: data.descricaoDoTorneio,
-          inicioDoTorneio: new Date(data.inicioDoTorneio),
+          inicioDoTorneio: new Date(data.inicioDoTorneio).toISOString().slice(0, 16),
           jogoDoTorneio: data.jogoDoTorneio,
           quantidadeDeEquipes: data.quantidadeDeEquipes,
           statusDoTorneio: data.statusDoTorneio,
@@ -91,11 +100,25 @@ export class TournamentFormComponent implements OnInit {
   }
 
   onSubmit(): void {
+    console.log('🔍 DEBUG - onSubmit chamado');
+    console.log('📋 Form válido?', this.tournamentForm.valid);
+    console.log('📋 Form values:', this.tournamentForm.value);
+
     if (this.tournamentForm.valid) {
+      const rawData = this.tournamentForm.value;
+      console.log('📤 Dados brutos do form:', rawData);
+
       const formData = {
-        ...this.tournamentForm.value,
-        inicioDoTorneio: new Date(this.tournamentForm.value.inicioDoTorneio).toISOString()
+        nomeDoTorneio: rawData.nomeDoTorneio,
+        descricaoDoTorneio: rawData.descricaoDoTorneio || null,
+        inicioDoTorneio: new Date(rawData.inicioDoTorneio).toISOString(),
+        jogoDoTorneio: rawData.jogoDoTorneio,
+        quantidadeDeEquipes: Number(rawData.quantidadeDeEquipes),
+        statusDoTorneio: rawData.statusDoTorneio,
+        plataforma: rawData.plataforma
       };
+
+      console.log('📤 Dados formatados para envio:', formData);
 
       if (this.isEditMode && this.tournamentId) {
         this.updateTournament(this.tournamentId, formData);
@@ -103,31 +126,34 @@ export class TournamentFormComponent implements OnInit {
         this.createTournament(formData);
       }
     } else {
+      console.log('❌ Formulário inválido');
       this.tournamentForm.markAllAsTouched();
     }
   }
 
   createTournament(data: any): void {
+    console.log('🚀 Enviando requisição para criar torneio:', data);
+
     this.tournamentService.criar(data).subscribe({
-      next: () => {
+      next: (response) => {
+        console.log('✅ Torneio criado com sucesso:', response);
         this.notificationService.success('Torneio criado com sucesso!');
         this.router.navigate(['/tournaments']);
-      },
-      error: () => {
-        // Erro já tratado pelo error interceptor
       }
+      // Error interceptor cuida dos erros
     });
   }
 
   updateTournament(id: number, data: any): void {
+    console.log('🔄 Atualizando torneio:', id, data);
+
     this.tournamentService.atualizar(id, data).subscribe({
-      next: () => {
+      next: (response) => {
+        console.log('✅ Torneio atualizado com sucesso:', response);
         this.notificationService.success('Torneio atualizado com sucesso!');
         this.router.navigate(['/tournaments', id]);
-      },
-      error: () => {
-        // Erro já tratado pelo error interceptor
       }
+      // Error interceptor cuida dos erros
     });
   }
 
@@ -149,16 +175,6 @@ export class TournamentFormComponent implements OnInit {
     if (control?.hasError('minlength')) {
       const minLength = control.errors?.['minlength'].requiredLength;
       return `Mínimo de ${minLength} caracteres`;
-    }
-
-    if (control?.hasError('min')) {
-      const min = control.errors?.['min'].min;
-      return `Valor mínimo: ${min}`;
-    }
-
-    if (control?.hasError('max')) {
-      const max = control.errors?.['max'].max;
-      return `Valor máximo: ${max}`;
     }
 
     return '';

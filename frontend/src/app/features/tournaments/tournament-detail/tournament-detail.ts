@@ -8,11 +8,14 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { TournamentService } from '@core/services/tournament';
 import { InscriptionService } from '@core/services/inscription';
+import { UserService } from '@core/services/user';
 import { NotificationService } from '@core/services/notification';
 import { AuthService } from '@core/services/auth';
 import { TorneioDomain, InscricaoDomain } from '@core/models';
 import { GameNamePipe } from '@shared/pipes/game-name-pipe';
 import { StatusBadgePipe } from '@shared/pipes/status-badge-pipe';
+import { StatusNamePipe } from '@shared/pipes/status-name-pipe';
+import { PlatformNamePipe } from '@shared/pipes/platform-name-pipe';
 
 @Component({
   selector: 'app-tournament-detail',
@@ -25,7 +28,9 @@ import { StatusBadgePipe } from '@shared/pipes/status-badge-pipe';
     MatChipsModule,
     MatDividerModule,
     GameNamePipe,
-    StatusBadgePipe
+    StatusBadgePipe,
+    StatusNamePipe,
+    PlatformNamePipe
   ],
   templateUrl: './tournament-detail.html',
   styleUrl: './tournament-detail.scss'
@@ -35,11 +40,13 @@ export class TournamentDetailComponent implements OnInit {
   private router = inject(Router);
   private tournamentService = inject(TournamentService);
   private inscriptionService = inject(InscriptionService);
+  private userService = inject(UserService);
   private notificationService = inject(NotificationService);
   private authService = inject(AuthService);
 
   tournament: TorneioDomain | null = null;
   inscriptions: InscricaoDomain[] = [];
+  criadorNome: string = '';
   loading = true;
 
   ngOnInit(): void {
@@ -55,6 +62,11 @@ export class TournamentDetailComponent implements OnInit {
       next: (data) => {
         this.tournament = data;
         this.loading = false;
+
+        // Buscar nome do criador
+        if (data.criadorId) {
+          this.loadCriador(data.criadorId);
+        }
       },
       error: () => {
         this.notificationService.error('Erro ao carregar torneio');
@@ -63,13 +75,26 @@ export class TournamentDetailComponent implements OnInit {
     });
   }
 
+  loadCriador(criadorId: number): void {
+    this.userService.buscarPorId(criadorId).subscribe({
+      next: (usuario) => {
+        this.criadorNome = usuario.nickname || usuario.nomeDoUsuario;
+      },
+      error: () => {
+        this.criadorNome = 'Desconhecido';
+      }
+    });
+  }
+
   loadInscriptions(id: number): void {
     this.inscriptionService.listarPorTorneio(id).subscribe({
-      next: (data) => {
-        this.inscriptions = data;
+      next: (response) => {
+        // Backend retorna objeto com 'Inscrições'
+        this.inscriptions = response['Inscrições'] || response.Inscricoes || [];
       },
       error: () => {
         // Não exibe erro se não conseguir carregar inscrições
+        this.inscriptions = [];
       }
     });
   }
@@ -90,7 +115,7 @@ export class TournamentDetailComponent implements OnInit {
           this.router.navigate(['/tournaments']);
         },
         error: () => {
-          this.notificationService.error('Erro ao excluir torneio');
+          // Error interceptor já mostrou a mensagem
         }
       });
     }

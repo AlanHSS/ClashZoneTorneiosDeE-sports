@@ -41,7 +41,7 @@
             <mat-label>Jogo</mat-label>
             <mat-select formControlName="jogoDoTorneio">
               @for (game of games; track game) {
-              <mat-option [value]="game">{{ game }}</mat-option>
+              <mat-option [value]="game">{{ game | gameName }}</mat-option>
               }
             </mat-select>
             <mat-icon matPrefix>sports_esports</mat-icon>
@@ -55,7 +55,7 @@
             <mat-label>Plataforma</mat-label>
             <mat-select formControlName="plataforma">
               @for (plat of plataformas; track plat) {
-              <mat-option [value]="plat">{{ plat }}</mat-option>
+              <mat-option [value]="plat">{{ plat | platformName }}</mat-option>
               }
             </mat-select>
             <mat-icon matPrefix>devices</mat-icon>
@@ -78,17 +78,14 @@
             }
           </mat-form-field>
 
-          <!-- Quantidade de Equipes -->
+          <!-- Quantidade de Equipes - SELECT -->
           <mat-form-field appearance="outline">
             <mat-label>Quantidade de Equipes</mat-label>
-            <input
-              matInput
-              type="number"
-              formControlName="quantidadeDeEquipes"
-              placeholder="Ex: 16"
-              min="2"
-              max="128"
-            >
+            <mat-select formControlName="quantidadeDeEquipes">
+              @for (qtd of quantidadesDisponiveis; track qtd) {
+              <mat-option [value]="qtd">{{ qtd }} equipes</mat-option>
+              }
+            </mat-select>
             <mat-icon matPrefix>groups</mat-icon>
             @if (tournamentForm.get('quantidadeDeEquipes')?.invalid && tournamentForm.get('quantidadeDeEquipes')?.touched) {
             <mat-error>{{ getErrorMessage('quantidadeDeEquipes') }}</mat-error>
@@ -101,7 +98,7 @@
             <mat-label>Status</mat-label>
             <mat-select formControlName="statusDoTorneio">
               @for (s of status; track s) {
-              <mat-option [value]="s">{{ s }}</mat-option>
+              <mat-option [value]="s">{{ s | statusName }}</mat-option>
               }
             </mat-select>
             <mat-icon matPrefix>info</mat-icon>

@@ -1,10 +1,11 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
 import {
   InscricaoDomain,
   CriarInscricaoDto,
-  AtualizarStatusInscricaoDto
+  AtualizarStatusInscricaoDto,
+  StatusInscricao
 } from '@core/models';
 import { environment } from '@environments/environment';
 
@@ -15,23 +16,40 @@ export class InscriptionService {
   private http = inject(HttpClient);
   private readonly API_URL = `${environment.apiUrl}/inscricao`;
 
-  criar(inscricao: CriarInscricaoDto): Observable<InscricaoDomain> {
-    return this.http.post<InscricaoDomain>(this.API_URL, inscricao);
+  // POST /clashzone/inscricao/criar
+  criar(inscricao: CriarInscricaoDto): Observable<any> {
+    return this.http.post<any>(`${this.API_URL}/criar`, inscricao);
   }
 
-  listarPorTorneio(torneioId: number): Observable<InscricaoDomain[]> {
-    return this.http.get<InscricaoDomain[]>(`${this.API_URL}/torneio/${torneioId}`);
+  // GET /clashzone/inscricao/torneio/{torneioId}?status=PENDENTE
+  listarPorTorneio(torneioId: number, status?: StatusInscricao): Observable<any> {
+    let params = new HttpParams();
+    if (status) {
+      params = params.set('status', status);
+    }
+    return this.http.get<any>(`${this.API_URL}/torneio/${torneioId}`, { params });
   }
 
-  listarPorEquipe(equipeId: number): Observable<InscricaoDomain[]> {
-    return this.http.get<InscricaoDomain[]>(`${this.API_URL}/equipe/${equipeId}`);
+  // GET /clashzone/inscricao/equipe/{equipeId}?status=APROVADA
+  listarPorEquipe(equipeId: number, status?: StatusInscricao): Observable<any> {
+    let params = new HttpParams();
+    if (status) {
+      params = params.set('status', status);
+    }
+    return this.http.get<any>(`${this.API_URL}/equipe/${equipeId}`, { params });
   }
 
-  atualizarStatus(id: number, status: AtualizarStatusInscricaoDto): Observable<InscricaoDomain> {
-    return this.http.patch<InscricaoDomain>(`${this.API_URL}/${id}/status`, status);
+  // PATCH /clashzone/inscricao/atualizar/{inscricaoId}
+  atualizarStatus(id: number, status: AtualizarStatusInscricaoDto): Observable<any> {
+    return this.http.patch<any>(`${this.API_URL}/atualizar/${id}`, status);
   }
 
-  listarMinhasInscricoes(): Observable<InscricaoDomain[]> {
-    return this.http.get<InscricaoDomain[]>(`${this.API_URL}/minhas`);
+  // GET /clashzone/inscricao/minhasinscricoes?status=PENDENTE
+  listarMinhasInscricoes(status?: StatusInscricao): Observable<any> {
+    let params = new HttpParams();
+    if (status) {
+      params = params.set('status', status);
+    }
+    return this.http.get<any>(`${this.API_URL}/minhasinscricoes`, { params });
   }
 }

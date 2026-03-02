@@ -72,12 +72,13 @@
           <span>Meu Perfil</span>
         </button>
 
-        @if (authService.isAdmin()) {
+        <!-- Criar Torneio disponível para TODOS usuários logados -->
         <button mat-menu-item routerLink="/tournaments/create">
           <mat-icon>add_circle</mat-icon>
           <span>Criar Torneio</span>
         </button>
 
+        @if (authService.isAdmin()) {
         <mat-divider></mat-divider>
 
         <button mat-menu-item routerLink="/admin">
@@ -181,7 +182,7 @@
         Meu Perfil
       </a>
 
-      @if (authService.isAdmin()) {
+      <!-- Criar Torneio disponível para TODOS usuários logados -->
       <a
         mat-button
         routerLink="/tournaments/create"
@@ -192,6 +193,7 @@
         Criar Torneio
       </a>
 
+      @if (authService.isAdmin()) {
       <a
         mat-button
         routerLink="/admin"

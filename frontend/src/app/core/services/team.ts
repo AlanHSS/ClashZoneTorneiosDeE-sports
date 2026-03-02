@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import {
   EquipeDomain,
   CriarEquipeDto,
@@ -18,44 +18,65 @@ export class TeamService {
   private http = inject(HttpClient);
   private readonly API_URL = `${environment.apiUrl}/equipes`;
 
+  // GET /clashzone/equipes/listartodasequipes (ADMIN only)
   listarEquipes(): Observable<EquipeDomain[]> {
-    return this.http.get<EquipeDomain[]>(this.API_URL);
+    return this.http.get<EquipeDomain[]>(`${this.API_URL}/listartodasequipes`);
   }
 
-  buscarPorId(id: number): Observable<EquipeDomain> {
-    return this.http.get<EquipeDomain>(`${this.API_URL}/${id}`);
+  // GET /clashzone/equipes/informacoesdaequipe/{id}
+  buscarPorId(id: number): Observable<any> {
+    return this.http.get<any>(`${this.API_URL}/informacoesdaequipe/${id}`);
   }
 
+  // POST /clashzone/equipes/criarequipe
   criar(equipe: CriarEquipeDto): Observable<EquipeDomain> {
-    return this.http.post<EquipeDomain>(this.API_URL, equipe);
+    return this.http.post<any>(`${this.API_URL}/criarequipe`, equipe).pipe(
+      map(response => response['Dados da equipe: '] || response)
+    );
   }
 
+  // PATCH /clashzone/equipes/atualizarequipe/{id}
   atualizar(id: number, equipe: AtualizarEquipeDto): Observable<EquipeDomain> {
-    return this.http.patch<EquipeDomain>(`${this.API_URL}/${id}`, equipe);
+    return this.http.patch<any>(`${this.API_URL}/atualizarequipe/${id}`, equipe).pipe(
+      map(response => response['Dados da equipe'] || response)
+    );
   }
 
+  // DELETE /clashzone/equipes/deletarequipe/{id}
   deletar(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.API_URL}/${id}`);
+    return this.http.delete<void>(`${this.API_URL}/deletarequipe/${id}`);
   }
 
-  listarMinhasEquipes(): Observable<EquipeDomain[]> {
-    return this.http.get<EquipeDomain[]>(`${this.API_URL}/minhas`);
+  // GET /clashzone/equipes/minhasequipes
+  listarMinhasEquipes(): Observable<any> {
+    return this.http.get<any>(`${this.API_URL}/minhasequipes`);
   }
 
-  // Gerenciamento de membros
+  // ==========================================
+  // GERENCIAMENTO DE MEMBROS
+  // ==========================================
+
+  // GET /clashzone/equipes/{equipeId}/membros/listarmembros (ADMIN only)
   listarMembros(equipeId: number): Observable<MembroEquipeDomain[]> {
-    return this.http.get<MembroEquipeDomain[]>(`${this.API_URL}/${equipeId}/membros`);
+    return this.http.get<MembroEquipeDomain[]>(`${this.API_URL}/${equipeId}/membros/listarmembros`);
   }
 
-  adicionarMembro(equipeId: number, membro: AdicionarMembroDto): Observable<MembroEquipeDomain> {
-    return this.http.post<MembroEquipeDomain>(`${this.API_URL}/${equipeId}/membros`, membro);
+  // POST /clashzone/equipes/{equipeId}/membros/adicionar
+  adicionarMembro(equipeId: number, membro: AdicionarMembroDto): Observable<any> {
+    // Backend espera array de membros
+    const membros = [membro];
+    return this.http.post<any>(`${this.API_URL}/${equipeId}/membros/adicionar`, membros);
   }
 
-  atualizarMembro(equipeId: number, membro: AtualizarMembroDto): Observable<MembroEquipeDomain> {
-    return this.http.patch<MembroEquipeDomain>(`${this.API_URL}/${equipeId}/membros`, membro);
+  // PATCH /clashzone/equipes/{equipeId}/membros/atualizar
+  atualizarMembro(equipeId: number, membro: AtualizarMembroDto): Observable<any> {
+    // Backend espera array de membros
+    const membros = [membro];
+    return this.http.patch<any>(`${this.API_URL}/${equipeId}/membros/atualizar`, membros);
   }
 
+  // DELETE /clashzone/equipes/{equipeId}/membros/deletar/{membroId}
   removerMembro(equipeId: number, membroId: number): Observable<void> {
-    return this.http.delete<void>(`${this.API_URL}/${equipeId}/membros/${membroId}`);
+    return this.http.delete<void>(`${this.API_URL}/${equipeId}/membros/deletar/${membroId}`);
   }
 }
