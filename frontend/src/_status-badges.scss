@@ -83,7 +83,8 @@
 
 .snackbar-error {
   --mdc-snackbar-container-color: #1a1a2e !important;
-  --mat-snack-bar-button-color: #f44336 !important;
+  // Action label ("Fechar") needs strong contrast on red surface.
+  --mat-snack-bar-button-color: rgba(255, 255, 255, 0.95) !important;
 
   .mdc-snackbar__surface {
     background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%) !important;
@@ -94,6 +95,16 @@
   .mat-mdc-snack-bar-label {
     color: white !important;
     font-weight: 600;
+  }
+
+  .mat-mdc-snack-bar-action {
+    color: rgba(255, 255, 255, 0.95) !important;
+    font-weight: 700;
+    border-radius: 999px;
+  }
+
+  .mat-mdc-snack-bar-action:hover {
+    background: rgba(255, 255, 255, 0.12) !important;
   }
 }
 
