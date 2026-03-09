@@ -1,0 +1,239 @@
+.team-detail-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+  }
+}
+
+.detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.main-card {
+  .team-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    mat-icon {
+      color: white;
+      font-size: 2rem;
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+
+    .info-item {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+
+      mat-icon {
+        color: #667eea;
+        margin-top: 0.25rem;
+      }
+
+      div {
+        flex: 1;
+
+        strong {
+          display: block;
+          font-size: 0.875rem;
+          opacity: 0.7;
+          margin-bottom: 0.25rem;
+        }
+
+        p {
+          margin: 0;
+          font-size: 1rem;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+.members-card {
+  .members-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    > div {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  }
+
+  .empty-members {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    text-align: center;
+
+    mat-icon {
+      font-size: 4rem;
+      width: 4rem;
+      height: 4rem;
+      opacity: 0.3;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      margin: 0 0 1.5rem 0;
+      opacity: 0.7;
+    }
+  }
+
+  .members-section {
+    margin-bottom: 2rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0 0 1rem 0;
+      font-size: 1.1rem;
+      font-weight: 500;
+      opacity: 0.9;
+
+      mat-icon {
+        font-size: 1.5rem;
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+
+    .members-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+
+      .member-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.05);
+          border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .member-info {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+
+          .member-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            mat-icon {
+              color: white;
+            }
+          }
+
+          .member-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+
+            strong {
+              font-size: 1rem;
+            }
+
+            .member-rank {
+              font-size: 0.875rem;
+              opacity: 0.7;
+            }
+          }
+        }
+
+        .member-actions {
+          display: flex;
+          gap: 0.5rem;
+        }
+      }
+    }
+  }
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+
+  p {
+    margin-top: 1rem;
+    opacity: 0.7;
+  }
+}
+
+@media (max-width: 768px) {
+  .team-detail-container {
+    padding: 1rem;
+  }
+
+  .detail-header {
+    h1 {
+      font-size: 1.5rem;
+    }
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .members-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 1rem;
+
+    button {
+      width: 100%;
+    }
+  }
+}

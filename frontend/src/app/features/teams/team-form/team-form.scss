@@ -1,0 +1,93 @@
+.team-form-container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.form-header {
+  margin-bottom: 2rem;
+
+  h1 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+  }
+}
+
+mat-card {
+  margin-bottom: 2rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+
+  .full-width {
+    grid-column: 1 / -1;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.info-card {
+  background: rgba(102, 126, 234, 0.1);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+
+  .info-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+
+    mat-icon {
+      color: #667eea;
+      margin-top: 0.25rem;
+    }
+
+    p {
+      margin: 0;
+      line-height: 1.6;
+
+      strong {
+        display: block;
+        margin-bottom: 0.25rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .team-form-container {
+    padding: 1rem;
+  }
+
+  .form-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+
+    button {
+      width: 100%;
+    }
+  }
+}

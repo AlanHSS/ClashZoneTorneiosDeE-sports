@@ -1,0 +1,58 @@
+<h2 mat-dialog-title>
+  <mat-icon>person_add</mat-icon>
+  Adicionar Membro
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="memberForm">
+    <div class="form-fields">
+      <mat-form-field appearance="outline">
+        <mat-label>Nickname</mat-label>
+        <input
+          matInput
+          formControlName="nickname"
+          placeholder="Ex: player123"
+        >
+        <mat-icon matPrefix>badge</mat-icon>
+        @if (memberForm.get('nickname')?.invalid && memberForm.get('nickname')?.touched) {
+        <mat-error>{{ getErrorMessage('nickname') }}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Rank (opcional)</mat-label>
+        <input
+          matInput
+          formControlName="rank"
+          placeholder="Ex: Diamante I"
+        >
+        <mat-icon matPrefix>military_tech</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo</mat-label>
+        <mat-select formControlName="tipo">
+          <mat-option value="TITULAR">Titular</mat-option>
+          <mat-option value="RESERVA">Reserva</mat-option>
+        </mat-select>
+        <mat-icon matPrefix>check_circle</mat-icon>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">
+    <mat-icon>close</mat-icon>
+    Cancelar
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="onSubmit()"
+    [disabled]="memberForm.invalid"
+  >
+    <mat-icon>person_add</mat-icon>
+    Adicionar
+  </button>
+</mat-dialog-actions>
