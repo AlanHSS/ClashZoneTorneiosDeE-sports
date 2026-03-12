@@ -2,6 +2,7 @@ package com.alanhss.ClashZone.infra.presentation;
 
 import com.alanhss.ClashZone.core.domain.MembroEquipeDomain;
 import com.alanhss.ClashZone.core.enums.TipoMembro;
+import com.alanhss.ClashZone.core.usecases.equipe.BuscarEquipePorIdUsecase;
 import com.alanhss.ClashZone.core.usecases.membro.AdicionarMembrosEquipeUsecase;
 import com.alanhss.ClashZone.core.usecases.membro.AtualizarMembrosEquipeUsecase;
 import com.alanhss.ClashZone.core.usecases.membro.DeletarMembroEquipeUsecase;
@@ -14,7 +15,6 @@ import com.alanhss.ClashZone.infra.persistence.UsuariosPersistence.UsuariosEntit
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +28,7 @@ public class MembroEquipeController {
 
     private final AdicionarMembrosEquipeUsecase adicionarMembrosEquipeUsecase;
     private final ListarMembrosPorEquipeUsecase listarMembrosPorEquipeUsecase;
+    private final BuscarEquipePorIdUsecase buscarEquipePorIdUsecase;
     private final DeletarMembroEquipeUsecase deletarMembroEquipeUsecase;
     private final AtualizarMembrosEquipeUsecase atualizarMembrosEquipeUsecase;
     private final MembroEquipeAtualizarMapper atualizarMapper;
@@ -74,10 +75,12 @@ public class MembroEquipeController {
 
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("listarmembros")
     public List<MembroEquipeDto> listarMembrosPorEquipe(@PathVariable Long equipeId){
-        Long equipe = getUsuarioAutenticado().getId();
+        UsuariosEntity usuarioAutenticado = getUsuarioAutenticado();
+
+        buscarEquipePorIdUsecase.execute(equipeId, usuarioAutenticado.getId(), usuarioAutenticado.getRole());
+
         List<MembroEquipeDomain> lista = listarMembrosPorEquipeUsecase.execute(equipeId);
 
         return lista.stream()

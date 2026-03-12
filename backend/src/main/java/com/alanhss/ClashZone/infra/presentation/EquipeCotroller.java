@@ -71,7 +71,7 @@ public class EquipeCotroller {
 
         Map<String, Object> response = new HashMap<>();
         response.put("Mensagem: ", "Equipe criada com sucesso!");
-        response.put("Dados da equipe: ", mapper.toDto(equipeDomainComCriador));
+        response.put("Dados da equipe: ", mapper.toDto(novaEquipeDomain));
 
         return ResponseEntity.ok(response);
     }
