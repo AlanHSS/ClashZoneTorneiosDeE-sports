@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TeamService } from '@core/services/team';
 import { NotificationService } from '@core/services/notification';
 import { AuthService } from '@core/services/auth';
@@ -26,6 +26,7 @@ import { MemberFormDialogComponent } from '../member-form-dialog/member-form-dia
     MatDividerModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
+    MatDialogModule,
     GameNamePipe
   ],
   templateUrl: './team-detail.html',
@@ -58,6 +59,7 @@ export class TeamDetailComponent implements OnInit {
         this.loading = false;
       },
       error: () => {
+        this.loading = false;
         this.router.navigate(['/teams']);
       }
     });

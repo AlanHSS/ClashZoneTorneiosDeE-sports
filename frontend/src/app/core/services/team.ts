@@ -11,6 +11,8 @@ import {
 } from '@core/models';
 import { environment } from '@environments/environment';
 
+type AnyRecord = Record<string, any>;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,14 +20,56 @@ export class TeamService {
   private http = inject(HttpClient);
   private readonly API_URL = `${environment.apiUrl}/equipes`;
 
+  private extractEquipeFromResponse(response: any): EquipeDomain {
+
+    if (!response) return response as EquipeDomain;
+
+    if (response.equipe) return response.equipe as EquipeDomain;
+    if (response['Dados da equipe: ']) return response['Dados da equipe: '] as EquipeDomain;
+    if (response['Dados da equipe']) return response['Dados da equipe'] as EquipeDomain;
+
+    const suasEquipes = (response as AnyRecord)['Suas equipes'];
+    if (suasEquipes) {
+      if (Array.isArray(suasEquipes) && (suasEquipes[0] as AnyRecord)?.['equipe']) {
+        return (suasEquipes[0] as AnyRecord)['equipe'] as EquipeDomain;
+      }
+      if (typeof suasEquipes === 'object' && (suasEquipes as AnyRecord)['equipe']) {
+        return (suasEquipes as AnyRecord)['equipe'] as EquipeDomain;
+      }
+    }
+
+    return response as EquipeDomain;
+  }
+
+  private extractEquipesFromResponse(response: any): EquipeDomain[] {
+
+    if (!response) return [];
+    if (Array.isArray(response)) return response as EquipeDomain[];
+
+    const suasEquipes = (response as AnyRecord)['Suas equipes'];
+    if (Array.isArray(suasEquipes)) {
+      return suasEquipes
+        .map((item) => ((item as AnyRecord)?.['equipe'] ?? item) as EquipeDomain)
+        .filter(Boolean);
+    }
+
+    if (typeof suasEquipes === 'object' && (suasEquipes as AnyRecord)['equipe']) {
+      return [((suasEquipes as AnyRecord)['equipe'] as EquipeDomain)].filter(Boolean);
+    }
+
+    return [];
+  }
+
   // GET /clashzone/equipes/listartodasequipes (ADMIN only)
   listarEquipes(): Observable<EquipeDomain[]> {
     return this.http.get<EquipeDomain[]>(`${this.API_URL}/listartodasequipes`);
   }
 
   // GET /clashzone/equipes/informacoesdaequipe/{id}
-  buscarPorId(id: number): Observable<any> {
-    return this.http.get<any>(`${this.API_URL}/informacoesdaequipe/${id}`);
+  buscarPorId(id: number): Observable<EquipeDomain> {
+    return this.http
+      .get<any>(`${this.API_URL}/informacoesdaequipe/${id}`)
+      .pipe(map((response) => this.extractEquipeFromResponse(response)));
   }
 
   // POST /clashzone/equipes/criarequipe
@@ -48,8 +92,10 @@ export class TeamService {
   }
 
   // GET /clashzone/equipes/minhasequipes
-  listarMinhasEquipes(): Observable<any> {
-    return this.http.get<any>(`${this.API_URL}/minhasequipes`);
+  listarMinhasEquipes(): Observable<EquipeDomain[]> {
+    return this.http
+      .get<any>(`${this.API_URL}/minhasequipes`)
+      .pipe(map((response) => this.extractEquipesFromResponse(response)));
   }
 
   // ==========================================
