@@ -1,0 +1,132 @@
+<div class="inscriptions-home-container">
+  <div class="page-header">
+    <div class="header-text">
+      <h1>Inscrições</h1>
+      <p class="subtitle">Acompanhe suas inscrições e gerencie inscrições dos seus torneios</p>
+    </div>
+  </div>
+
+  <div class="top-grid">
+    <mat-card class="quick-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>assignment_ind</mat-icon>
+          Minhas inscrições
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Veja o status das inscrições feitas pelas suas equipes.</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="goToMyInscriptions()">
+          <mat-icon>arrow_forward</mat-icon>
+          Ir para minhas inscrições
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="quick-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>emoji_events</mat-icon>
+          Inscrições dos meus torneios
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Inscrições pendentes para torneios agendados que você está organizando.</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-card class="section-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>pending_actions</mat-icon>
+        Pendentes em torneios agendados
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      @if (loading) {
+      <div class="loading-state">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p>Carregando...</p>
+      </div>
+      } @else if (scheduledTournaments.length === 0) {
+      <div class="empty-state">
+        <mat-icon>event_busy</mat-icon>
+        <h2>Você não possui torneios agendados</h2>
+        <p>Quando você criar um torneio com status agendado, as inscrições pendentes aparecem aqui.</p>
+      </div>
+      } @else if (pendingByTournament.length === 0) {
+      <div class="empty-state">
+        <mat-icon>check_circle</mat-icon>
+        <h2>Nenhuma inscrição pendente</h2>
+        <p>Se houver inscrições pendentes nos seus torneios agendados, elas aparecem aqui.</p>
+      </div>
+      } @else {
+      <div class="tournament-list">
+        @for (item of pendingByTournament; track item.tournament.id) {
+        <mat-card class="tournament-card">
+          <mat-card-header>
+            <mat-card-title>
+              <div class="tournament-title">
+                <span>{{ item.tournament.nomeDoTorneio }}</span>
+                <mat-chip [ngClass]="item.tournament.statusDoTorneio | statusBadge">
+                  {{ item.tournament.statusDoTorneio | statusName }}
+                </mat-chip>
+              </div>
+            </mat-card-title>
+            <mat-card-subtitle>
+              {{ item.tournament.jogoDoTorneio | gameName }} | {{ item.tournament.plataforma | platformName }}
+            </mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="tournament-meta">
+              <div class="meta-row">
+                <mat-icon>event</mat-icon>
+                <span>Início: {{ item.tournament.inicioDoTorneio | date: 'dd/MM/yyyy HH:mm' }}</span>
+              </div>
+              <div class="meta-row">
+                <mat-icon>hourglass_top</mat-icon>
+                <span>{{ item.pending.length }} pendente(s)</span>
+              </div>
+            </div>
+
+            <div class="pending-list">
+              @for (inscription of item.pending; track inscription.id) {
+              <div class="pending-item">
+                <div class="team-info">
+                  <mat-icon>groups</mat-icon>
+                  <div class="team-text">
+                    <strong>{{ inscription.nomeEquipe }}</strong>
+                    <span>Líder: {{ getLeaderName(inscription.liderId) }}</span>
+                    <span>Inscrita em {{ inscription.dataInscricao | date: 'dd/MM/yyyy HH:mm' }}</span>
+                  </div>
+                </div>
+                <mat-chip [ngClass]="inscription.statusInscricao | statusBadge">
+                  {{ inscription.statusInscricao | statusName }}
+                </mat-chip>
+              </div>
+              }
+            </div>
+          </mat-card-content>
+
+          <mat-card-actions>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="goToTournamentInscriptions(item.tournament.id)"
+            >
+              <mat-icon>assignment</mat-icon>
+              Gerenciar inscrições
+            </button>
+          </mat-card-actions>
+        </mat-card>
+        }
+      </div>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>

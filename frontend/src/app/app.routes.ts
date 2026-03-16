@@ -24,6 +24,11 @@ export const routes: Routes = [
     loadChildren: () => import('./features/tournaments/tournaments.routes').then(m => m.TOURNAMENTS_ROUTES)
   },
   {
+    path: 'inscriptions',
+    canActivate: [authGuard],
+    loadChildren: () => import('./features/inscriptions/inscriptions.routes').then(m => m.INSCRIPTIONS_ROUTES)
+  },
+  {
     path: '**',
     redirectTo: ''
   }

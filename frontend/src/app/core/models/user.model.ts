@@ -9,6 +9,12 @@ export interface UsuariosDomain {
   role: Role;
 }
 
+export interface PublicUsuarioDto {
+  id: number;
+  nomeDoUsuario: string;
+  nickname: string;
+}
+
 export interface LoginRequest {
   emailDoUsuario: string;
   senhaDoUsuario: string;

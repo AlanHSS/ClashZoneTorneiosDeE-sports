@@ -1,0 +1,154 @@
+<div class="inscriptions-container">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-content">
+      <h1>
+        <mat-icon>assignment</mat-icon>
+        Minhas Inscrições
+      </h1>
+      <p class="subtitle">
+        Acompanhe o status das inscrições de suas equipes em torneios
+      </p>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <mat-card class="filters-card">
+    <mat-card-content>
+      <div class="filters-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Filtrar por Status</mat-label>
+          <mat-select
+            [(ngModel)]="filters.status"
+            (ngModelChange)="applyFilters()"
+          >
+            <mat-option [value]="null">Todos os Status</mat-option>
+            @for (s of statusList; track s) {
+            <mat-option [value]="s">{{ s | statusName }}</mat-option>
+            }
+          </mat-select>
+          <mat-icon matPrefix>filter_list</mat-icon>
+        </mat-form-field>
+
+        @if (hasActiveFilters()) {
+        <button
+          mat-stroked-button
+          (click)="clearFilters()"
+        >
+          <mat-icon>clear</mat-icon>
+          Limpar Filtros
+        </button>
+        }
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Lista de Inscrições -->
+  @if (loading) {
+  <div class="loading-state">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Carregando inscrições...</p>
+  </div>
+  } @else if (filteredInscriptions.length === 0) {
+  <div class="empty-state">
+    <mat-icon>inbox</mat-icon>
+    <h2>Nenhuma inscrição encontrada</h2>
+    @if (hasActiveFilters()) {
+    <p>Tente ajustar os filtros de busca</p>
+    <button mat-button (click)="clearFilters()">
+      <mat-icon>clear</mat-icon>
+      Limpar Filtros
+    </button>
+    } @else {
+    <p>Suas equipes ainda não se inscreveram em nenhum torneio</p>
+    <button
+      mat-raised-button
+      color="primary"
+      routerLink="/tournaments"
+    >
+      <mat-icon>search</mat-icon>
+      Explorar Torneios
+    </button>
+    }
+  </div>
+  } @else {
+  <div class="inscriptions-list">
+    @for (inscription of filteredInscriptions; track inscription.id) {
+    <mat-card class="inscription-card">
+      <mat-card-header>
+        <div class="inscription-header">
+          <div class="header-left">
+            <mat-card-title>{{ inscription.nomeTorneio }}</mat-card-title>
+            <mat-card-subtitle>
+              <mat-icon>groups</mat-icon>
+              {{ inscription.nomeEquipe }}
+            </mat-card-subtitle>
+          </div>
+          <mat-chip [ngClass]="inscription.statusInscricao | statusBadge">
+            {{ inscription.statusInscricao | statusName }}
+          </mat-chip>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="inscription-info">
+          <div class="info-row">
+            <mat-icon>sports_esports</mat-icon>
+            <span>{{ inscription.jogoTorneio | gameName }}</span>
+          </div>
+
+          <div class="info-row">
+            <mat-icon>event</mat-icon>
+            <span>{{ inscription.inicioTorneio | date: 'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+
+          <div class="info-row">
+            <mat-icon>calendar_today</mat-icon>
+            <span>Inscrito em: {{ inscription.dataInscricao | date: 'dd/MM/yyyy' }}</span>
+          </div>
+
+          @if (inscription.motivoRecusa) {
+          <div class="motivo-recusa">
+            <mat-icon color="warn">info</mat-icon>
+            <div>
+              <strong>Motivo da recusa:</strong>
+              <p>{{ inscription.motivoRecusa }}</p>
+            </div>
+          </div>
+          }
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button
+          mat-button
+          [routerLink]="['/tournaments', inscription.torneioId]"
+        >
+          <mat-icon>visibility</mat-icon>
+          Ver Torneio
+        </button>
+
+        <button
+          mat-button
+          [routerLink]="['/teams', inscription.equipeId]"
+        >
+          <mat-icon>group</mat-icon>
+          Ver Equipe
+        </button>
+
+        @if (canCancel(inscription)) {
+        <button
+          mat-button
+          color="warn"
+          (click)="onCancel(inscription)"
+        >
+          <mat-icon>cancel</mat-icon>
+          Cancelar Inscrição
+        </button>
+        }
+      </mat-card-actions>
+    </mat-card>
+    }
+  </div>
+  }
+</div>

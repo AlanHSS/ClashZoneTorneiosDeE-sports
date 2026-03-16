@@ -282,9 +282,21 @@
                 color: #667eea;
               }
 
-              span {
-                font-weight: 600;
+              .inscription-text {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+              }
+
+              .team-name {
+                font-weight: 700;
                 color: #ffffff;
+              }
+
+              .leader {
+                font-weight: 600;
+                color: rgba(255, 255, 255, 0.75);
+                font-size: 13px;
               }
             }
 

@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { UsuariosDomain, AtualizarUsuariosDto } from '@core/models';
+import { UsuariosDomain, AtualizarUsuariosDto, PublicUsuarioDto } from '@core/models';
 import { environment } from '@environments/environment';
 
 @Injectable({
@@ -38,5 +38,10 @@ export class UserService {
   // GET /clashzone/usuarios/userprofile/{id}
   buscarPorId(id: number): Observable<UsuariosDomain> {
     return this.http.get<UsuariosDomain>(`${this.API_URL}/userprofile/${id}`);
+  }
+
+  // GET /clashzone/usuarios/public/{id}
+  buscarPublicoPorId(id: number): Observable<PublicUsuarioDto> {
+    return this.http.get<PublicUsuarioDto>(`${this.API_URL}/public/${id}`);
   }
 }

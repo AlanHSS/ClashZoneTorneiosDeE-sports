@@ -5,7 +5,8 @@ import {
   InscricaoDomain,
   CriarInscricaoDto,
   AtualizarStatusInscricaoDto,
-  StatusInscricao
+  StatusInscricao,
+  MembroEquipeDomain
 } from '@core/models';
 import { environment } from '@environments/environment';
 
@@ -51,5 +52,12 @@ export class InscriptionService {
       params = params.set('status', status);
     }
     return this.http.get<any>(`${this.API_URL}/minhasinscricoes`, { params });
+  }
+
+  // GET /clashzone/inscricao/torneio/{torneioId}/equipe/{equipeId}/membros
+  listarMembrosEquipeNoTorneio(torneioId: number, equipeId: number): Observable<MembroEquipeDomain[]> {
+    return this.http.get<any>(`${this.API_URL}/torneio/${torneioId}/equipe/${equipeId}/membros`).pipe(
+      map((response) => response?.['Membros'] || response?.Membros || response || [])
+    );
   }
 }

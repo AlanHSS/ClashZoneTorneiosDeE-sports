@@ -1,0 +1,122 @@
+<div class="inscription-form-container">
+  <div class="form-header">
+    <h1>
+      <mat-icon>how_to_reg</mat-icon>
+      Inscrever Equipe
+    </h1>
+    <p class="subtitle">{{ tournament?.nomeDoTorneio }}</p>
+  </div>
+
+  @if (tournament) {
+  <mat-card class="tournament-info-card">
+    <mat-card-header>
+      <mat-card-title>Informações do Torneio</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="info-grid">
+        <div class="info-item">
+          <mat-icon>sports_esports</mat-icon>
+          <div>
+            <strong>Jogo</strong>
+            <p>{{ tournament.jogoDoTorneio | gameName }}</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <mat-icon>event</mat-icon>
+          <div>
+            <strong>Início</strong>
+            <p>{{ tournament.inicioDoTorneio | date: 'dd/MM/yyyy HH:mm' }}</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <mat-icon>groups</mat-icon>
+          <div>
+            <strong>Vagas</strong>
+            <p>{{ getAvailableSlots() }} / {{ tournament.quantidadeDeEquipes }} disponíveis</p>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="inscriptionForm" (ngSubmit)="onSubmit()">
+        <div class="form-fields">
+          <mat-form-field appearance="outline">
+            <mat-label>Selecione sua Equipe</mat-label>
+            <mat-select formControlName="equipeId">
+              @if (loadingTeams) {
+              <mat-option disabled>Carregando equipes...</mat-option>
+              } @else if (eligibleTeams.length === 0) {
+              <mat-option disabled>Nenhuma equipe elegível encontrada</mat-option>
+              } @else {
+              @for (team of eligibleTeams; track team.id) {
+              <mat-option [value]="team.id">
+                {{ team.nomeDaEquipe }} - {{ team.jogo | gameName }}
+              </mat-option>
+              }
+              }
+            </mat-select>
+            <mat-icon matPrefix>emoji_events</mat-icon>
+            @if (inscriptionForm.get('equipeId')?.invalid && inscriptionForm.get('equipeId')?.touched) {
+            <mat-error>{{ getErrorMessage('equipeId') }}</mat-error>
+            }
+            <mat-hint>Apenas equipes do jogo {{ tournament.jogoDoTorneio | gameName }}</mat-hint>
+          </mat-form-field>
+
+          @if (eligibleTeams.length === 0 && !loadingTeams) {
+          <mat-card class="warning-card">
+            <mat-card-content>
+              <div class="warning-message">
+                <mat-icon>warning</mat-icon>
+                <div>
+                  <strong>Nenhuma equipe elegível</strong>
+                  <p>Você não possui equipes de {{ tournament.jogoDoTorneio | gameName }} ou suas equipes não atendem aos requisitos.</p>
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    routerLink="/teams/create"
+                  >
+                    <mat-icon>add</mat-icon>
+                    Criar Nova Equipe
+                  </button>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          }
+        </div>
+
+        <div class="form-actions">
+          <button
+            mat-button
+            type="button"
+            (click)="onCancel()"
+          >
+            <mat-icon>close</mat-icon>
+            Cancelar
+          </button>
+
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="inscriptionForm.invalid || eligibleTeams.length === 0"
+          >
+            <mat-icon>how_to_reg</mat-icon>
+            Inscrever Equipe
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+  } @else {
+  <div class="loading-state">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Carregando torneio...</p>
+  </div>
+  }
+</div>

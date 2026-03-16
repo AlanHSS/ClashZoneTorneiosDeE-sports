@@ -1,0 +1,139 @@
+<div class="tournament-inscriptions-container">
+  <div class="page-header">
+    <button mat-icon-button (click)="onBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="header-text">
+      <h1>Inscricoes do Torneio</h1>
+      <p class="subtitle">
+        @if (tournament) { {{ tournament.nomeDoTorneio }} } @else { Carregando... }
+      </p>
+    </div>
+  </div>
+
+  <mat-card class="filters-card">
+    <mat-card-content>
+      <div class="filters-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Status</mat-label>
+          <mat-select [(ngModel)]="filters.status" (ngModelChange)="onStatusFilterChange()">
+            <mat-option [value]="null">Todos</mat-option>
+            @for (status of statusList; track status) {
+            <mat-option [value]="status">{{ status | statusName }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <div class="filters-meta">
+          <span>Total: {{ inscriptions.length }}</span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  @if (loading) {
+  <div class="loading-state">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Carregando inscricoes...</p>
+  </div>
+  } @else if (inscriptions.length === 0) {
+  <div class="empty-state">
+    <mat-icon>assignment_late</mat-icon>
+    <h2>Nenhuma inscricao encontrada</h2>
+    <p>Tente ajustar o filtro de status.</p>
+  </div>
+  } @else {
+  <div class="inscriptions-grid">
+    @for (inscription of inscriptions; track inscription.id) {
+    <mat-card class="inscription-card">
+      <mat-card-header>
+        <mat-card-title>
+          <div class="title-row">
+            <span>{{ inscription.nomeEquipe }}</span>
+            <mat-chip [ngClass]="inscription.statusInscricao | statusBadge">
+              {{ inscription.statusInscricao | statusName }}
+            </mat-chip>
+          </div>
+        </mat-card-title>
+        <mat-card-subtitle>
+          Líder: {{ getLeaderName(inscription.liderId) }}
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="info">
+          <div class="info-row">
+            <mat-icon>event</mat-icon>
+            <span>Inscrita em {{ inscription.dataInscricao | date: 'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+
+          @if (inscription.motivoRecusa) {
+          <div class="info-row">
+            <mat-icon>info</mat-icon>
+            <span>Motivo: {{ inscription.motivoRecusa }}</span>
+          </div>
+          }
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        @if (canApproveOrReject(inscription)) {
+        <button mat-raised-button color="primary" (click)="onApprove(inscription)">
+          <mat-icon>check</mat-icon>
+          Aprovar
+        </button>
+        <button mat-stroked-button color="warn" (click)="onReject(inscription)">
+          <mat-icon>close</mat-icon>
+          Recusar
+        </button>
+        } @else {
+        <span class="readonly-hint">Acoes disponiveis apenas para inscricoes pendentes.</span>
+        }
+
+        <button mat-button (click)="toggleMembers(inscription)">
+          <mat-icon>group</mat-icon>
+          @if (membersOpenByTeamId[inscription.equipeId]) { Ocultar participantes } @else { Ver participantes }
+        </button>
+      </mat-card-actions>
+
+      @if (membersOpenByTeamId[inscription.equipeId]) {
+      <div class="members-panel">
+        @if (membersLoadingByTeamId[inscription.equipeId]) {
+        <div class="members-loading">
+          <mat-spinner diameter="28"></mat-spinner>
+          <span>Carregando participantes...</span>
+        </div>
+        } @else if ((membersByTeamId[inscription.equipeId] || []).length === 0) {
+        <div class="members-empty">
+          <mat-icon>group_off</mat-icon>
+          <span>Nenhum participante encontrado</span>
+        </div>
+        } @else {
+        <div class="members-grid">
+          <div class="members-col">
+            <h4>Titulares</h4>
+            @for (m of getTitulares(inscription.equipeId); track m.id) {
+            <div class="member-row">
+              <span class="nick">{{ m.nickname }}</span>
+              @if (m.rank) { <span class="rank">{{ m.rank }}</span> }
+            </div>
+            }
+          </div>
+          <div class="members-col">
+            <h4>Reservas</h4>
+            @for (m of getReservas(inscription.equipeId); track m.id) {
+            <div class="member-row">
+              <span class="nick">{{ m.nickname }}</span>
+              @if (m.rank) { <span class="rank">{{ m.rank }}</span> }
+            </div>
+            }
+          </div>
+        </div>
+        }
+      </div>
+      }
+    </mat-card>
+    }
+  </div>
+  }
+</div>

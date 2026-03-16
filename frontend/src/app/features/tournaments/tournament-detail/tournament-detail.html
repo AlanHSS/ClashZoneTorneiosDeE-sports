@@ -44,7 +44,11 @@
             <mat-icon>groups</mat-icon>
             <div>
               <strong>Equipes</strong>
+              @if (canManageInscriptions()) {
               <p>{{ getInscriptionsCount() }} / {{ tournament.quantidadeDeEquipes }}</p>
+              } @else {
+              <p>Disponível para o organizador</p>
+              }
             </div>
           </div>
 
@@ -52,7 +56,11 @@
             <mat-icon>check_circle</mat-icon>
             <div>
               <strong>Vagas Disponíveis</strong>
+              @if (canManageInscriptions()) {
               <p>{{ getAvailableSlots() }} vagas</p>
+              } @else {
+              <p>{{ tournament.quantidadeDeEquipes }} vagas</p>
+              }
             </div>
           </div>
 
@@ -89,6 +97,12 @@
         </div>
 
         <div class="actions-right">
+          @if (canManageInscriptions()) {
+          <button mat-button (click)="onManageInscriptions()">
+            <mat-icon>assignment</mat-icon>
+            Inscrições
+          </button>
+          }
           @if (canEdit()) {
           <button mat-button (click)="onEdit()">
             <mat-icon>edit</mat-icon>
@@ -104,7 +118,7 @@
     </mat-card>
 
     <!-- Card de Inscrições -->
-    @if (inscriptions.length > 0) {
+    @if (canManageInscriptions() && inscriptions.length > 0) {
     <mat-card class="inscriptions-card">
       <mat-card-header>
         <mat-card-title>
@@ -119,7 +133,10 @@
           <div class="inscription-item">
             <div class="inscription-info">
               <mat-icon>emoji_events</mat-icon>
-              <span>Equipe #{{ inscription.equipeId }}</span>
+              <div class="inscription-text">
+                <span class="team-name">{{ inscription.nomeEquipe }}</span>
+                <span class="leader">Líder: {{ getLeaderName(inscription.liderId) }}</span>
+              </div>
             </div>
             <mat-chip [ngClass]="inscription.statusInscricao | statusBadge">
               {{ inscription.statusInscricao | statusName }}

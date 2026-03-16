@@ -1,0 +1,148 @@
+.inscription-form-container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.form-header {
+  margin-bottom: 2rem;
+
+  h1 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+  }
+
+  .subtitle {
+    margin: 0.5rem 0 0 0;
+    font-size: 1.1rem;
+    opacity: 0.7;
+  }
+}
+
+.tournament-info-card {
+  margin-bottom: 2rem;
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+
+    .info-item {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+
+      mat-icon {
+        color: #667eea;
+        margin-top: 0.25rem;
+      }
+
+      div {
+        flex: 1;
+
+        strong {
+          display: block;
+          font-size: 0.875rem;
+          opacity: 0.7;
+          margin-bottom: 0.25rem;
+        }
+
+        p {
+          margin: 0;
+          font-size: 1rem;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.warning-card {
+  background: rgba(255, 152, 0, 0.1);
+  border: 1px solid rgba(255, 152, 0, 0.3);
+
+  .warning-message {
+    display: flex;
+    gap: 1rem;
+
+    mat-icon {
+      color: #ff9800;
+      font-size: 2rem;
+      width: 2rem;
+      height: 2rem;
+    }
+
+    div {
+      flex: 1;
+
+      strong {
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+
+      p {
+        margin: 0 0 1rem 0;
+        opacity: 0.9;
+      }
+    }
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+
+  p {
+    margin-top: 1rem;
+    opacity: 0.7;
+  }
+}
+
+@media (max-width: 768px) {
+  .inscription-form-container {
+    padding: 1rem;
+  }
+
+  .form-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+
+    button {
+      width: 100%;
+    }
+  }
+}
