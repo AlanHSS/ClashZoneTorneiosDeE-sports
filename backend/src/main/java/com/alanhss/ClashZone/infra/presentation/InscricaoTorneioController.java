@@ -2,16 +2,20 @@ package com.alanhss.ClashZone.infra.presentation;
 
 import com.alanhss.ClashZone.core.domain.EquipeDomain;
 import com.alanhss.ClashZone.core.domain.InscricaoTorneioDomain;
+import com.alanhss.ClashZone.core.domain.MembroEquipeDomain;
 import com.alanhss.ClashZone.core.enums.Role;
 import com.alanhss.ClashZone.core.enums.StatusInscricao;
 import com.alanhss.ClashZone.core.usecases.equipe.ListarEquipesPorLiderUsecase;
 import com.alanhss.ClashZone.core.usecases.inscricao.*;
+import com.alanhss.ClashZone.core.usecases.membro.ListarMembrosPorEquipeUsecase;
 import com.alanhss.ClashZone.infra.dtos.InscricaoDtos.AtualizarInscricaoDto;
 import com.alanhss.ClashZone.infra.dtos.InscricaoDtos.InscricaoDetalhadaDto;
 import com.alanhss.ClashZone.infra.dtos.InscricaoDtos.InscricaoTorneioDto;
+import com.alanhss.ClashZone.infra.dtos.MembrosDtos.MembroEquipeDto;
 import com.alanhss.ClashZone.infra.mappers.InscricaoMappers.InscricaoDetalhadaDtoMapper;
 import com.alanhss.ClashZone.infra.mappers.InscricaoMappers.InscricaoTorneioAtualizarMapper;
 import com.alanhss.ClashZone.infra.mappers.InscricaoMappers.InscricaoTorneioDtoMapper;
+import com.alanhss.ClashZone.infra.mappers.MembrosMappers.MembroEquipeDtoMapper;
 import com.alanhss.ClashZone.infra.persistence.InscricaoPersistence.InscricaoTorneioEntity;
 import com.alanhss.ClashZone.infra.persistence.InscricaoPersistence.InscricaoTorneioRepository;
 import com.alanhss.ClashZone.infra.persistence.UsuariosPersistence.UsuariosEntity;
@@ -40,9 +44,11 @@ public class InscricaoTorneioController {
     private final InscricaoTorneioRepository inscricaoTorneioRepository;
     private final AtualizarInscricaoUsecase atualizarInscricaoUsecase;
     private final BuscarInscricaoPorIdUsecase buscarInscricaoPorIdUsecase;
+    private final ListarMembrosPorEquipeUsecase listarMembrosPorEquipeUsecase;
     private final InscricaoDetalhadaDtoMapper detalhadaMapper;
     private final InscricaoTorneioAtualizarMapper atualizarMapper;
     private final InscricaoTorneioDtoMapper mapper;
+    private final MembroEquipeDtoMapper membroEquipeDtoMapper;
 
     private UsuariosEntity getUsuarioAutenticado() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -239,6 +245,42 @@ public class InscricaoTorneioController {
 
         response.put("Mensagem", "Inscrição atualizada com sucesso!");
         response.put("Inscrição", inscricaoDetalhada);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("torneio/{torneioId}/equipe/{equipeId}/membros")
+    public ResponseEntity<Map<String, Object>> listarMembrosDaEquipeInscrita(
+            @PathVariable Long torneioId,
+            @PathVariable Long equipeId) {
+
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        Long usuarioAutenticadoId = getUsuarioAutenticado().getId();
+        Role roleUsuario = getUsuarioAutenticado().getRole();
+
+        // Reusa a mesma regra de acesso de "listar inscricoes por torneio".
+        List<InscricaoTorneioDomain> inscricoes = listarInscricoesPorTorneioUsecase.execute(
+                torneioId,
+                null,
+                usuarioAutenticadoId,
+                roleUsuario
+        );
+
+        boolean equipeEstaInscrita = inscricoes.stream().anyMatch(i -> i.equipeId().equals(equipeId));
+        if (!equipeEstaInscrita) {
+            response.put("Mensagem", "Equipe nao encontrada nas inscricoes deste torneio");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        List<MembroEquipeDomain> membros = listarMembrosPorEquipeUsecase.execute(equipeId);
+        List<MembroEquipeDto> membrosDto = membros.stream()
+                .map(membroEquipeDtoMapper::toDto)
+                .toList();
+
+        response.put("Equipe ID", equipeId);
+        response.put("Total encontrado", membrosDto.size());
+        response.put("Membros", membrosDto);
 
         return ResponseEntity.ok(response);
     }

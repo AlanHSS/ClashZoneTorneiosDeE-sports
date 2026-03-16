@@ -3,6 +3,7 @@ import com.alanhss.ClashZone.core.domain.UsuariosDomain;
 import com.alanhss.ClashZone.core.enums.Role;
 import com.alanhss.ClashZone.core.usecases.usuario.*;
 import com.alanhss.ClashZone.infra.dtos.UsuariosDtos.AtualizarUsuariosDto;
+import com.alanhss.ClashZone.infra.dtos.UsuariosDtos.PublicUsuarioDto;
 import com.alanhss.ClashZone.infra.dtos.UsuariosDtos.UsuariosDto;
 import com.alanhss.ClashZone.infra.mappers.UsuariosMappers.UsuariosAtualizarMapper;
 import com.alanhss.ClashZone.infra.mappers.UsuariosMappers.UsuariosDtoMapper;
@@ -76,6 +77,17 @@ public class UsuarioController {
         UsuariosDto usuariosDto = mapper.toDto(usuariosDomain);
 
         return usuariosDto;
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @GetMapping("public/{id}")
+    public PublicUsuarioDto buscarUsuarioPublicoPorId(@PathVariable Long id) {
+        UsuariosDomain usuariosDomain = buscarUsuarioPorIdUsecase.execute(id);
+        return new PublicUsuarioDto(
+                usuariosDomain.id(),
+                usuariosDomain.nomeDoUsuario(),
+                usuariosDomain.nickname()
+        );
     }
 
     @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
