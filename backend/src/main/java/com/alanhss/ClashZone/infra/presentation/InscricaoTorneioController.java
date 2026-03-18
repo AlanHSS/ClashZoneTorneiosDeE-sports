@@ -5,6 +5,8 @@ import com.alanhss.ClashZone.core.domain.InscricaoTorneioDomain;
 import com.alanhss.ClashZone.core.domain.MembroEquipeDomain;
 import com.alanhss.ClashZone.core.enums.Role;
 import com.alanhss.ClashZone.core.enums.StatusInscricao;
+import com.alanhss.ClashZone.core.exceptions.AcessoNegadoException;
+import com.alanhss.ClashZone.core.exceptions.NaoEncontradoPorIdException;
 import com.alanhss.ClashZone.core.usecases.equipe.ListarEquipesPorLiderUsecase;
 import com.alanhss.ClashZone.core.usecases.inscricao.*;
 import com.alanhss.ClashZone.core.usecases.membro.ListarMembrosPorEquipeUsecase;
@@ -18,9 +20,14 @@ import com.alanhss.ClashZone.infra.mappers.InscricaoMappers.InscricaoTorneioDtoM
 import com.alanhss.ClashZone.infra.mappers.MembrosMappers.MembroEquipeDtoMapper;
 import com.alanhss.ClashZone.infra.persistence.InscricaoPersistence.InscricaoTorneioEntity;
 import com.alanhss.ClashZone.infra.persistence.InscricaoPersistence.InscricaoTorneioRepository;
+import com.alanhss.ClashZone.infra.persistence.EquipePersistence.EquipeRepository;
+import com.alanhss.ClashZone.infra.persistence.TorneioPersistence.TorneioRepository;
 import com.alanhss.ClashZone.infra.persistence.UsuariosPersistence.UsuariosEntity;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -42,6 +49,8 @@ public class InscricaoTorneioController {
     private final ListarInscricoesPorEquipeUsecase listarInscricoesPorEquipeUsecase;
     private final ListarEquipesPorLiderUsecase listarEquipesPorLiderUsecase;
     private final InscricaoTorneioRepository inscricaoTorneioRepository;
+    private final TorneioRepository torneioRepository;
+    private final EquipeRepository equipeRepository;
     private final AtualizarInscricaoUsecase atualizarInscricaoUsecase;
     private final BuscarInscricaoPorIdUsecase buscarInscricaoPorIdUsecase;
     private final ListarMembrosPorEquipeUsecase listarMembrosPorEquipeUsecase;
@@ -249,6 +258,109 @@ public class InscricaoTorneioController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("torneio/{torneioId}/paginado")
+    public ResponseEntity<Map<String, Object>> listarInscricoesPorTorneioPaginado(
+            @PathVariable Long torneioId,
+            @RequestParam(required = false) StatusInscricao status,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false, name = "sort") List<String> sort
+    ) {
+        Long usuarioAutenticadoId = getUsuarioAutenticado().getId();
+        Role roleUsuario = getUsuarioAutenticado().getRole();
+
+        var torneio = torneioRepository.findById(torneioId)
+                .orElseThrow(() -> new NaoEncontradoPorIdException(torneioId, "torneio"));
+
+        Long criadorId = torneio.getCriadorId() != null ? torneio.getCriadorId().getId() : null;
+        if (roleUsuario != Role.ADMIN && (criadorId == null || !criadorId.equals(usuarioAutenticadoId))) {
+            throw new AcessoNegadoException("Apenas o criador do torneio ou um administrador podem visualizar as inscrições");
+        }
+
+        Sort sortObj = parseSort(sort, Sort.by(Sort.Direction.DESC, "dataInscricao"));
+        PageRequest pageable = PageRequest.of(page, size, sortObj);
+
+        Page<InscricaoDetalhadaDto> dtoPage = (status != null
+                ? inscricaoTorneioRepository.findByTorneioIdIdAndStatusInscricao(torneioId, status, pageable)
+                : inscricaoTorneioRepository.findByTorneioIdId(torneioId, pageable))
+                .map(detalhadaMapper::toDto);
+
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("page", dtoPage.getNumber());
+        response.put("size", dtoPage.getSize());
+        response.put("totalElements", dtoPage.getTotalElements());
+        response.put("totalPages", dtoPage.getTotalPages());
+        response.put("content", dtoPage.getContent());
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("equipe/{equipeId}/paginado")
+    public ResponseEntity<Map<String, Object>> listarInscricoesPorEquipePaginado(
+            @PathVariable Long equipeId,
+            @RequestParam(required = false) StatusInscricao status,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false, name = "sort") List<String> sort
+    ) {
+        Long usuarioAutenticadoId = getUsuarioAutenticado().getId();
+        Role roleUsuario = getUsuarioAutenticado().getRole();
+
+        var equipe = equipeRepository.findById(equipeId)
+                .orElseThrow(() -> new NaoEncontradoPorIdException(equipeId, "equipe"));
+
+        if (roleUsuario != Role.ADMIN && !equipe.getLiderId().equals(usuarioAutenticadoId)) {
+            throw new AcessoNegadoException("Apenas o líder da equipe ou um administrador podem visualizar o histórico de inscrições");
+        }
+
+        Sort sortObj = parseSort(sort, Sort.by(Sort.Direction.DESC, "dataInscricao"));
+        PageRequest pageable = PageRequest.of(page, size, sortObj);
+
+        Page<InscricaoDetalhadaDto> dtoPage = (status != null
+                ? inscricaoTorneioRepository.findByEquipeIdIdAndStatusInscricao(equipeId, status, pageable)
+                : inscricaoTorneioRepository.findByEquipeIdId(equipeId, pageable))
+                .map(detalhadaMapper::toDto);
+
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("page", dtoPage.getNumber());
+        response.put("size", dtoPage.getSize());
+        response.put("totalElements", dtoPage.getTotalElements());
+        response.put("totalPages", dtoPage.getTotalPages());
+        response.put("content", dtoPage.getContent());
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("minhasinscricoes/paginado")
+    public ResponseEntity<Map<String, Object>> listarMinhasInscricoesPaginado(
+            @RequestParam(required = false) StatusInscricao status,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false, name = "sort") List<String> sort
+    ) {
+        Long usuarioAutenticadoId = getUsuarioAutenticado().getId();
+
+        List<Long> equipeIds = equipeRepository.findByLiderId(usuarioAutenticadoId).stream()
+                .map(e -> e.getId())
+                .toList();
+
+        Sort sortObj = parseSort(sort, Sort.by(Sort.Direction.DESC, "dataInscricao"));
+        PageRequest pageable = PageRequest.of(page, size, sortObj);
+
+        Page<InscricaoDetalhadaDto> dtoPage = equipeIds.isEmpty()
+                ? Page.<InscricaoTorneioEntity>empty(pageable).map(detalhadaMapper::toDto)
+                : inscricaoTorneioRepository.findByEquipeIdsAndStatus(equipeIds, status, pageable).map(detalhadaMapper::toDto);
+
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("page", dtoPage.getNumber());
+        response.put("size", dtoPage.getSize());
+        response.put("totalElements", dtoPage.getTotalElements());
+        response.put("totalPages", dtoPage.getTotalPages());
+        response.put("content", dtoPage.getContent());
+
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("torneio/{torneioId}/equipe/{equipeId}/membros")
     public ResponseEntity<Map<String, Object>> listarMembrosDaEquipeInscrita(
             @PathVariable Long torneioId,
@@ -283,5 +395,31 @@ public class InscricaoTorneioController {
         response.put("Membros", membrosDto);
 
         return ResponseEntity.ok(response);
+    }
+
+    private Sort parseSort(List<String> sortParams, Sort defaultSort) {
+        if (sortParams == null || sortParams.isEmpty()) return defaultSort;
+
+        Sort result = Sort.unsorted();
+        for (String raw : sortParams) {
+            if (raw == null || raw.isBlank()) continue;
+
+            String[] parts = raw.split(",");
+            String property = parts[0].trim();
+            if (property.isEmpty()) continue;
+
+            Sort.Direction direction = Sort.Direction.ASC;
+            if (parts.length > 1) {
+                try {
+                    direction = Sort.Direction.fromString(parts[1].trim());
+                } catch (IllegalArgumentException ignored) {
+                    direction = Sort.Direction.ASC;
+                }
+            }
+
+            result = result.and(Sort.by(direction, property));
+        }
+
+        return result.isUnsorted() ? defaultSort : result;
     }
 }
