@@ -65,6 +65,30 @@ export class TeamService {
     return this.http.get<EquipeDomain[]>(`${this.API_URL}/listartodasequipes`);
   }
 
+  // GET /clashzone/equipes/listartodasequipes/paginado?page=0&size=10&sort=dataCriacao,desc
+  listarEquipesPaginado(params?: {
+    page?: number;
+    size?: number;
+    sort?: string[];
+  }): Observable<{
+    page: number;
+    size: number;
+    totalElements: number;
+    totalPages: number;
+    content: EquipeDomain[];
+  }> {
+    let httpParams: any = undefined;
+
+    // HttpParams is optional here to keep the service lightweight; callers can pass plain params.
+    const query: Record<string, any> = {};
+    if (params?.page != null) query['page'] = params.page;
+    if (params?.size != null) query['size'] = params.size;
+    if (params?.sort?.length) query['sort'] = params.sort;
+    httpParams = query;
+
+    return this.http.get<any>(`${this.API_URL}/listartodasequipes/paginado`, { params: httpParams });
+  }
+
   // GET /clashzone/equipes/informacoesdaequipe/{id}
   buscarPorId(id: number): Observable<EquipeDomain> {
     return this.http
@@ -96,6 +120,26 @@ export class TeamService {
     return this.http
       .get<any>(`${this.API_URL}/minhasequipes`)
       .pipe(map((response) => this.extractEquipesFromResponse(response)));
+  }
+
+  // GET /clashzone/equipes/minhasequipes/paginado?page=0&size=10&sort=dataCriacao,desc
+  listarMinhasEquipesPaginado(params?: {
+    page?: number;
+    size?: number;
+    sort?: string[];
+  }): Observable<{
+    page: number;
+    size: number;
+    totalElements: number;
+    totalPages: number;
+    content: EquipeDomain[];
+  }> {
+    const query: Record<string, any> = {};
+    if (params?.page != null) query['page'] = params.page;
+    if (params?.size != null) query['size'] = params.size;
+    if (params?.sort?.length) query['sort'] = params.sort;
+
+    return this.http.get<any>(`${this.API_URL}/minhasequipes/paginado`, { params: query });
   }
 
   // ==========================================

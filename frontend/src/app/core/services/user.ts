@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, map, shareReplay } from 'rxjs';
 import { UsuariosDomain, AtualizarUsuariosDto, PublicUsuarioDto } from '@core/models';
 import { environment } from '@environments/environment';
 
@@ -10,6 +10,7 @@ import { environment } from '@environments/environment';
 export class UserService {
   private http = inject(HttpClient);
   private readonly API_URL = `${environment.apiUrl}/usuarios`;
+  private publicUserCache = new Map<number, Observable<PublicUsuarioDto>>();
 
   // GET /clashzone/usuarios/userprofile/{id}
   buscarPerfil(): Observable<UsuariosDomain> {
@@ -42,6 +43,14 @@ export class UserService {
 
   // GET /clashzone/usuarios/public/{id}
   buscarPublicoPorId(id: number): Observable<PublicUsuarioDto> {
-    return this.http.get<PublicUsuarioDto>(`${this.API_URL}/public/${id}`);
+    const cached = this.publicUserCache.get(id);
+    if (cached) return cached;
+
+    const request$ = this.http
+      .get<PublicUsuarioDto>(`${this.API_URL}/public/${id}`)
+      .pipe(shareReplay({ bufferSize: 1, refCount: true }));
+
+    this.publicUserCache.set(id, request$);
+    return request$;
   }
 }

@@ -209,6 +209,11 @@ export class TournamentDetailComponent implements OnInit {
     return currentUser?.id === this.tournament.criadorId || this.authService.isAdmin();
   }
 
+  // Backend ainda nao implementa deletar torneio. Mantemos o botao escondido por enquanto.
+  canDelete(): boolean {
+    return false;
+  }
+
   canManageInscriptions(): boolean {
     if (!this.tournament) return false;
     return this.canManageInscriptionsFor(this.tournament);

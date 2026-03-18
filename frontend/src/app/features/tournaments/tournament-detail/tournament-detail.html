@@ -108,10 +108,12 @@
             <mat-icon>edit</mat-icon>
             Editar
           </button>
+          @if (canDelete()) {
           <button mat-button color="warn" (click)="onDelete()">
             <mat-icon>delete</mat-icon>
             Excluir
           </button>
+          }
           }
         </div>
       </mat-card-actions>

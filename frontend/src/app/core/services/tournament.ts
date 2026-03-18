@@ -27,11 +27,58 @@ export class TournamentService {
     return this.http.get<TorneioDomain[]>(`${this.API_URL}/listartorneios`);
   }
 
+  // GET /clashzone/torneios/listartorneios/paginado?page=0&size=10&sort=dataCriacao,desc
+  listarTorneiosPaginado(params?: {
+    page?: number;
+    size?: number;
+    sort?: string[];
+  }): Observable<{
+    page: number;
+    size: number;
+    totalElements: number;
+    totalPages: number;
+    content: TorneioDomain[];
+  }> {
+    let httpParams = new HttpParams();
+    if (params?.page != null) httpParams = httpParams.set('page', params.page);
+    if (params?.size != null) httpParams = httpParams.set('size', params.size);
+    if (params?.sort?.length) {
+      for (const s of params.sort) httpParams = httpParams.append('sort', s);
+    }
+
+    return this.http.get<any>(`${this.API_URL}/listartorneios/paginado`, { params: httpParams });
+  }
+
   // POST /clashzone/torneios/torneiosfiltrados
   listarTorneiosFiltrados(filtros: FiltroTorneioDto): Observable<TorneioDomain[]> {
     return this.http.post<any>(`${this.API_URL}/torneiosfiltrados`, filtros).pipe(
       map(response => response['Lista de torneios'] || [])
     );
+  }
+
+  // POST /clashzone/torneios/torneiosfiltrados/paginado?page=0&size=10&sort=dataCriacao,desc
+  listarTorneiosFiltradosPaginado(
+    filtros: FiltroTorneioDto,
+    params?: {
+      page?: number;
+      size?: number;
+      sort?: string[];
+    }
+  ): Observable<{
+    page: number;
+    size: number;
+    totalElements: number;
+    totalPages: number;
+    content: TorneioDomain[];
+  }> {
+    let httpParams = new HttpParams();
+    if (params?.page != null) httpParams = httpParams.set('page', params.page);
+    if (params?.size != null) httpParams = httpParams.set('size', params.size);
+    if (params?.sort?.length) {
+      for (const s of params.sort) httpParams = httpParams.append('sort', s);
+    }
+
+    return this.http.post<any>(`${this.API_URL}/torneiosfiltrados/paginado`, filtros, { params: httpParams });
   }
 
   // GET /clashzone/torneios/paginadotorneio/{id}

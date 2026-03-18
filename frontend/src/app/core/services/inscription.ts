@@ -31,6 +31,27 @@ export class InscriptionService {
     return this.http.get<any>(`${this.API_URL}/torneio/${torneioId}`, { params });
   }
 
+  // GET /clashzone/inscricao/torneio/{torneioId}/paginado?page=0&size=10&sort=dataInscricao,desc
+  listarPorTorneioPaginado(
+    torneioId: number,
+    params?: {
+      status?: StatusInscricao;
+      page?: number;
+      size?: number;
+      sort?: string[];
+    }
+  ): Observable<any> {
+    let httpParams = new HttpParams();
+    if (params?.status) httpParams = httpParams.set('status', params.status);
+    if (params?.page != null) httpParams = httpParams.set('page', params.page);
+    if (params?.size != null) httpParams = httpParams.set('size', params.size);
+    if (params?.sort?.length) {
+      for (const s of params.sort) httpParams = httpParams.append('sort', s);
+    }
+
+    return this.http.get<any>(`${this.API_URL}/torneio/${torneioId}/paginado`, { params: httpParams });
+  }
+
   // GET /clashzone/inscricao/equipe/{equipeId}?status=APROVADA
   listarPorEquipe(equipeId: number, status?: StatusInscricao): Observable<any> {
     let params = new HttpParams();
@@ -38,6 +59,27 @@ export class InscriptionService {
       params = params.set('status', status);
     }
     return this.http.get<any>(`${this.API_URL}/equipe/${equipeId}`, { params });
+  }
+
+  // GET /clashzone/inscricao/equipe/{equipeId}/paginado?page=0&size=10&sort=dataInscricao,desc
+  listarPorEquipePaginado(
+    equipeId: number,
+    params?: {
+      status?: StatusInscricao;
+      page?: number;
+      size?: number;
+      sort?: string[];
+    }
+  ): Observable<any> {
+    let httpParams = new HttpParams();
+    if (params?.status) httpParams = httpParams.set('status', params.status);
+    if (params?.page != null) httpParams = httpParams.set('page', params.page);
+    if (params?.size != null) httpParams = httpParams.set('size', params.size);
+    if (params?.sort?.length) {
+      for (const s of params.sort) httpParams = httpParams.append('sort', s);
+    }
+
+    return this.http.get<any>(`${this.API_URL}/equipe/${equipeId}/paginado`, { params: httpParams });
   }
 
   // PATCH /clashzone/inscricao/atualizar/{inscricaoId}
@@ -52,6 +94,24 @@ export class InscriptionService {
       params = params.set('status', status);
     }
     return this.http.get<any>(`${this.API_URL}/minhasinscricoes`, { params });
+  }
+
+  // GET /clashzone/inscricao/minhasinscricoes/paginado?page=0&size=10&sort=dataInscricao,desc
+  listarMinhasInscricoesPaginado(params?: {
+    status?: StatusInscricao;
+    page?: number;
+    size?: number;
+    sort?: string[];
+  }): Observable<any> {
+    let httpParams = new HttpParams();
+    if (params?.status) httpParams = httpParams.set('status', params.status);
+    if (params?.page != null) httpParams = httpParams.set('page', params.page);
+    if (params?.size != null) httpParams = httpParams.set('size', params.size);
+    if (params?.sort?.length) {
+      for (const s of params.sort) httpParams = httpParams.append('sort', s);
+    }
+
+    return this.http.get<any>(`${this.API_URL}/minhasinscricoes/paginado`, { params: httpParams });
   }
 
   // GET /clashzone/inscricao/torneio/{torneioId}/equipe/{equipeId}/membros
