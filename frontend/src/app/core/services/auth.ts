@@ -53,6 +53,15 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
+  updateCurrentUser(partial: Partial<UsuariosDomain>): void {
+    const current = this.getCurrentUser();
+    if (!current) return;
+
+    const updated: UsuariosDomain = { ...current, ...partial };
+    localStorage.setItem(this.STORAGE_USER, JSON.stringify(updated));
+    this.currentUserSubject.next(updated);
+  }
+
   isAuthenticated(): boolean {
     return !!this.getToken();
   }

@@ -1,0 +1,73 @@
+<div class="user-profile-container">
+  <div class="page-header">
+    <h1>
+      <mat-icon>person</mat-icon>
+      Editar Perfil
+    </h1>
+    <p class="subtitle">Atualize nome, email e senha</p>
+  </div>
+
+  @if (loading) {
+  <div class="loading-state">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Carregando perfil...</p>
+  </div>
+  } @else {
+  <mat-card class="profile-card">
+    <mat-card-content>
+      <form [formGroup]="profileForm" (ngSubmit)="onSave()">
+        <div class="form-grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Nickname</mat-label>
+            <input matInput formControlName="nickname" />
+            <mat-icon matPrefix>badge</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Nome</mat-label>
+            <input matInput formControlName="nomeDoUsuario" />
+            <mat-icon matPrefix>person</mat-icon>
+            @if (profileForm.get('nomeDoUsuario')?.invalid && profileForm.get('nomeDoUsuario')?.touched) {
+            <mat-error>Informe um nome válido</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="emailDoUsuario" />
+            <mat-icon matPrefix>mail</mat-icon>
+            @if (profileForm.get('emailDoUsuario')?.invalid && profileForm.get('emailDoUsuario')?.touched) {
+            <mat-error>Informe um email válido</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Nova senha (opcional)</mat-label>
+            <input matInput type="password" formControlName="senhaDoUsuario" />
+            <mat-icon matPrefix>lock</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="actions-row">
+          <button mat-button type="button" (click)="onCancel()" [disabled]="saving || deleting">
+            <mat-icon>arrow_back</mat-icon>
+            Voltar
+          </button>
+
+          <button mat-raised-button color="primary" type="submit" [disabled]="saving || deleting">
+            <mat-icon>save</mat-icon>
+            @if (saving) { Salvando... } @else { Salvar }
+          </button>
+
+          <button mat-stroked-button color="warn" type="button" (click)="onDeleteAccount()" [disabled]="saving || deleting">
+            <mat-icon>delete_forever</mat-icon>
+            @if (deleting) { Excluindo... } @else { Excluir conta }
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+  }
+</div>

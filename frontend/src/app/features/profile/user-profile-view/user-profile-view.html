@@ -1,0 +1,90 @@
+<div class="profile-view-container">
+  <div class="page-header">
+    <div class="title">
+      <h1>
+        <mat-icon>person</mat-icon>
+        Meu Perfil
+      </h1>
+      <p class="subtitle">Informações da sua conta e seus torneios</p>
+    </div>
+
+    <button mat-raised-button color="primary" (click)="onEdit()">
+      <mat-icon>edit</mat-icon>
+      Editar perfil
+    </button>
+  </div>
+
+  @if (loading) {
+  <div class="loading-state">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Carregando...</p>
+  </div>
+  } @else if (user) {
+  <div class="grid">
+    <mat-card class="info-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>badge</mat-icon>
+          Informações
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="info-list">
+          <div class="info-row">
+            <span class="label">Nickname</span>
+            <span class="value">{{ user.nickname }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Nome</span>
+            <span class="value">{{ user.nomeDoUsuario }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Email</span>
+            <span class="value">{{ user.emailDoUsuario }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Criado em</span>
+            <span class="value">{{ user.dataCriacao | date: 'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="tournaments-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>emoji_events</mat-icon>
+          Torneios criados ({{ myTournaments.length }})
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        @if (myTournaments.length === 0) {
+        <div class="empty">
+          <mat-icon>event_busy</mat-icon>
+          <p>Você ainda não criou nenhum torneio.</p>
+        </div>
+        } @else {
+        <div class="tournaments-list">
+          @for (t of myTournaments; track t.id) {
+          <div class="tournament-row" [routerLink]="['/tournaments', t.id]">
+            <div class="left">
+              <strong>{{ t.nomeDoTorneio }}</strong>
+              <span class="meta">{{ t.jogoDoTorneio | gameName }} | {{ t.plataforma | platformName }}</span>
+              <span class="meta">Início: {{ t.inicioDoTorneio | date: 'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+            <div class="right">
+              <mat-chip [ngClass]="t.statusDoTorneio | statusBadge">
+                {{ t.statusDoTorneio | statusName }}
+              </mat-chip>
+              <mat-icon class="chevron">chevron_right</mat-icon>
+            </div>
+          </div>
+          }
+        </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  </div>
+  }
+</div>
+
