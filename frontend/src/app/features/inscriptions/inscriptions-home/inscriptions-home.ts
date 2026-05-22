@@ -11,7 +11,7 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { TournamentService } from '@core/services/tournament';
 import { InscriptionService } from '@core/services/inscription';
-import { NotificationService } from '@core/services/notification';
+import { ToastService } from '@core/services/toast';
 import { UserService } from '@core/services/user';
 import { InscricaoDetalhadaDto, StatusDoTorneio, StatusInscricao, TorneioDomain } from '@core/models';
 import { GameNamePipe } from '@shared/pipes/game-name-pipe';
@@ -47,7 +47,7 @@ export class InscriptionsHomeComponent implements OnInit {
   private router = inject(Router);
   private tournamentService = inject(TournamentService);
   private inscriptionService = inject(InscriptionService);
-  private notificationService = inject(NotificationService);
+  private toastService = inject(ToastService);
   private userService = inject(UserService);
 
   loading = true;
@@ -97,7 +97,7 @@ export class InscriptionsHomeComponent implements OnInit {
         return forkJoin(requests);
       }),
       catchError(() => {
-        this.notificationService.error('Erro ao carregar inscrições pendentes dos seus torneios.');
+        this.toastService.error('Erro ao carregar inscrições pendentes dos seus torneios.');
         return of([] as TournamentPending[]);
       })
     ).subscribe({

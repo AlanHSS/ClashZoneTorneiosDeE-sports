@@ -9,7 +9,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { TournamentService } from '@core/services/tournament';
 import { InscriptionService } from '@core/services/inscription';
 import { UserService } from '@core/services/user';
-import { NotificationService } from '@core/services/notification';
+import { ToastService } from '@core/services/toast';
 import { AuthService } from '@core/services/auth';
 import { TorneioDomain, InscricaoDetalhadaDto } from '@core/models';
 import { GameNamePipe } from '@shared/pipes/game-name-pipe';
@@ -41,7 +41,7 @@ export class TournamentDetailComponent implements OnInit {
   private tournamentService = inject(TournamentService);
   private inscriptionService = inject(InscriptionService);
   private userService = inject(UserService);
-  private notificationService = inject(NotificationService);
+  private toastService = inject(ToastService);
   private authService = inject(AuthService);
 
   tournament: TorneioDomain | null = null;
@@ -85,7 +85,7 @@ export class TournamentDetailComponent implements OnInit {
         }
       },
       error: () => {
-        this.notificationService.error('Erro ao carregar torneio');
+        this.toastService.error('Erro ao carregar torneio');
         this.router.navigate(['/tournaments']);
       }
     });
@@ -176,7 +176,7 @@ export class TournamentDetailComponent implements OnInit {
     if (confirm(`Tem certeza que deseja excluir o torneio "${this.tournament.nomeDoTorneio}"?`)) {
       this.tournamentService.deletar(this.tournament.id).subscribe({
         next: () => {
-          this.notificationService.success('Torneio excluído com sucesso!');
+          this.toastService.success('Torneio excluído com sucesso!');
           this.router.navigate(['/tournaments']);
         },
         error: () => {

@@ -11,7 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { TournamentService } from '@core/services/tournament';
-import { NotificationService } from '@core/services/notification';
+import { ToastService } from '@core/services/toast';
 import { Games, StatusDoTorneio, Plataforma } from '@core/models';
 import { GameNamePipe } from '@shared/pipes/game-name-pipe';
 import { StatusNamePipe } from '@shared/pipes/status-name-pipe';
@@ -43,7 +43,7 @@ export class TournamentFormComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private tournamentService = inject(TournamentService);
-  private notificationService = inject(NotificationService);
+  private toastService = inject(ToastService);
 
   tournamentForm: FormGroup;
   isEditMode = false;
@@ -93,7 +93,7 @@ export class TournamentFormComponent implements OnInit {
         });
       },
       error: () => {
-        this.notificationService.error('Erro ao carregar torneio');
+        this.toastService.error('Erro ao carregar torneio');
         this.router.navigate(['/tournaments']);
       }
     });
@@ -137,7 +137,7 @@ export class TournamentFormComponent implements OnInit {
     this.tournamentService.criar(data).subscribe({
       next: (response) => {
         console.log('✅ Torneio criado com sucesso:', response);
-        this.notificationService.success('Torneio criado com sucesso!');
+        this.toastService.success('Torneio criado com sucesso!');
         this.router.navigate(['/tournaments']);
       }
       // Error interceptor cuida dos erros
@@ -150,7 +150,7 @@ export class TournamentFormComponent implements OnInit {
     this.tournamentService.atualizar(id, data).subscribe({
       next: (response) => {
         console.log('✅ Torneio atualizado com sucesso:', response);
-        this.notificationService.success('Torneio atualizado com sucesso!');
+        this.toastService.success('Torneio atualizado com sucesso!');
         this.router.navigate(['/tournaments', id]);
       }
       // Error interceptor cuida dos erros

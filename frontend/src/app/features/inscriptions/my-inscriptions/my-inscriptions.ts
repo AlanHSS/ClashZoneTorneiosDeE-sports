@@ -10,7 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { InscriptionService } from '@core/services/inscription';
-import { NotificationService } from '@core/services/notification';
+import { ToastService } from '@core/services/toast';
 import { InscricaoDetalhadaDto, StatusInscricao } from '@core/models';
 import { GameNamePipe } from '@shared/pipes/game-name-pipe';
 import { StatusNamePipe } from '@shared/pipes/status-name-pipe';
@@ -39,7 +39,7 @@ import { StatusBadgePipe } from '@shared/pipes/status-badge-pipe';
 })
 export class MyInscriptionsComponent implements OnInit {
   private inscriptionService = inject(InscriptionService);
-  private notificationService = inject(NotificationService);
+  private toastService = inject(ToastService);
 
   inscriptions: InscricaoDetalhadaDto[] = [];
   filteredInscriptions: InscricaoDetalhadaDto[] = [];
@@ -105,7 +105,7 @@ export class MyInscriptionsComponent implements OnInit {
         statusInscricao: StatusInscricao.CANCELADA
       }).subscribe({
         next: () => {
-          this.notificationService.success('Inscrição cancelada com sucesso!');
+          this.toastService.success('Inscrição cancelada com sucesso!');
           this.loadInscriptions();
         }
       });

@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { TournamentService } from '@core/services/tournament';
-import { NotificationService } from '@core/services/notification';
+import { ToastService } from '@core/services/toast';
 import { AuthService } from '@core/services/auth';
 import { TorneioDomain, Games, StatusDoTorneio, Plataforma } from '@core/models';
 import { TournamentCardComponent } from '@shared/components/tournament-card/tournament-card';
@@ -39,7 +39,7 @@ import { PlatformNamePipe } from '@shared/pipes/platform-name-pipe';
 })
 export class TournamentListComponent implements OnInit {
   private tournamentService = inject(TournamentService);
-  private notificationService = inject(NotificationService);
+  private toastService = inject(ToastService);
   authService = inject(AuthService);
   private router = inject(Router);
   private fb = inject(FormBuilder);
@@ -78,7 +78,7 @@ export class TournamentListComponent implements OnInit {
         this.filteredTournaments = data;
       },
       error: () => {
-        this.notificationService.error('Erro ao carregar torneios');
+        this.toastService.error('Erro ao carregar torneios');
       }
     });
   }

@@ -12,7 +12,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { UserService } from '@core/services/user';
 import { AuthService } from '@core/services/auth';
-import { NotificationService } from '@core/services/notification';
+import { ToastService } from '@core/services/toast';
 import { AtualizarUsuariosDto, UsuariosDomain } from '@core/models';
 
 @Component({
@@ -37,7 +37,7 @@ export class UserProfileEditComponent implements OnInit {
   private router = inject(Router);
   private userService = inject(UserService);
   private authService = inject(AuthService);
-  private notificationService = inject(NotificationService);
+  private toastService = inject(ToastService);
 
   user: UsuariosDomain | null = null;
   loading = true;
@@ -75,7 +75,7 @@ export class UserProfileEditComponent implements OnInit {
       },
       error: () => {
         this.loading = false;
-        this.notificationService.error('Erro ao carregar perfil');
+        this.toastService.error('Erro ao carregar perfil');
         this.router.navigate(['/']);
       }
     });
@@ -96,7 +96,7 @@ export class UserProfileEditComponent implements OnInit {
     if (raw.senhaDoUsuario && String(raw.senhaDoUsuario).trim() !== '') dto.senhaDoUsuario = raw.senhaDoUsuario;
 
     if (Object.keys(dto).length === 0) {
-      this.notificationService.info('Nenhuma alteração para salvar');
+      this.toastService.info('Nenhuma alteração para salvar');
       return;
     }
 
@@ -115,7 +115,7 @@ export class UserProfileEditComponent implements OnInit {
           emailDoUsuario: this.user.emailDoUsuario
         });
 
-        this.notificationService.success('Perfil atualizado com sucesso!');
+        this.toastService.success('Perfil atualizado com sucesso!');
         this.saving = false;
         this.router.navigate(['/profile']);
       },
@@ -140,7 +140,7 @@ export class UserProfileEditComponent implements OnInit {
     this.userService.deletarConta(this.user.id).subscribe({
       next: () => {
         this.deleting = false;
-        this.notificationService.success('Conta excluída com sucesso!');
+        this.toastService.success('Conta excluída com sucesso!');
         this.authService.logout();
       },
       error: () => {

@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '@core/services/auth';
-import { NotificationService } from '@core/services/notification';
+import { ToastService } from '@core/services/toast';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +29,7 @@ import { NotificationService } from '@core/services/notification';
 export class LoginComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
-  private notificationService = inject(NotificationService);
+  private toastService = inject(ToastService);
   private router = inject(Router);
 
   hidePassword = true;
@@ -46,7 +46,7 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value).subscribe({
         next: () => {
-          this.notificationService.success('Login realizado com sucesso!');
+          this.toastService.success('Login realizado com sucesso!');
           this.router.navigate(['/tournaments']);
         },
         error: () => {

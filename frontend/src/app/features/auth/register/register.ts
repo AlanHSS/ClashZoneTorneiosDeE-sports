@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '@core/services/auth';
-import { NotificationService } from '@core/services/notification';
+import { ToastService } from '@core/services/toast';
 
 @Component({
   selector: 'app-register',
@@ -29,7 +29,7 @@ import { NotificationService } from '@core/services/notification';
 export class RegisterComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
-  private notificationService = inject(NotificationService);
+  private toastService = inject(ToastService);
   private router = inject(Router);
 
   hidePassword = true;
@@ -48,7 +48,7 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
       this.authService.register(this.registerForm.value).subscribe({
         next: () => {
-          this.notificationService.success('Conta criada com sucesso!');
+          this.toastService.success('Conta criada com sucesso!');
           this.router.navigate(['/tournaments']);
         },
         error: () => {

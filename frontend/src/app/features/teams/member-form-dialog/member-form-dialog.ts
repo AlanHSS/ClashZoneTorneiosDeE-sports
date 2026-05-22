@@ -8,7 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TeamService } from '@core/services/team';
-import { NotificationService } from '@core/services/notification';
+import { ToastService } from '@core/services/toast';
 import { TipoMembro } from '@core/models';
 
 export interface MemberDialogData {
@@ -34,7 +34,7 @@ export interface MemberDialogData {
 export class MemberFormDialogComponent {
   private fb = inject(FormBuilder);
   private teamService = inject(TeamService);
-  private notificationService = inject(NotificationService);
+  private toastService = inject(ToastService);
   private dialogRef = inject(MatDialogRef<MemberFormDialogComponent>);
 
   memberForm: FormGroup;
@@ -59,7 +59,7 @@ export class MemberFormDialogComponent {
 
       this.teamService.adicionarMembro(this.data.equipeId, memberData).subscribe({
         next: () => {
-          this.notificationService.success('Membro adicionado com sucesso!');
+          this.toastService.success('Membro adicionado com sucesso!');
           this.dialogRef.close(true);
         }
       });

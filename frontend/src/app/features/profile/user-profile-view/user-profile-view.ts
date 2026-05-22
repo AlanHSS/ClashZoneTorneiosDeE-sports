@@ -10,7 +10,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthService } from '@core/services/auth';
 import { UserService } from '@core/services/user';
 import { TournamentService } from '@core/services/tournament';
-import { NotificationService } from '@core/services/notification';
+import { ToastService } from '@core/services/toast';
 import { TorneioDomain, UsuariosDomain } from '@core/models';
 import { GameNamePipe } from '@shared/pipes/game-name-pipe';
 import { StatusBadgePipe } from '@shared/pipes/status-badge-pipe';
@@ -41,7 +41,7 @@ export class UserProfileViewComponent implements OnInit {
   private authService = inject(AuthService);
   private userService = inject(UserService);
   private tournamentService = inject(TournamentService);
-  private notificationService = inject(NotificationService);
+  private toastService = inject(ToastService);
 
   loading = true;
   user: UsuariosDomain | null = null;
@@ -71,7 +71,7 @@ export class UserProfileViewComponent implements OnInit {
       },
       error: () => {
         this.loading = false;
-        this.notificationService.error('Erro ao carregar perfil');
+        this.toastService.error('Erro ao carregar perfil');
         this.router.navigate(['/']);
       }
     });

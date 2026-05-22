@@ -11,7 +11,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { InscriptionService } from '@core/services/inscription';
 import { TournamentService } from '@core/services/tournament';
 import { TeamService } from '@core/services/team';
-import { NotificationService } from '@core/services/notification';
+import { ToastService } from '@core/services/toast';
 import { TorneioDomain, EquipeDomain } from '@core/models';
 import { GameNamePipe } from '@shared/pipes/game-name-pipe';
 
@@ -40,7 +40,7 @@ export class InscriptionFormComponent implements OnInit {
   private inscriptionService = inject(InscriptionService);
   private tournamentService = inject(TournamentService);
   private teamService = inject(TeamService);
-  private notificationService = inject(NotificationService);
+  private toastService = inject(ToastService);
 
   inscriptionForm: FormGroup;
   tournament: TorneioDomain | null = null;
@@ -58,7 +58,7 @@ export class InscriptionFormComponent implements OnInit {
     const tournamentId = this.route.snapshot.queryParamMap.get('tournamentId');
 
     if (!tournamentId) {
-      this.notificationService.error('ID do torneio não fornecido');
+      this.toastService.error('ID do torneio não fornecido');
       this.router.navigate(['/tournaments']);
       return;
     }
@@ -74,7 +74,7 @@ export class InscriptionFormComponent implements OnInit {
         this.filterEligibleTeams();
       },
       error: () => {
-        this.notificationService.error('Erro ao carregar torneio');
+        this.toastService.error('Erro ao carregar torneio');
         this.router.navigate(['/tournaments']);
       }
     });
@@ -120,7 +120,7 @@ export class InscriptionFormComponent implements OnInit {
 
       this.inscriptionService.criar(inscriptionData).subscribe({
         next: () => {
-          this.notificationService.success('Inscrição realizada com sucesso! Aguarde aprovação.');
+          this.toastService.success('Inscrição realizada com sucesso! Aguarde aprovação.');
           this.router.navigate(['/inscriptions/my']);
         }
       });

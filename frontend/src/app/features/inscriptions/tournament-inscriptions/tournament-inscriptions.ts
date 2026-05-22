@@ -11,7 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { InscriptionService } from '@core/services/inscription';
 import { TournamentService } from '@core/services/tournament';
-import { NotificationService } from '@core/services/notification';
+import { ToastService } from '@core/services/toast';
 import { AuthService } from '@core/services/auth';
 import { UserService } from '@core/services/user';
 import { InscricaoDetalhadaDto, MembroEquipeDomain, StatusInscricao, TipoMembro, TorneioDomain } from '@core/models';
@@ -43,7 +43,7 @@ export class TournamentInscriptionsComponent implements OnInit {
   private router = inject(Router);
   private inscriptionService = inject(InscriptionService);
   private tournamentService = inject(TournamentService);
-  private notificationService = inject(NotificationService);
+  private toastService = inject(ToastService);
   private authService = inject(AuthService);
   private userService = inject(UserService);
 
@@ -85,7 +85,7 @@ export class TournamentInscriptionsComponent implements OnInit {
         this.tournament = data;
 
         if (!this.canManageFor(data)) {
-          this.notificationService.error('Você não tem permissão para gerenciar inscrições deste torneio.');
+          this.toastService.error('Você não tem permissão para gerenciar inscrições deste torneio.');
           this.router.navigate(['/tournaments', id]);
           return;
         }
@@ -93,7 +93,7 @@ export class TournamentInscriptionsComponent implements OnInit {
         this.loadInscriptions(id);
       },
       error: () => {
-        this.notificationService.error('Erro ao carregar torneio');
+        this.toastService.error('Erro ao carregar torneio');
         this.router.navigate(['/tournaments']);
       }
     });
@@ -197,7 +197,7 @@ export class TournamentInscriptionsComponent implements OnInit {
       statusInscricao: StatusInscricao.APROVADA
     }).subscribe({
       next: () => {
-        this.notificationService.success('Inscricao aprovada com sucesso!');
+        this.toastService.success('Inscricao aprovada com sucesso!');
         this.onStatusFilterChange();
       }
     });
@@ -213,7 +213,7 @@ export class TournamentInscriptionsComponent implements OnInit {
       motivoRecusa: motivo
     }).subscribe({
       next: () => {
-        this.notificationService.success('Inscricao recusada com sucesso!');
+        this.toastService.success('Inscricao recusada com sucesso!');
         this.onStatusFilterChange();
       }
     });

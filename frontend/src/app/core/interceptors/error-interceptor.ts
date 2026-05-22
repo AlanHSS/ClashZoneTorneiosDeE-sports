@@ -2,12 +2,12 @@ import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 import { Router } from '@angular/router';
-import { NotificationService } from '@core/services/notification';
+import { ToastService } from '@core/services/toast';
 import { AuthService } from '@core/services/auth';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
-  const notificationService = inject(NotificationService);
+  const toastService = inject(ToastService);
   const authService = inject(AuthService);
 
   return next(req).pipe(
@@ -58,54 +58,54 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         case 0:
           // Erro de rede / CORS / Backend offline
           errorMessage = 'Não foi possível conectar ao servidor. Verifique sua conexão ou se o backend está rodando.';
-          notificationService.error(errorMessage, 6000);
+          toastService.error(errorMessage, 6000);
           break;
 
         case 400:
           // Bad Request - Validação, dados inválidos
-          notificationService.error(errorMessage, 5000);
+          toastService.error(errorMessage, 5000);
           break;
 
         case 401:
           // Unauthorized - Token inválido/expirado
           errorMessage = error.error?.message || 'Sessão expirada. Faça login novamente.';
-          notificationService.error(errorMessage);
+          toastService.error(errorMessage);
           shouldLogout = true;
           break;
 
         case 403:
           // Forbidden - Sem permissão
           errorMessage = error.error?.message || 'Você não tem permissão para acessar este recurso.';
-          notificationService.error(errorMessage);
+          toastService.error(errorMessage);
           shouldRedirect = true;
           break;
 
         case 404:
           // Not Found
-          notificationService.error(errorMessage);
+          toastService.error(errorMessage);
           break;
 
         case 409:
           // Conflict - Duplicação (CampoDuplicadoException, InscricaoDuplicadaException)
-          notificationService.warning(errorMessage, 5000);
+          toastService.warning(errorMessage, 5000);
           break;
 
         case 500:
           // Internal Server Error
           console.error('🔥 Erro 500 do backend:', error);
           errorMessage = error.error?.message || 'Erro interno do servidor. Tente novamente mais tarde.';
-          notificationService.error(errorMessage, 6000);
+          toastService.error(errorMessage, 6000);
           break;
 
         case 503:
           // Service Unavailable
           errorMessage = 'Serviço temporariamente indisponível. Tente novamente em alguns instantes.';
-          notificationService.error(errorMessage);
+          toastService.error(errorMessage);
           break;
 
         default:
           // Outros erros
-          notificationService.error(errorMessage);
+          toastService.error(errorMessage);
           break;
       }
 

@@ -11,7 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TeamService } from '@core/services/team';
-import { NotificationService } from '@core/services/notification';
+import { ToastService } from '@core/services/toast';
 import { AuthService } from '@core/services/auth';
 import { EquipeDomain, Games } from '@core/models';
 import { GameNamePipe } from '@shared/pipes/game-name-pipe';
@@ -38,7 +38,7 @@ import { GameNamePipe } from '@shared/pipes/game-name-pipe';
 })
 export class TeamListComponent implements OnInit {
   private teamService = inject(TeamService);
-  private notificationService = inject(NotificationService);
+  private toastService = inject(ToastService);
   private authService = inject(AuthService);
   private router = inject(Router);
 
@@ -118,7 +118,7 @@ export class TeamListComponent implements OnInit {
     if (confirm(`Tem certeza que deseja excluir a equipe "${team.nomeDaEquipe}"?`)) {
       this.teamService.deletar(team.id).subscribe({
         next: () => {
-          this.notificationService.success('Equipe excluída com sucesso!');
+          this.toastService.success('Equipe excluída com sucesso!');
           this.loadTeams();
         }
       });

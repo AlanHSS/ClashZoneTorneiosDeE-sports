@@ -9,7 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TeamService } from '@core/services/team';
-import { NotificationService } from '@core/services/notification';
+import { ToastService } from '@core/services/toast';
 import { Games } from '@core/models';
 import { GameNamePipe } from '@shared/pipes/game-name-pipe';
 
@@ -35,7 +35,7 @@ export class TeamFormComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private teamService = inject(TeamService);
-  private notificationService = inject(NotificationService);
+  private toastService = inject(ToastService);
 
   teamForm: FormGroup;
   isEditMode = false;
@@ -68,7 +68,7 @@ export class TeamFormComponent implements OnInit {
         });
       },
       error: () => {
-        this.notificationService.error('Erro ao carregar equipe');
+        this.toastService.error('Erro ao carregar equipe');
         this.router.navigate(['/teams']);
       }
     });
@@ -94,7 +94,7 @@ export class TeamFormComponent implements OnInit {
   createTeam(data: any): void {
     this.teamService.criar(data).subscribe({
       next: (response) => {
-        this.notificationService.success('Equipe criada com sucesso!');
+        this.toastService.success('Equipe criada com sucesso!');
         if (response.id) {
           this.router.navigate(['/teams', response.id]);
         } else {
@@ -107,7 +107,7 @@ export class TeamFormComponent implements OnInit {
   updateTeam(id: number, data: any): void {
     this.teamService.atualizar(id, data).subscribe({
       next: () => {
-        this.notificationService.success('Equipe atualizada com sucesso!');
+        this.toastService.success('Equipe atualizada com sucesso!');
         this.router.navigate(['/teams', id]);
       }
     });

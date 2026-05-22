@@ -9,7 +9,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TeamService } from '@core/services/team';
-import { NotificationService } from '@core/services/notification';
+import { ToastService } from '@core/services/toast';
 import { AuthService } from '@core/services/auth';
 import { EquipeDomain, MembroEquipeDomain, TipoMembro } from '@core/models';
 import { GameNamePipe } from '@shared/pipes/game-name-pipe';
@@ -36,7 +36,7 @@ export class TeamDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private teamService = inject(TeamService);
-  private notificationService = inject(NotificationService);
+  private toastService = inject(ToastService);
   private authService = inject(AuthService);
   private dialog = inject(MatDialog);
 
@@ -106,7 +106,7 @@ export class TeamDetailComponent implements OnInit {
 
     this.teamService.atualizarMembro(this.team.id, updateDto).subscribe({
       next: () => {
-        this.notificationService.success(
+        this.toastService.success(
           `${member.nickname} agora é ${novoTipo.toLowerCase()}`
         );
         this.loadMembers(this.team!.id);
@@ -120,7 +120,7 @@ export class TeamDetailComponent implements OnInit {
     if (confirm(`Tem certeza que deseja remover ${member.nickname} da equipe?`)) {
       this.teamService.removerMembro(this.team.id, member.id).subscribe({
         next: () => {
-          this.notificationService.success('Membro removido com sucesso!');
+          this.toastService.success('Membro removido com sucesso!');
           this.loadMembers(this.team!.id);
           this.loadTeam(this.team!.id);
         }
@@ -140,7 +140,7 @@ export class TeamDetailComponent implements OnInit {
     if (confirm(`Tem certeza que deseja excluir a equipe "${this.team.nomeDaEquipe}"?`)) {
       this.teamService.deletar(this.team.id).subscribe({
         next: () => {
-          this.notificationService.success('Equipe excluída com sucesso!');
+          this.toastService.success('Equipe excluída com sucesso!');
           this.router.navigate(['/teams']);
         }
       });
