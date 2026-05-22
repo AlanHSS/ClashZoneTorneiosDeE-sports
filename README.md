@@ -85,6 +85,10 @@ ClashZone/
 │   ├── nginx.conf
 │   └── package.json
 │
+├── docs/
+│   └── postman/
+│       └── ClashZone.postman_collection.json
+│
 ├── docker-compose.yml
 ├── docker-compose.dev.yml
 └── README.md
@@ -108,15 +112,6 @@ O backend segue uma separação inspirada em Clean Architecture:
 Essa estrutura ajuda a manter as regras de negócio menos dependentes de detalhes externos como banco de dados, HTTP e frameworks.
 
 ## Como Rodar com Docker
-
-Crie um arquivo `.env` na raiz do projeto com as variáveis:
-
-```env
-DATABASE_DB=clashzone
-DATABASE_USERNAME=postgres
-DATABASE_PASSWORD=postgres
-JWT_SECRET=sua_chave_secreta
-```
 
 Suba os containers:
 
@@ -181,6 +176,16 @@ A API usa autenticação JWT. Após login, o token retornado deve ser enviado na
 ```http
 Authorization: Bearer <token>
 ```
+
+## Coleção Postman
+
+O repositório inclui uma coleção do Postman com endpoints da API:
+
+```text
+docs/postman/ClashZone.postman_collection.json
+```
+
+Para usar, importe esse arquivo no Postman e ajuste o ambiente/base URL conforme sua execução local.
 
 ## Endpoints Principais
 
@@ -300,44 +305,8 @@ ClashZone/
 └── docker-compose.yml
 ```
 
-Arquitetura sugerida:
-
-```text
-ClashZone API
-   |
-   | publica eventos
-   v
-RabbitMQ
-   |
-   v
-Notification Service
-   ├── envia emails
-   ├── cria notificações internas
-   └── registra histórico de envio
-```
-
-Eventos candidatos:
-
-- `REGISTRATION_CREATED`
-- `REGISTRATION_PENDING`
-- `REGISTRATION_APPROVED`
-- `REGISTRATION_REJECTED`
-- `TOURNAMENT_STARTING_SOON`
-- `TOURNAMENT_STARTED`
-
-Tecnologias sugeridas para essa etapa:
-
-- Spring Boot
-- Spring AMQP
-- RabbitMQ
-- Spring Mail
-- PostgreSQL
-- Mailpit ou MailHog para testes locais
-- Amazon SES, SendGrid, Mailgun ou Resend para produção
-
 ## Observações de Desenvolvimento
 
 - O frontend possui um `ToastService` para mensagens rápidas de interface, como sucesso e erro.
 - O futuro `notification-service` será responsável por notificações de domínio, emails e alertas relacionados a torneios e inscrições.
 - Essa separação evita confusão entre feedback visual do frontend e notificações reais do sistema.
-

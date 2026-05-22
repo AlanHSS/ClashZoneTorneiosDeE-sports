@@ -1,0 +1,1058 @@
+{
+  "info": {
+    "_postman_id": "3968f189-d20c-4857-9f45-dc6ebb12d461",
+    "name": "ClashZone",
+    "description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Scripts\" tab**\n\nAdding tests to your requests can help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/fa30ea0a-373d-4545-a668-e7b283cca343/aW1hZ2UucG5n\" alt=\"\" height=\"1530\" width=\"2162\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n    \n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "46480352",
+    "_collection_link": "https://go.postman.co/collection/46480352-3968f189-d20c-4857-9f45-dc6ebb12d461?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Torneio - Requisições",
+      "item": [
+        {
+          "name": "Torneios - Listar todos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8058/clashzone/torneios/listartorneios",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "torneios",
+                "listartorneios"
+              ]
+            },
+            "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+          },
+          "response": []
+        },
+        {
+          "name": "Torneios - Buscar por id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8058/clashzone/torneios/paginadotorneio/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "torneios",
+                "paginadotorneio",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Torneios - Meus torneios",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8058/clashzone/torneios/meustorneios",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "torneios",
+                "meustorneios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Torneios - Criar",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Successful POST request\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nomeDoTorneio\": \"Fortnite Battle Arena\",\n  \"descricaoDoTorneio\": \"Competição multiplataforma de Fortnite\",\n  \"inicioDoTorneio\": \"2026-01-15T17:00:00\",\n  \"jogoDoTorneio\": \"FORTNITE\",\n  \"quantidadeDeEquipes\": 64,\n  \"statusDoTorneio\": \"AGENDADO\",\n  \"plataforma\": \"CROSS_PLATAFORM\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8058/clashzone/torneios/criartorneio",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "torneios",
+                "criartorneio"
+              ]
+            },
+            "description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+          },
+          "response": []
+        },
+        {
+          "name": "Torneios - Filtrar",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Successful POST request\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jogoDoTorneio\": \"FORTNITE\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8058/clashzone/torneios/torneiosfiltrados",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "torneios",
+                "torneiosfiltrados"
+              ]
+            },
+            "description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+          },
+          "response": []
+        },
+        {
+          "name": "Torneios - Atualizar",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nomeDoTorneio\": \"Campeonato de LOL 2024 - ATUALIZADO3.0\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8058/clashzone/torneios/atualizartorneio/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "torneios",
+                "atualizartorneio",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Usuários - Requisições",
+      "item": [
+        {
+          "name": "Usuários - Listar todos",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8058/clashzone/usuarios/listartodosusuarios",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "usuarios",
+                "listartodosusuarios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Usuários - Buscar por id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8058/clashzone/usuarios/userprofile/12",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "usuarios",
+                "userprofile",
+                "12"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Usuários - Atualizar",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nomeDoUsuario\": \"Maria Silva do Rego\"\r\n\r\n  }\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8058/clashzone/usuarios/atualizarusuario/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "usuarios",
+                "atualizarusuario",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Usuários - Deletar",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8058/clashzone/usuarios/deletarusuario/6",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "usuarios",
+                "deletarusuario",
+                "6"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Equipes - Requisições",
+      "item": [
+        {
+          "name": "Equipes - Listar todos",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8058/clashzone/equipes/listartodasequipes",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "equipes",
+                "listartodasequipes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Equipes - Minhas equipes",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8058/clashzone/equipes/minhasequipes",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "equipes",
+                "minhasequipes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Equipes - Buscar por id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8058/clashzone/equipes/informacoesdaequipe/16",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "equipes",
+                "informacoesdaequipe",
+                "16"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Equipes - Listar membros por equipe",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8058/clashzone/equipes/18/membros/listarmembros",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "equipes",
+                "18",
+                "membros",
+                "listarmembros"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Equipes - Salvar",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nomeDaEquipe\": \"Steel Wolves\",\r\n  \"jogo\": \"CS2\"\r\n}\r\n\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8058/clashzone/equipes/criarequipe",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "equipes",
+                "criarequipe"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Equipes - Adicionar membros",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "[\r\n  { \"nickname\": \"BuildMaster\", \"tipo\": \"TITULAR\", \"rank\": \"Champion League\" },\r\n  { \"nickname\": \"EditKing\", \"tipo\": \"TITULAR\", \"rank\": \"Champion League\" },\r\n  { \"nickname\": \"StormRunner\", \"tipo\": \"TITULAR\", \"rank\": \"Elite\" },\r\n  { \"nickname\": \"SharpShooter\", \"tipo\": \"TITULAR\", \"rank\": \"Elite\" },\r\n  { \"nickname\": \"BackupRaider\", \"tipo\": \"RESERVA\", \"rank\": \"Contender League\" }\r\n]\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8058/clashzone/equipes/22/membros/adicionar",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "equipes",
+                "22",
+                "membros",
+                "adicionar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Equipes - Atualizar",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkZWxldGFyQGV4YW1wbGUuY29tIiwiaWF0IjoxNzY0MDk5MjEzLCJleHAiOjE3NjQxODU2MTN9.wYzjhu7uao_AQVXF0FVU12kZjZ5YhFSqMpnYvIb7Duukal1Q0Ur49uyosOGsP0JeyX65zNPlmr_wo-LtjYNZzw",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nomeDaEquipe\": \"equipe a deletar 2.0\",\r\n  \"jogo\": \"OVERWATCH_2\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8058/clashzone/equipes/atualizarequipe/10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "equipes",
+                "atualizarequipe",
+                "10"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Equipes - Atualizar membros",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "[\r\n  {\r\n    \"id\": 8,\r\n    \"nickname\": \"NovoNick2.0\"\r\n  }\r\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8058/clashzone/equipes/16/membros/atualizar",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "equipes",
+                "16",
+                "membros",
+                "atualizar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Equipes - Deletar",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8058/clashzone/equipes/deletarequipe/9",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "equipes",
+                "deletarequipe",
+                "9"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Equipes - Deletar membro",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8058/clashzone/equipes/16/membros/deletar/13",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "equipes",
+                "16",
+                "membros",
+                "deletar",
+                "13"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Inscrição - Requisições",
+      "item": [
+        {
+          "name": "Inscrição - Listar por torneio",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8058/clashzone/inscricao/torneio/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "inscricao",
+                "torneio",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Inscrição - Listar por equipe",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8058/clashzone/inscricao/equipe/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "inscricao",
+                "equipe",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "inscrição - listar todas por usuário",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8058/clashzone/inscricao/minhasinscricoes",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "inscricao",
+                "minhasinscricoes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Inscrição - criar",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"torneioId\": 1,\r\n  \"equipeId\": 13\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8058/clashzone/inscricao/criar",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "inscricao",
+                "criar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Inscrição - Atualizar",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8058/clashzone/inscricao/atualizar/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "inscricao",
+                "atualizar",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth - Requisições",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nomeDoTorneio\": \"Torneio Urgente\",\n    \"descricaoDoTorneio\": \"Torneio com data de hoje\",\n    \"inicioDoTorneio\": \"2025-11-05T20:00:00\",\n    \"jogoDoTorneio\": \"CS2\",\n    \"quantidadeDeEquipes\": 16,\n    \"criadorDoTorneio\": \"Admin\",\n    \"statusDoTorneio\": \"AGENDADO\",\n    \"plataforma\": \"PC\"\n  }"
+            },
+            "url": {
+              "raw": "http://localhost:8058/clashzone/auth/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8058/clashzone/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8058",
+              "path": [
+                "clashzone",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "id",
+      "value": "1"
+    },
+    {
+      "key": "base_url",
+      "value": "https://template.postman-echo.com"
+    }
+  ]
+}
